@@ -134,12 +134,20 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
         if (!matchesSale) return false;
       }
 
-      // 2. Country filter
+      // 2. Region / wilayah filter (matches Lombok area in address/title)
       if (filters.country) {
-        const propertyCountry = (p as any).country || (p as any).countryCode || '';
-        if (propertyCountry.toLowerCase() !== filters.country.toLowerCase()) {
-          return false;
-        }
+        const needle = filters.country.toLowerCase();
+        const haystack = [
+          p.address,
+          p.title,
+          (p as any).region,
+          (p as any).city,
+          (p as any).country,
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!haystack.includes(needle)) return false;
       }
 
       // 3. Location (substring match, case-insensitive)

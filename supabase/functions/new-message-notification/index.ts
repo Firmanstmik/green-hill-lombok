@@ -116,8 +116,8 @@ Deno.serve(async (req) => {
     // Determine login link based on recipient role
     const isSeller = recipientId === conversation.seller_id;
     const loginUrl = isSeller
-      ? 'https://ukonestate.com/en/dashboard'
-      : 'https://ukonestate.com/en/account';
+      ? 'https://example.com/en/dashboard'
+      : 'https://example.com/en/account';
 
     // Send email
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
@@ -131,10 +131,10 @@ Deno.serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Ukon Estate <notifications@ukonestate.com>',
+          from: 'Green Hill <notifications@example.com>',
           to: [recipientUser.email],
           subject: `New message regarding ${listingTitle}`,
-          text: `You have received a new message on Ukon Estate regarding "${listingTitle}".\n\nLog in to view and respond:\n${loginUrl}\n\n— Ukon Estate`,
+          text: `You have received a new message on Green Hill regarding "${listingTitle}".\n\nLog in to view and respond:\n${loginUrl}\n\n— Green Hill`,
         }),
       });
 

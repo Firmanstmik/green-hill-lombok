@@ -19,6 +19,7 @@ const About = lazy(() => import("./pages/About"));
 const Agents = lazy(() => import("./pages/Agents"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BuyingInLombok = lazy(() => import("./pages/BuyingInLombok"));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Account = lazy(() => import("./pages/Account"));
@@ -27,6 +28,7 @@ const UpdatePassword = lazy(() => import("./pages/UpdatePassword"));
 const BuyerSettings = lazy(() => import("./pages/BuyerSettings"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const Partners = lazy(() => import("./pages/Partners"));
+const Invoice = lazy(() => import("./pages/Invoice"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -76,6 +78,9 @@ function AppRoutes() {
       {/* Redirect non-prefixed auth callback to language-prefixed version */}
       <Route path="/auth/callback" element={<AuthCallbackRedirect />} />
 
+      {/* Isolated invoice preview / PDF export (not language-routed) */}
+      <Route path="/invoice" element={<Invoice />} />
+
       {/* Language-prefixed routes */}
       <Route path="/:lang" element={<Index />} />
       <Route path="/:lang/properties" element={<Properties />} />
@@ -85,6 +90,7 @@ function AppRoutes() {
       <Route path="/:lang/partners" element={<Partners />} />
       <Route path="/:lang/intelligence" element={<Blog />} />
       <Route path="/:lang/intelligence/:slug" element={<BlogPost />} />
+      <Route path="/:lang/buying-in-lombok" element={<BuyingInLombok />} />
       <Route path="/:lang/login" element={<Login />} />
       <Route path="/:lang/dashboard" element={<Dashboard />} />
       <Route path="/:lang/dashboard/admin" element={<AdminDashboard />} />

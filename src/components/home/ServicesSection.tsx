@@ -36,7 +36,7 @@ export function ServicesSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="inline-block px-5 py-1.5 border border-gray-300 rounded-full text-sm font-medium text-gray-700 mb-5"
+            className="gh-label inline-block text-[#2D3621]/50 mb-5"
           >
             {t('services.whatWeDo')}
           </motion.span>
@@ -44,7 +44,7 @@ export function ServicesSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-2xl md:text-3xl lg:text-[2.6rem] font-bold text-[#111827] uppercase leading-tight tracking-tight"
+            className="gh-section-display max-w-3xl mx-auto normal-case"
           >
             {t('services.exploreOurRange')}
           </motion.h2>
@@ -72,10 +72,10 @@ export function ServicesSection() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg lg:text-xl font-bold text-[#111827] mb-3">
+                <h3 className="text-lg lg:text-xl font-sans font-semibold text-[#2D3621] mb-3 tracking-[-0.01em]">
                   {title}
                 </h3>
-                <p className="text-[#6b7280] text-sm leading-relaxed">
+                <p className="text-[#2D3621]/60 text-[15px] font-sans font-normal leading-relaxed">
                   {description}
                 </p>
               </motion.div>

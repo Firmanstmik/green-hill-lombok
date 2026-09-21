@@ -1,0 +1,187 @@
+{
+  "generatedAt": "2026-09-21T07:59:17.633Z",
+  "report": [
+    {
+      "id": "01",
+      "label": "Land & Ocean",
+      "source": "hero-coastal-land.jpg",
+      "sourceSize": "1536x1024",
+      "desktopCrop": {
+        "left": 0,
+        "top": 29,
+        "width": 1536,
+        "height": 960
+      },
+      "mobileCrop": {
+        "left": 522,
+        "top": 0,
+        "width": 694,
+        "height": 1024
+      },
+      "desktopWidths": [
+        960,
+        1200,
+        1440,
+        1536
+      ],
+      "mobileWidths": [
+        432,
+        576,
+        694
+      ],
+      "mobileCropHeightAt576": 850,
+      "dominant": "#666b5d"
+    },
+    {
+      "id": "02",
+      "label": "Land & Light",
+      "source": "hero-section1.webp",
+      "sourceSize": "1672x941",
+      "desktopCrop": {
+        "left": 83,
+        "top": 0,
+        "width": 1506,
+        "height": 941
+      },
+      "mobileCrop": {
+        "left": 517,
+        "top": 0,
+        "width": 638,
+        "height": 941
+      },
+      "desktopWidths": [
+        960,
+        1200,
+        1440,
+        1506
+      ],
+      "mobileWidths": [
+        432,
+        576,
+        638
+      ],
+      "mobileCropHeightAt576": 850,
+      "dominant": "#827365"
+    },
+    {
+      "id": "03",
+      "label": "On the Ground",
+      "source": "hero-section2.webp",
+      "sourceSize": "1672x941",
+      "desktopCrop": {
+        "left": 83,
+        "top": 0,
+        "width": 1506,
+        "height": 941
+      },
+      "mobileCrop": {
+        "left": 517,
+        "top": 0,
+        "width": 638,
+        "height": 941
+      },
+      "desktopWidths": [
+        960,
+        1200,
+        1440,
+        1506
+      ],
+      "mobileWidths": [
+        432,
+        576,
+        638
+      ],
+      "mobileCropHeightAt576": 850,
+      "dominant": "#747366"
+    },
+    {
+      "id": "02-founder",
+      "label": "Founder portrait",
+      "source": "reece-suv-elevated-original.jpg",
+      "sourceSize": "768x1024",
+      "crop": {
+        "left": 44,
+        "top": 290,
+        "width": 587,
+        "height": 734
+      },
+      "widths": [
+        520,
+        760,
+        1040
+      ],
+      "aspect": "587:734",
+      "dominant": "#74776e"
+    }
+  ],
+  "logo": {
+    "desktop": [
+      {
+        "h": 56,
+        "width": 205,
+        "kb": 6
+      },
+      {
+        "h": 112,
+        "width": 410,
+        "kb": 15
+      },
+      {
+        "h": 168,
+        "width": 615,
+        "kb": 26
+      }
+    ],
+    "mobile": [
+      {
+        "h": 44,
+        "width": 58,
+        "kb": 3
+      },
+      {
+        "h": 88,
+        "width": 117,
+        "kb": 7
+      },
+      {
+        "h": 132,
+        "width": 175,
+        "kb": 11
+      }
+    ],
+    "solid": [
+      {
+        "h": 56,
+        "width": 205,
+        "kb": 7
+      },
+      {
+        "h": 112,
+        "width": 410,
+        "kb": 16
+      },
+      {
+        "h": 168,
+        "width": 615,
+        "kb": 25
+      }
+    ],
+    "solidStacked": [
+      {
+        "h": 44,
+        "width": 58,
+        "kb": 3
+      },
+      {
+        "h": 88,
+        "width": 117,
+        "kb": 7
+      },
+      {
+        "h": 132,
+        "width": 175,
+        "kb": 11
+      }
+    ]
+  }
+}

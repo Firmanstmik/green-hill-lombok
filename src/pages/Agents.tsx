@@ -12,27 +12,10 @@ import { NetworkModelSection } from '@/components/agents/NetworkModelSection';
 import heroBg from '@/assets/Ukon_Estate_Hero.avif';
 import heroVideo from '@/assets/Ukon_Estate_hero-video-v2.mp4';
 
-import ginoBeeltPhoto from '@/assets/members/Gino_Beelt.avif';
-import pakKumisPhoto from '@/assets/members/Pak_Kumis.avif';
-import paulWenninkPhoto from '@/assets/members/Paul_Wennink.avif';
-import raffyUkonPhoto from '@/assets/members/Raffy_Ukon.avif';
-import roselynnChaiPhoto from '@/assets/members/Roselynn_Chai.avif';
-import marcoLoureiroPhoto from '@/assets/members/Marco_Loureiro.avif';
-import jeroenEgbersPhoto from '@/assets/members/Jeroen_Egbers.avif';
-import hendrikUkonPhoto from '@/assets/members/Hendrik_Ukon.avif';
-import afifahUkonPhoto from '@/assets/members/Afifah_Ukon.avif';
-
-const agentPhotos: Record<string, string> = {
-  '1': ginoBeeltPhoto,
-  '2': pakKumisPhoto,
-  '3': paulWenninkPhoto,
-  '4': raffyUkonPhoto,
-  '5': roselynnChaiPhoto,
-  '6': marcoLoureiroPhoto,
-  '7': jeroenEgbersPhoto,
-  '8': hendrikUkonPhoto,
-  '9': afifahUkonPhoto,
-};
+/** Photos come from local placeholder data only — no prior-project agent assets */
+const agentPhotos: Record<string, string> = Object.fromEntries(
+  agents.map((agent) => [agent.id, agent.photo])
+);
 
 type RegionKey = 'all' | 'europe' | 'southeast-asia';
 
@@ -136,7 +119,7 @@ const Agents = () => {
                 <span className="w-px h-3 bg-white/20" />
                 <span>2 {t('agents.metricContinents')}</span>
                 <span className="w-px h-3 bg-white/20" />
-                <span>628 {t('agents.metricTransactions')}</span>
+                <span>— {t('agents.metricTransactions')}</span>
               </motion.div>
             </div>
           </div>

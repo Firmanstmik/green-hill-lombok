@@ -1,3 +1,15 @@
+/**
+ * GREEN HILL — local demo data for public pages.
+ * Compatible with original PropertyCard / Services / Agents / Testimonials components.
+ */
+
+import landCoastal from '@/assets/greenhill/land-coastal.jpg';
+import villaPool from '@/assets/greenhill/villa-pool.jpg';
+import landBeach from '@/assets/greenhill/land-beach.jpg';
+import landHillside from '@/assets/greenhill/land-hillside.jpg';
+import villaGarden from '@/assets/greenhill/villa-garden.jpg';
+import landHolding from '@/assets/greenhill/land-holding.jpg';
+
 export interface Property {
   id: string;
   title: string;
@@ -24,6 +36,7 @@ export interface Property {
     distance: string;
     type: 'school' | 'hospital' | 'shopping' | 'transport' | 'airport' | 'park';
   }[];
+  /** Legacy field — architecture compatibility */
   isUkonAgent: boolean;
 }
 
@@ -49,6 +62,13 @@ export interface Testimonial {
   location?: string;
 }
 
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -59,332 +79,188 @@ export interface BlogPost {
   author: string;
 }
 
-export interface Service {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
-
+/** Curated Green Hill Lombok opportunities — demo examples (AI stills) */
 export const properties: Property[] = [
   {
-    id: '1',
-    title: 'Modern Luxury Villa',
-    address: '123 Palm Avenue, Miami, FL',
-    price: 1250000,
+    id: 'gh-1',
+    title: 'South Lombok Coastal Land',
+    address: 'Kuta Selatan, Lombok',
+    price: 0,
     priceType: 'sale',
-    bedrooms: 5,
-    bathrooms: 4,
-    sqft: 450,
-    status: 'sale',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?w=800&q=80',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-    ],
+    bedrooms: 0,
+    bathrooms: 0,
+    sqft: 2450,
+    status: 'investment',
+    image: landCoastal,
+    images: [landCoastal],
     featured: true,
-    type: 'Villa',
-    listingCode: 'LV-MIA-001',
-    ownership: 'Freehold',
-    yearBuilt: '2022',
-    surfaceArea: '500 m2',
-    buildingArea: '450 m2',
-    features: {
-      'Condition': 'New',
-      'View': 'Garden',
-      'Distance to Beach': '5 mins',
-      'Pool': 'Private 12m',
-      'Garden': 'Landscaped',
-      'Kitchen': 'Fully Equipped',
-    },
-    nearbyAmenities: [
-      { name: 'Miami International School', distance: '800m', type: 'school' },
-      { name: 'Coconut Grove Hospital', distance: '1.2km', type: 'hospital' },
-      { name: 'The Fresh Market', distance: '400m', type: 'shopping' },
-      { name: 'Metrobus Station', distance: '200m', type: 'transport' },
-    ],
-    isUkonAgent: true,
-  },
-  {
-    id: '2',
-    title: 'Downtown Penthouse',
-    address: '456 Sky Tower, New York, NY',
-    price: 8500,
-    priceType: 'rent',
-    bedrooms: 3,
-    bathrooms: 2,
-    sqft: 220,
-    status: 'rent',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
-    ],
-    featured: true,
-    type: 'Penthouse',
-    listingCode: 'PH-NYC-002',
-    ownership: 'Leasehold',
-    yearBuilt: '2020',
-    surfaceArea: '220 m2',
-    buildingArea: '220 m2',
-    features: {
-      'Floor': '42nd',
-      'View': 'City Skyline',
-      'Gym': 'In-building',
-      'Security': '24/7 Doorman',
-      'Terrace': 'Private',
-      'Distance to Park': '2 mins',
-    },
-    nearbyAmenities: [
-      { name: 'PS 158 Manhattan', distance: '500m', type: 'school' },
-      { name: 'Lenox Hill Hospital', distance: '1.5km', type: 'hospital' },
-      { name: 'Bloomingdale\'s', distance: '900m', type: 'shopping' },
-      { name: '59th St Subway Station', distance: '300m', type: 'transport' },
-    ],
+    type: 'Land',
+    listingCode: 'GH-LOM-001',
+    surfaceArea: '2,450 m²',
+    description: 'Elevated coastal land suited to a discreet villa compound.',
+    features: { Type: 'Land', Status: 'Available' },
     isUkonAgent: false,
   },
   {
-    id: '3',
-    title: 'Beachfront Estate',
-    address: '789 Ocean Drive, Malibu, CA',
-    price: 3500000,
+    id: 'gh-2',
+    title: 'Private Villa Opportunity',
+    address: 'Central Lombok',
+    price: 0,
     priceType: 'sale',
-    bedrooms: 6,
-    bathrooms: 5,
+    bedrooms: 3,
+    bathrooms: 3,
     sqft: 680,
-    status: 'investment',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
-    ],
+    status: 'sale',
+    image: villaPool,
+    images: [villaPool],
     featured: true,
     type: 'Villa',
-    listingCode: 'BE-MAL-003',
-    ownership: 'Freehold',
-    yearBuilt: '2019',
-    surfaceArea: '1000 m2',
-    buildingArea: '680 m2',
-    features: {
-      'Beach Access': 'Direct',
-      'ROI': 'Up to 12%',
-      'Status': 'Operational',
-      'Management': 'In-house',
-      'Guest Facilities': 'Sauna, Gym',
-      'Furniture': 'Included',
-    },
-    nearbyAmenities: [
-      { name: 'Malibu Elementary School', distance: '2.5km', type: 'school' },
-      { name: 'St. John\'s Health Center', distance: '8km', type: 'hospital' },
-      { name: 'Malibu Village', distance: '3.2km', type: 'shopping' },
-      { name: 'Pacific Coast Hwy Bus Stop', distance: '150m', type: 'transport' },
-    ],
-    isUkonAgent: true,
+    listingCode: 'GH-LOM-002',
+    buildingArea: '680 m²',
+    surfaceArea: '1,200 m²',
+    description: 'A considered villa setting framed by agricultural landscape.',
+    features: { Type: 'Villa', Status: 'Available' },
+    isUkonAgent: false,
   },
   {
-    id: '4',
-    title: 'Contemporary Townhouse',
-    address: '321 Urban Lane, Austin, TX',
-    price: 4200,
-    priceType: 'rent',
-    bedrooms: 4,
-    bathrooms: 3,
-    sqft: 280,
-    status: 'rent',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?w=800&q=80',
-    ],
+    id: 'gh-3',
+    title: 'Near-Beach Development Plot',
+    address: 'Northwest Lombok',
+    price: 0,
+    priceType: 'sale',
+    bedrooms: 0,
+    bathrooms: 0,
+    sqft: 3800,
+    status: 'investment',
+    image: landBeach,
+    images: [landBeach],
     featured: true,
-    type: 'Townhouse',
-    listingCode: 'TH-AUS-004',
-    ownership: 'Freehold',
-    yearBuilt: '2021',
-    surfaceArea: '300 m2',
-    buildingArea: '280 m2',
-    features: {
-      'Parking': '2 Cars',
-      'Smart Home': 'Yes',
-      'Patio': 'Yes',
-      'Distance to Downtown': '10 mins',
-      'Pet Friendly': 'Yes',
-      'Utilities': 'Low Energy',
-    },
-    nearbyAmenities: [
-      { name: 'Austin High School', distance: '1.8km', type: 'school' },
-      { name: 'St. David\'s Medical Center', distance: '3.5km', type: 'hospital' },
-      { name: 'Whole Foods Market', distance: '1.1km', type: 'shopping' },
-      { name: 'CapMetro Bus Stop', distance: '250m', type: 'transport' },
-    ],
+    type: 'Land',
+    listingCode: 'GH-LOM-003',
+    surfaceArea: '3,800 m²',
+    description: 'A larger holding positioned for thoughtful residential development.',
+    features: { Type: 'Development', Status: 'Available' },
+    isUkonAgent: false,
+  },
+  {
+    id: 'gh-4',
+    title: 'Hillside Land Parcel',
+    address: 'South Lombok',
+    price: 0,
+    priceType: 'sale',
+    bedrooms: 0,
+    bathrooms: 0,
+    sqft: 1800,
+    status: 'investment',
+    image: landHillside,
+    images: [landHillside],
+    featured: true,
+    type: 'Land',
+    listingCode: 'GH-LOM-004',
+    surfaceArea: '1,800 m²',
+    description: 'Quiet hillside parcel with long-term holding potential.',
+    features: { Type: 'Land', Status: 'Available' },
+    isUkonAgent: false,
+  },
+  {
+    id: 'gh-5',
+    title: 'Tropical Garden Villa Site',
+    address: 'East Lombok',
+    price: 0,
+    priceType: 'sale',
+    bedrooms: 4,
+    bathrooms: 4,
+    sqft: 920,
+    status: 'sale',
+    image: villaGarden,
+    images: [villaGarden],
+    featured: true,
+    type: 'Villa',
+    listingCode: 'GH-LOM-005',
+    buildingArea: '920 m²',
+    description: 'Garden-oriented villa opportunity with strong lifestyle appeal.',
+    features: { Type: 'Villa', Status: 'Available' },
+    isUkonAgent: false,
+  },
+  {
+    id: 'gh-6',
+    title: 'Investment Land Holding',
+    address: 'West Lombok',
+    price: 0,
+    priceType: 'sale',
+    bedrooms: 0,
+    bathrooms: 0,
+    sqft: 5200,
+    status: 'investment',
+    image: landHolding,
+    images: [landHolding],
+    featured: true,
+    type: 'Land',
+    listingCode: 'GH-LOM-006',
+    surfaceArea: '5,200 m²',
+    description: 'Larger land holding for investors seeking scale in Lombok.',
+    features: { Type: 'Investment', Status: 'Available' },
     isUkonAgent: false,
   },
 ];
 
+/** Green Hill focus areas — same 6-card services layout */
+export const services: Service[] = [
+  { id: '1', title: 'Land Opportunities', description: 'Carefully selected land parcels across Lombok’s most promising locations.', icon: 'Home' },
+  { id: '2', title: 'Villa Opportunities', description: 'Private villa sites and residences suited to lifestyle and long-term holding.', icon: 'Users' },
+  { id: '3', title: 'Development Plots', description: 'Larger holdings positioned for thoughtful residential or hospitality use.', icon: 'Key' },
+  { id: '4', title: 'Investment Guidance', description: 'Clear, considered advice shaped around your criteria and timeline.', icon: 'TrendingUp' },
+  { id: '5', title: 'Site Evaluation', description: 'Access, orientation, context and fit reviewed with local knowledge.', icon: 'BarChart' },
+  { id: '6', title: 'Tailored Search', description: 'A focused process — not a marketplace — for the opportunities that matter.', icon: 'Settings' },
+];
+
+/** Placeholder advisors — not prior-project people */
 export const agents: Agent[] = [
-  { id: '9', name: 'Afifah Ukon', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: '', specialty: 'Modern Apartments', languages: 'Indonesian, English, Dutch', experience: '5+ years' },
-  { id: '7', name: 'Jeroen Egbers', location: 'Amsterdam, NL', country: 'Netherlands', region: 'europe', photo: '', specialty: 'Tech Hub Living', languages: 'Dutch, English', experience: '7+ years' },
-  { id: '3', name: 'Paul Wennink', location: 'Almere, NL', country: 'Netherlands', region: 'europe', photo: '', specialty: 'Beachfront Properties', languages: 'Dutch, English, German', experience: '10+ years' },
-  { id: '6', name: 'Marco Loureiro', location: 'Lisbon, Portugal', country: 'Portugal', region: 'europe', photo: '', specialty: 'Urban Living', languages: 'Portuguese, English, Spanish', experience: '9+ years' },
-  { id: '5', name: 'Roselynn Chai', location: 'Johor Bahru, Malaysia', country: 'Malaysia', region: 'southeast-asia', photo: '', specialty: 'Mountain Retreats', languages: 'English, Malay, Mandarin', experience: '6+ years' },
-  { id: '1', name: 'Gino Beelt', location: 'Utrecht, NL', country: 'Netherlands', region: 'europe', photo: '', specialty: 'Luxury Homes', languages: 'Dutch, English', experience: '8+ years' },
-  { id: '8', name: 'Hendrik Ukon', location: 'Bandung, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: '', specialty: 'Historic Villas', languages: 'Dutch, Indonesian, English', experience: '15+ years' },
-  { id: '2', name: 'Pak Kumis', location: 'Pangandaran, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: '', specialty: 'Commercial Properties', languages: 'Indonesian, English', experience: '12+ years' },
-  { id: '4', name: 'Raffy Ukon', location: 'Bali, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: '', specialty: 'Investment Properties', languages: 'Dutch, English, Indonesian', experience: '12+ years' },
+  { id: '1', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80', specialty: 'Land & Investment', languages: 'English, Indonesian', experience: '—' },
+  { id: '2', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80', specialty: 'Villa Opportunities', languages: 'English', experience: '—' },
+  { id: '3', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80', specialty: 'Development', languages: 'English, Indonesian', experience: '—' },
+  { id: '4', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80', specialty: 'Investor Relations', languages: 'English', experience: '—' },
+  { id: '5', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', specialty: 'Site Visits', languages: 'English, Indonesian', experience: '—' },
+  { id: '6', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80', specialty: 'Local Coordination', languages: 'Indonesian, English', experience: '—' },
 ];
 
 export const testimonials: Testimonial[] = [
   {
     id: '1',
-    clientName: 'Giovanni Bertè',
-    clientType: 'Home Buyer',
-    location: 'Amsterdam, NL',
+    clientName: 'Demo Client',
+    clientType: 'Investor',
+    location: 'Lombok',
     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
-    review: 'Raffy was incredibly helpful throughout our search. We were able to find our dream house within just one month. His serious and dedicated approach to the process made all the difference. I can highly recommend this service to anyone looking to buy.',
+    review: '[Placeholder] Sample investor feedback for layout only. Not a real Green Hill client review.',
     rating: 5,
   },
   {
     id: '2',
-    clientName: 'Adriaan Vorster',
-    clientType: 'Home Buyer',
-    location: 'Amsterdam, NL',
+    clientName: 'Demo Client',
+    clientType: 'Buyer',
+    location: 'Lombok',
+    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
+    review: '[Placeholder] Sample feedback for layout only. Not a real Green Hill client review.',
+    rating: 5,
+  },
+  {
+    id: '3',
+    clientName: 'Demo Client',
+    clientType: 'Investor',
+    location: 'Lombok',
     photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
-    review: 'Raffy is very professional and offers a great all round service. He is always responsive and goes the extra mile to ensure everything is done perfectly. His attention to detail and genuine care for his clients is truly exceptional. I highly recommend his services.',
-    rating: 5,
-  },
-  {
-    id: '3',
-    clientName: 'Dario Tasende',
-    clientType: 'Home Buyer',
-    location: 'Bali, Indonesia',
-    photo: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80',
-    review: 'Raffy found us an excellent apartment within just one month of searching. The communication was easy and transparent throughout the entire process. His dedication to finding us the perfect property was evident. Highly recommend his services to anyone.',
-    rating: 4,
-  },
-  {
-    id: '4',
-    clientName: 'Vincent Speed',
-    clientType: 'Home Seller',
-    location: 'Almere, NL',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
-    review: 'I\'d like to thank Ukon Estate for the fast and excellent service I received throughout the process. The sale of my house went very smoothly from start to finish. Their professionalism and expertise were invaluable. I recommend Ukon Estate to everyone looking to sell.',
-    rating: 5,
-  },
-  {
-    id: '5',
-    clientName: 'Ben van Bree',
-    clientType: 'Home Buyer',
-    location: 'Lombok, Indonesia',
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
-    review: 'An truly excellent buyer\'s agent who helped me immensely throughout the entire process. Always available, even in the evenings, which is truly exceptional. After a year of searching, I found a suitable property in just one month thanks to Ukon Estate. Highly recommended.',
-    rating: 5,
-  },
-  {
-    id: '6',
-    clientName: 'Adrian Marcelo',
-    clientType: 'Home Buyer',
-    location: 'Johor Bahru, Malaysia',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
-    review: 'A pleasant and professional person who helps you from start to finish with genuine care. They treat your purchase as if it were their own and never leave you without guidance. Their valuable recommendations and consistent support throughout made a real difference. Definitely worth it.',
+    review: '[Placeholder] Sample feedback for layout only. Not a real Green Hill client review.',
     rating: 5,
   },
 ];
 
-export const services: Service[] = [
-  {
-    id: '1',
-    title: 'Property Sales',
-    description: 'Expert guidance through the entire sales process, from listing to closing. We maximize your property value with strategic marketing.',
-    icon: 'Home',
-  },
-  {
-    id: '2',
-    title: 'Buyer Representation',
-    description: 'Dedicated support for finding your perfect home. We negotiate the best deals and ensure a smooth buying experience.',
-    icon: 'Users',
-  },
-  {
-    id: '3',
-    title: 'Rental Management',
-    description: 'Comprehensive rental services for landlords and tenants. From screening to maintenance, we handle it all.',
-    icon: 'Key',
-  },
-  {
-    id: '4',
-    title: 'Investment Consulting',
-    description: 'Strategic advice for real estate investments. We identify opportunities that deliver strong returns.',
-    icon: 'TrendingUp',
-  },
-  {
-    id: '5',
-    title: 'Property Valuation',
-    description: 'Accurate market valuations backed by data and local expertise. Know the true worth of your property.',
-    icon: 'BarChart',
-  },
-  {
-    id: '6',
-    title: 'Tailored Solutions',
-    description: 'Customized real estate solutions for unique needs. Whether relocating or downsizing, we adapt to you.',
-    icon: 'Settings',
-  },
-];
+export const blogPosts: BlogPost[] = [];
 
-export const blogPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: '10 Tips for First-Time Home Buyers',
-    excerpt: 'Navigate the home buying process with confidence using these essential tips from our experts.',
-    category: 'Buying',
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80',
-    date: '2024-01-15',
-    author: 'Sarah Johnson',
-  },
-  {
-    id: '2',
-    title: 'Real Estate Market Trends 2024',
-    excerpt: 'Stay ahead of the curve with our comprehensive analysis of this years real estate market.',
-    category: 'Market',
-    image: 'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=800&q=80',
-    date: '2024-01-10',
-    author: 'Michael Chen',
-  },
-  {
-    id: '3',
-    title: 'Maximizing Your Rental Income',
-    excerpt: 'Learn strategies to increase your rental property profits while keeping tenants happy.',
-    category: 'Investing',
-    image: 'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80',
-    date: '2024-01-05',
-    author: 'David Williams',
-  },
-  {
-    id: '4',
-    title: 'Home Staging Secrets',
-    excerpt: 'Transform your property to sell faster and for more money with professional staging tips.',
-    category: 'Selling',
-    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
-    date: '2024-01-01',
-    author: 'Emily Rodriguez',
-  },
-];
+export const stats = { projects: 0, clients: 0, value: 0 };
 
-export const stats = {
-  projects: 274,
-  clients: 70,
-  value: 10,
+/** Contact CTA — placeholder until Green Hill channels are finalised */
+export const contactInfo = {
+  email: 'hello@greenhill.example',
+  phone: '+44 7810 062383',
+  address: 'Lombok, Indonesia',
 };
-
-export const whatsappNumber = '+31853331000';
-export const whatsappUrl = 'https://wa.me/31853331000?text=Hello%2C%20I%E2%80%99m%20interested%20in%20a%20property%20on%20your%20website.%20Could%20you%20please%20share%20more%20details%20about%3A';

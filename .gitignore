@@ -11,7 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Secrets — keep .env.example tracked
 .env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +27,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local tooling
+.lovable
+*.tsbuildinfo
+

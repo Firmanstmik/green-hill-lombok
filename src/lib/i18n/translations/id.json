@@ -9,24 +9,79 @@
     "signIn": "Masuk",
     "contact": "Hubungi",
     "contactUsNow": "Hubungi Kami Sekarang",
-    "logout": "Keluar"
+    "logout": "Keluar",
+    "opportunities": "Peluang",
+    "whyLombok": "Mengapa Lombok",
+    "speakWithUs": "Bicara dengan Reece",
+    "menu": "Menu",
+    "close": "Tutup",
+    "notes": "Catatan"
   },
   "hero": {
-    "headline": "DI MANA IMPIAN MENJADI KENYATAAN.",
-    "subheadline": "Kami menyediakan solusi real estat yang disesuaikan, membimbing Anda di setiap langkah dengan pengalaman personal yang memenuhi kebutuhan dan aspirasi unik Anda.",
-    "exploreProperties": "Jelajahi Properti",
+    "headline": "Peluang properti &|investasi terkurasi|di Lombok Selatan.",
+    "headlineMobile": "Peluang properti|& investasi|terkurasi di|Lombok Selatan.",
+    "subheadline": "Dipilih di lapangan. Dipertimbangkan untuk jangka panjang.",
+    "exploreProperties": "Jelajahi Peluang",
     "stats": {
       "projectsComplete": "Proyek Selesai",
       "propertiesTransacted": "Properti Ditransaksikan",
       "happyClients": "Klien Puas",
       "projectValue": "Nilai Proyek",
-      "googleReviews": "47+ Ulasan Google",
-      "rating": "4.8 / 5"
+      "googleReviews": "Green Hill · Lombok",
+      "rating": "Curated property & land"
+    },
+    "eyebrow": "Green Hill / Lombok",
+    "badge": "Peluang Lombok Selatan",
+    "locationLabel": "Lombok Selatan, Indonesia",
+    "headlineBefore": "Temukan",
+    "headlineHighlight": "peluang properti terkurasi",
+    "headlineAfter": "di Lombok Selatan.",
+    "speakWithUs": "Berbicara dengan Reece",
+    "foundedBy": "Didirikan oleh Reece Green",
+    "founderName": "Reece Green",
+    "founderRole": "Founder · Investor · Lombok Selatan",
+    "founderNote": "Saya secara pribadi mengunjungi dan memilih peluang yang kami wakili.",
+    "meetReece": "Kenali Reece",
+    "founderQuote": "Tempat yang luar biasa menciptakan peluang yang luar biasa.",
+    "founderAttr": "Reece Green / Founder",
+    "microTrust": "Dikurasi di Lombok Selatan · Dipilih secara personal",
+    "watchFilm": "Tonton filmnya",
+    "watchFilmCaption": "Sudut pandang yang berbeda",
+    "scrollExplore": "Jelajahi lebih lanjut",
+    "land": "Lahan",
+    "villas": "Villa",
+    "exploreOpportunities": "Jelajahi Peluang",
+    "trust": {
+      "local": "Pengetahuan lokal di lapangan",
+      "selected": "Peluang yang dipilih dengan cermat",
+      "personal": "Pendampingan personal dari Reece"
+    },
+    "enquiry": {
+      "eyebrow": "Permintaan investor",
+      "meta": "Indikatif · tanpa kewajiban",
+      "title": "Mulai percakapan tentang peluang di Lombok.",
+      "question": "Apa yang Anda cari?",
+      "optLand": "Lahan",
+      "optVilla": "Villa",
+      "optDev": "Plot pengembangan",
+      "optGuide": "Panduan investasi",
+      "optLifestyle": "Properti lifestyle",
+      "optExploring": "Masih menjelajah",
+      "ctaContinue": "Lanjutkan",
+      "ctaSubmit": "Bicara dengan Reece",
+      "back": "Kembali",
+      "contactTitle": "Bagaimana Reece dapat menghubungi Anda?",
+      "name": "Nama Anda",
+      "namePlaceholder": "Nama lengkap",
+      "contact": "Email atau WhatsApp",
+      "contactPlaceholder": "anda@email.com atau +62…",
+      "doneTitle": "Semua siap.",
+      "doneBody": "WhatsApp akan terbuka agar Anda dapat melanjutkan percakapan langsung dengan Reece."
     }
   },
   "properties": {
-    "featured": "Properti Unggulan",
-    "featuredSubtitle": "Temukan Rumah yang Disesuaikan dengan Gaya Hidup dan Kebutuhan Anda",
+    "featured": "Peluang Unggulan",
+    "featuredSubtitle": "Peluang terpilih|dengan potensi jangka panjang.",
     "viewAllProperties": "Lihat Semua Properti",
     "findYourPerfect": "Temukan Properti Sempurna Anda",
     "browseDescription": "Jelajahi koleksi eksklusif properti kami untuk dijual, disewa, dan peluang investasi.",
@@ -39,7 +94,121 @@
     "available": "Tersedia",
     "backToProperties": "Kembali ke Properti",
     "noPropertiesFound": "Tidak ada properti yang sesuai dengan kriteria Anda.",
-    "notFound": "Properti tidak ditemukan"
+    "notFound": "Properti tidak ditemukan",
+    "featuredLead": "Contoh peluang lahan dan villa di Lombok — ditampilkan sebagai preview terkurasi.",
+    "exampleLand": "Lahan",
+    "exampleVilla": "Villa"
+  },
+  "selected": {
+    "eyebrow": "Peluang Terpilih",
+    "headline": "Seleksi yang dipertimbangkan|dari tempat dengan potensi.",
+    "lead": "Contoh peluang lahan dan villa di Lombok — ditampilkan sebagai seleksi kecil yang dikurasi, bukan katalog pasar.",
+    "viewOpportunity": "Lihat Peluang",
+    "viewAll": "Lihat Semua Peluang",
+    "priceOnRequest": "Harga atas Permintaan",
+    "landSize": "Luas lahan"
+  },
+  "private": {
+    "eyebrow": "Green Hill Private",
+    "headline": "Beberapa peluang|lebih baik ditangani secara pribadi.",
+    "lead": "Ketika kebutuhan lebih spesifik — lahan lebih besar, hospitality, pengembangan, atau kemitraan — Green Hill dapat bekerja langsung dengan Anda melalui percakapan yang diskret dan berbasis hubungan dengan Reece.",
+    "cta": "Minta Percakapan Pribadi",
+    "note": "Ini adalah jalur pertanyaan, bukan katalog publik proyek yang tersedia.",
+    "pathways": {
+      "land": {
+        "title": "Lahan Pribadi",
+        "body": "Untuk kebutuhan lahan spesifik atau pencarian lahan yang lebih besar."
+      },
+      "hospitality": {
+        "title": "Hospitality",
+        "body": "Untuk pertanyaan hospitality, destinasi, atau berorientasi pengembangan."
+      },
+      "development": {
+        "title": "Pengembangan Pribadi",
+        "body": "Untuk diskusi pengembangan atau kemitraan yang lebih kompleks."
+      },
+      "joint": {
+        "title": "Joint Venture",
+        "body": "Untuk peluang berbasis hubungan di mana pendekatan bersama sesuai."
+      }
+    }
+  },
+  "trust": {
+    "eyebrow": "Mengapa Lombok",
+    "headline": "Pendekatan yang dipertimbangkan|untuk membeli di Lombok.",
+    "lead": "Lombok lebih dari sekadar destinasi. Bagi kami, memahami lahan, masyarakat, dan proses adalah bagian dari memahami peluang.",
+    "placeLabel": "Tempat",
+    "buyingLabel": "Membeli di Lombok",
+    "buyingLead": "Mulai dengan pertanyaan yang tepat. Jalur ini memperkenalkan hal-hal penting untuk dipertimbangkan — bukan nasihat hukum.",
+    "explore": "Jelajahi",
+    "cta": "Jelajahi Membeli di Lombok",
+    "pageHeadline": "Memahami prosesnya",
+    "pageLead": "Membeli lahan atau properti di Lombok melibatkan konteks: struktur kepemilikan, due diligence, perencanaan, dan hubungan lokal. Green Hill membantu klien menavigasi pertanyaan tersebut dengan pengetahuan di lapangan.",
+    "disclaimer": "Ikhtisar ini bersifat edukatif. Bukan nasihat hukum, pajak, atau investasi. Persyaratan spesifik harus dibahas dengan profesional yang berkualifikasi.",
+    "talkCta": "Bicara dengan Reece",
+    "backToWhy": "Kembali ke Mengapa Lombok",
+    "place": {
+      "south": {
+        "title": "Selatan Lombok",
+        "body": "Karakter lanskap — pantai, perbukitan, dan lembah — membentuk cara kami melihat peluang."
+      },
+      "access": {
+        "title": "Akses",
+        "body": "Lokasi dan bagaimana suatu tempat dijangkau penting saat menilai potensi jangka panjang."
+      },
+      "lifestyle": {
+        "title": "Gaya hidup",
+        "body": "Lahan, lanskap, dan komunitas mendasari bagaimana orang ingin tinggal dan memiliki properti di sini."
+      },
+      "perspective": {
+        "title": "Perspektif jangka panjang",
+        "body": "Kami menimbang konteks dan kualitas di atas volume — lebih sedikit peluang, dipertimbangkan dengan cermat."
+      }
+    },
+    "buying": {
+      "ownership": {
+        "title": "Kepemilikan & tenure",
+        "body": "Pahami struktur dan pertanyaan yang perlu dipertimbangkan saat membeli di Lombok.",
+        "detail": "Pembeli asing sering menghadapi struktur kepemilikan dan perusahaan yang berbeda. Pertanyaan yang tepat bergantung pada tujuan, jangka waktu, dan cara Anda ingin memegang properti. Green Hill dapat membantu merumuskan pertanyaan itu sebelum Anda melanjutkan."
+      },
+      "dueDiligence": {
+        "title": "Due diligence",
+        "body": "Apa yang perlu dipahami sebelum melanjutkan suatu peluang.",
+        "detail": "Due diligence mencakup pemeriksaan praktis di balik pembelian yang dipertimbangkan — title, pihak terkait, batas, dan sejarah lahan. Ini tentang kejelasan, bukan kecepatan."
+      },
+      "zoning": {
+        "title": "Zonasi & perencanaan",
+        "body": "Mengapa penggunaan lahan, perencanaan, dan pembangunan yang diizinkan penting.",
+        "detail": "Apa yang dapat dibangun — dan bagaimana — bergantung pada konteks perencanaan. Memahami zonasi dan penggunaan yang diizinkan sejak awal membantu menghindari asumsi tentang potensi pengembangan."
+      },
+      "process": {
+        "title": "Proses pembelian",
+        "body": "Pandangan yang lebih jelas tentang langkah dari pertanyaan awal hingga penyelesaian.",
+        "detail": "Dari percakapan pertama hingga notaris, hubungan lokal, dan bila relevan arsitek serta pembangun — prosesnya lebih jelas ketika setiap langkah dipahami berurutan. Green Hill memandu klien melalui penemuan, evaluasi, dan langkah berikutnya."
+      }
+    }
+  },
+  "final": {
+    "eyebrow": "Bicara dengan Reece",
+    "headline": "Mari bicarakan|apa yang Anda cari.",
+    "lead": "Baik Anda menjelajahi lahan, villa, peluang pengembangan yang lebih besar, atau kebutuhan pribadi, mulailah dengan percakapan.",
+    "primaryCta": "Berbicara dengan Reece",
+    "secondaryCta": "Jelajahi Peluang",
+    "contactPending": "Saluran kontak langsung akan dikonfirmasi segera. Untuk saat ini, jelajahi peluang atau kembali ke halaman ini setelah berbicara dengan Reece tersedia.",
+    "steps": {
+      "start": {
+        "title": "Mulai percakapan",
+        "body": "Sampaikan kepada Reece apa yang Anda cari."
+      },
+      "discuss": {
+        "title": "Diskusikan peluang yang tepat",
+        "body": "Bagikan kebutuhan Anda dan diskusikan kemungkinan yang relevan."
+      },
+      "explore": {
+        "title": "Jelajahi langkah berikutnya",
+        "body": "Lanjutkan hanya ketika peluang dan prosesnya terasa tepat."
+      }
+    }
   },
   "filters": {
     "transactionType": {
@@ -47,9 +216,9 @@
       "sale": "Dijual",
       "rent": "Disewa"
     },
-    "country": "Negara",
+    "country": "Wilayah",
     "location": "Lokasi",
-    "locationPlaceholder": "Kota, distrik, alamat...",
+    "locationPlaceholder": "Area, distrik, alamat...",
     "priceRange": "Rentang Harga",
     "bedrooms": "Kamar Tidur",
     "beds": "Kamar Tidur",
@@ -81,7 +250,8 @@
       "garden": "Taman"
     },
     "minPrice": "Min",
-    "maxPrice": "Maks"
+    "maxPrice": "Maks",
+    "allRegions": "Semua Lombok"
   },
   "propertyDetail": {
     "description": "Deskripsi",
@@ -121,10 +291,10 @@
     "seeMore": "Lihat lebih banyak",
     "verifiedListing": "Daftar Terverifikasi",
     "secureAndVerified": "Properti aman dan terverifikasi",
-    "ukonEstateAgent": "Agen Ukon Estate",
+    "ukonEstateAgent": "Agen Green Hill",
     "officialCompanyRepresentative": "Perwakilan resmi perusahaan",
     "verifiedPartner": "Mitra Terverifikasi",
-    "verifiedPartnerDesc": "Mitra terverifikasi resmi Ukon Estate",
+    "verifiedPartnerDesc": "Mitra terverifikasi resmi Green Hill",
     "showAllPhotos": "Tampilkan semua foto",
     "sqm": "m²"
   },
@@ -144,11 +314,23 @@
     "tailoredSolutions": "Solusi yang Disesuaikan",
     "tailoredSolutionsDescription": "Solusi real estat yang disesuaikan untuk kebutuhan unik. Baik relokasi atau downsizing, kami beradaptasi dengan Anda."
   },
+  "founder": {
+    "eyebrow": "Dari investor menuju Green Hill",
+    "headline": "Saya datang ke Lombok|mencari peluang|untuk diri saya sendiri.",
+    "story1": "Awalnya saya datang ke Lombok untuk mencari peluang bagi diri saya sendiri, pindah dari Inggris bersama pasangan dan putri saya.",
+    "story2": "Setelah membeli tanah di Are Guling dan menjalani prosesnya secara langsung, dari mencari tanah dan struktur kepemilikan hingga notaris, due diligence, zonasi, arsitek dan pembangun, saya mulai membangun hubungan dengan pemilik lahan, pengembang, dan profesional lokal di Selatan Lombok.",
+    "story3": "Hubungan itu mulai membuka pintu ke peluang yang tidak selalu dipasarkan secara publik. Green Hill tumbuh secara alami dari situ.",
+    "story4": "Hari ini, saya pribadi mengunjungi dan memilih peluang yang kami wakili, dari kavling bangunan dan vila hingga lahan yang lebih luas serta peluang pengembangan.",
+    "quote": "Saya tidak tertarik punya listing terbanyak.|Saya tertarik menemukan yang tepat.",
+    "name": "Reece Green",
+    "role": "Pendiri · Investor · Selatan Lombok",
+    "roleShort": "Pendiri"
+  },
   "about": {
-    "aboutUkon": "Tentang Ukon Estate",
+    "aboutUkon": "Tentang Green Hill",
     "buildingDreams": "Membangun Impian,",
     "creatingHomes": "Menciptakan Rumah",
-    "description": "Dengan pengalaman bertahun-tahun di industri real estat, Ukon Estate telah membantu ribuan keluarga menemukan rumah impian mereka. Tim berdedikasi kami menggabungkan keahlian lokal dengan visi global untuk memberikan hasil yang luar biasa.",
+    "description": "Green Hill sedang dalam pengembangan. Teks ini adalah placeholder tata letak dan bukan klaim bisnis yang nyata.",
     "yearsExperience": "Tahun Pengalaman",
     "propertiesSold": "Properti Terjual",
     "clientSatisfaction": "Kepuasan Klien",
@@ -157,11 +339,11 @@
     "visionStatement": "Menjadi mitra real estat paling terpercaya, mengubah cara orang menemukan dan mengalami properti impian mereka.",
     "ourMission": "Misi Kami",
     "missionStatement": "Memberikan layanan luar biasa, bimbingan jujur, dan solusi inovatif yang melebihi harapan klien.",
-    "longDescription": "Selama lebih dari 12 tahun, Ukon Estate telah menjadi mitra terpercaya bagi keluarga, investor, dan bisnis yang mencari properti sempurna mereka.",
+    "longDescription": "Green Hill placeholder copy. No historical claims from prior projects.",
     "pageHeadline": "Tahun Kepercayaan",
     "pageSubheadline": "Kisah Kami",
     "pageTitle": "Warisan Keunggulan dalam Real Estat",
-    "foundedDescription": "Didirikan dengan passion untuk membantu orang menemukan rumah impian mereka, Ukon Estate telah berkembang dari agensi lokal kecil menjadi salah satu nama paling terpercaya dalam real estat. Perjalanan kami telah ditentukan oleh komitmen kami terhadap keunggulan, integritas, dan kepuasan klien.",
+    "foundedDescription": "Green Hill is under development. Founding story content will be written later.",
     "todayDescription": "Hari ini, kami terus membangun warisan kami, menggabungkan nilai-nilai tradisional dengan teknologi inovatif untuk memberikan pengalaman real estat yang luar biasa. Tim profesional berdedikasi kami membawa keahlian lokal dan perspektif global ke setiap transaksi.",
     "ourValues": "Nilai-Nilai Kami",
     "whatDrivesUs": "Apa yang Mendorong Kami Setiap Hari",
@@ -212,7 +394,7 @@
   "testimonials": {
     "testimonials": "Testimonial",
     "whatOurClientsSay": "Apa yang Klien Kami Katakan",
-    "realStories": "Kisah nyata dari klien nyata yang menemukan properti impian mereka dengan Ukon Estate."
+    "realStories": "Placeholder testimonials for layout only."
   },
   "blog": {
     "ourBlog": "Intelijen",
@@ -231,7 +413,7 @@
     "emailPlaceholder": "Masukkan email Anda",
     "subscribe": "Berlangganan",
     "backToBlog": "Kembali ke Intelijen",
-    "closingLabel": "Ukon Estate Research",
+    "closingLabel": "Green Hill Research",
     "closingText": "Untuk konsultasi strategis tentang investasi properti internasional, hubungi jaringan global kami."
   },
   "account": {
@@ -251,7 +433,7 @@
     "accountSettings": "Pengaturan Akun",
     "fullName": "Nama Lengkap",
     "yourName": "Nama Anda",
-    "email": "Email",
+    "email": "hello@example.com",
     "changeEmailContact": "Untuk mengubah email Anda, hubungi dukungan",
     "phoneNumber": "Nomor Telepon",
     "phoneExample": "+1 (555) 123-4567",
@@ -266,7 +448,7 @@
   },
   "auth": {
     "email": {
-      "welcome": "Selamat Datang di Ukon Estate",
+      "welcome": "Selamat Datang di Green Hill",
       "signInDescription": "Masuk untuk menyimpan properti dan mendapatkan rekomendasi yang dipersonalisasi",
       "signUpDescription": "Buat akun untuk memulai perjalanan real estat Anda",
       "emailAddress": "Alamat email",
@@ -297,10 +479,10 @@
     "signup": {
       "back": "Kembali",
       "createYourAccount": "Buat akun Anda",
-      "joinUkonEstate": "Bergabunglah dengan Ukon Estate hari ini",
+      "joinUkonEstate": "Bergabunglah dengan Green Hill hari ini",
       "fullName": "Nama lengkap",
       "fullNamePlaceholder": "Budi Santoso",
-      "email": "Email",
+      "email": "hello@example.com",
       "createPassword": "Buat kata sandi",
       "createPasswordPlaceholder": "Min. 8 karakter",
       "passwordMinLength": "Harus setidaknya 8 karakter",
@@ -327,7 +509,7 @@
       "checkEmail": "Periksa email Anda",
       "sentLoginLink": "Kami mengirimkan tautan masuk ke",
       "lookForEmail": "Cari email dengan subjek:",
-      "signInSubject": "Masuk ke Ukon Estate",
+      "signInSubject": "Masuk ke Green Hill",
       "quickTips": "💡 Tips cepat:",
       "checkSpamFolder": "Periksa folder spam jika tidak melihatnya",
       "linkExpires": "Tautan kedaluwarsa dalam 24 jam",
@@ -372,10 +554,16 @@
     "messages": "Pesan"
   },
   "footer": {
+    "tagline": "Peluang properti dan investasi di Lombok yang terfokus — disajikan dengan kejelasan dan kehati-hatian.",
+    "location": "Lombok, Indonesia",
+    "locationShort": "Lombok · Indonesia",
+    "explore": "Jelajahi",
+    "approach": "Pendekatan",
+    "rights": "Semua hak dilindungi.",
     "positioning": "Penasihat real estat lintas batas untuk investor dan klien swasta yang mencari representasi properti strategis di seluruh dunia.",
-    "address": "1621 Central Ave, Cheyenne, WY 82001, AS",
-    "email": "info@ukonestate.com",
-    "phone": "+31 085 333 1000",
+    "address": "Lombok, Indonesia",
+    "email": "",
+    "phone": "",
     "advisory": "Layanan Konsultasi",
     "propertySales": "Penjualan Properti",
     "investmentAdvisory": "Penasihat Investasi",
@@ -392,7 +580,7 @@
     "marketReports": "Laporan Pasar",
     "buyingGuides": "Panduan Pembelian",
     "sellingGuides": "Panduan Penjualan",
-    "copyright": "\u00a9 2026 Ukon Estate. Semua hak dilindungi.",
+    "copyright": "© 2026 Green Hill. Semua hak dilindungi.",
     "privacyPolicy": "Kebijakan Privasi",
     "termsOfUse": "Ketentuan Penggunaan",
     "disclaimer": "Sanggahan"
@@ -407,7 +595,7 @@
     "applications": "Aplikasi",
     "noApplications": "Tidak ada aplikasi kemitraan ditemukan",
     "applicationApproveConfirm": "Setujui Aplikasi Kemitraan?",
-    "applicationApproveDesc": "Ini akan memberikan status Mitra Terverifikasi kepada \"{name}\". Daftar mereka akan menampilkan lencana mitra resmi Ukon Estate.",
+    "applicationApproveDesc": "Ini akan memberikan status Mitra Terverifikasi kepada \"{name}\". Daftar mereka akan menampilkan lencana mitra resmi Green Hill.",
     "applicationRejectConfirm": "Tolak Aplikasi Kemitraan?",
     "applicationRejectDesc": "Ini akan menolak aplikasi kemitraan dari \"{name}\".",
     "applicationDate": "Diajukan",
@@ -423,17 +611,17 @@
     "heroSubheadline": "Infrastruktur di balik real estate kelas institusional.",
     "heroSupportingLine": "Jaringan yang dibangun di atas standar bersama, keselarasan strategis, dan komitmen jangka panjang.",
     "introHeadline": "Mengapa Kemitraan Penting",
-    "introText1": "Ukon Estate beroperasi melalui jaringan profesional lokal yang dikurasi dengan cermat yang berbagi komitmen kami terhadap keunggulan, kebijaksanaan, dan hasil klien.",
+    "introText1": "Green Hill beroperasi melalui jaringan profesional lokal yang dikurasi dengan cermat yang berbagi komitmen kami terhadap keunggulan, kebijaksanaan, dan hasil klien.",
     "introText2": "Kemitraan bukan sekadar label. Ini adalah komitmen struktural terhadap standar operasional bersama di pasar properti internasional.",
-    "buildingHeadline": "Apa yang Sedang Dibangun Ukon Estate",
+    "buildingHeadline": "Apa yang Sedang Dibangun Green Hill",
     "buildingText": "Infrastruktur broker global di mana setiap mitra menyumbangkan kecerdasan lokal sambil beroperasi di bawah kerangka kualitas terpadu. Model jaringan kami memastikan klien menerima layanan konsultatif yang konsisten terlepas dari geografi.",
     "expectHeadline": "Yang Kami Harapkan dari Mitra",
     "expectItem1": "Rekam jejak yang terbukti di real estate residensial atau komersial",
     "expectItem2": "Komitmen pada representasi klien yang etis dan transparan",
     "expectItem3": "Kehadiran aktif di pasar geografis yang terdefinisi",
-    "expectItem4": "Kesediaan beroperasi di bawah standar kualitas Ukon Estate",
+    "expectItem4": "Kesediaan beroperasi di bawah standar kualitas Green Hill",
     "gainHeadline": "Apa yang Didapat Mitra",
-    "gainItem1": "Akses ke jalur klien internasional Ukon Estate",
+    "gainItem1": "Akses ke jalur klien internasional Green Hill",
     "gainItem2": "Lencana Mitra Terverifikasi dan visibilitas listing prioritas",
     "gainItem3": "Koordinasi sentral untuk transaksi lintas batas",
     "gainItem4": "Asosiasi merek dengan broker internasional terpercaya",
@@ -445,7 +633,7 @@
     "formNumberOfAgentsPlaceholder": "mis. 12",
     "formAreasActive": "Area Aktivitas",
     "formAreasActivePlaceholder": "mis. Jakarta, Bali, Surabaya",
-    "formStrategicMotivation": "Mengapa Anda ingin bermitra dengan Ukon Estate?",
+    "formStrategicMotivation": "Mengapa Anda ingin bermitra dengan Green Hill?",
     "formStrategicMotivationPlaceholder": "Jelaskan motivasi strategis Anda untuk bergabung dengan jaringan kami...",
     "formContactEmail": "Email Kontak",
     "formContactEmailPlaceholder": "anda@email.com",
@@ -464,7 +652,7 @@
     "statusPending": "Aplikasi Sedang Ditinjau",
     "statusPendingText": "Aplikasi Anda telah dikirim dan sedang ditinjau oleh tim kami.",
     "statusApproved": "Aplikasi Disetujui",
-    "statusApprovedText": "Aplikasi kemitraan Anda telah disetujui. Anda sekarang adalah Mitra Terverifikasi di jaringan Ukon Estate.",
+    "statusApprovedText": "Aplikasi kemitraan Anda telah disetujui. Anda sekarang adalah Mitra Terverifikasi di jaringan Green Hill.",
     "statusRejected": "Aplikasi Tidak Disetujui",
     "statusRejectedText": "Setelah peninjauan cermat, aplikasi Anda tidak disetujui saat ini."
   },

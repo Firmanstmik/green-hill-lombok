@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -57,6 +57,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Initialize auth state on mount
   useEffect(() => {
+    // Green Hill isolation: skip remote auth until a GH Supabase project is configured
+    if (!isSupabaseConfigured) {
+      setUser(null);
+      setSession(null);
+      setUserType(null);
+      setLoading(false);
+      return;
+    }
+
     const initializeAuth = async () => {
       try {
         // Get current session

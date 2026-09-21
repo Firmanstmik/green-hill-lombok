@@ -89,6 +89,7 @@ import { LuxuryTabNavigation, type Tab as TabType } from './LuxuryTabNavigation'
 import { PhaseIndicator } from './PhaseIndicator';
 import { NumericStepper } from './NumericStepper';
 import { SpecificationsStep } from './SpecificationsStep';
+import { generateListingDescription } from '@/services/ai/generateListingDescription';
 
 const propertySchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -178,6 +179,7 @@ const AddPropertyForm = ({ onComplete, propertyId, initialTab }: AddPropertyForm
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [poiLoading, setPoiLoading] = useState(false);
+    const [aiGeneratingDescription, setAiGeneratingDescription] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [showPreview, setShowPreview] = useState(false);
     const [isEditMode] = useState(!!propertyId);
@@ -515,6 +517,24 @@ const AddPropertyForm = ({ onComplete, propertyId, initialTab }: AddPropertyForm
                 ? current.filter(i => i !== value)
                 : [...current, value]
         }));
+    };
+
+    const handleGenerateDescriptionWithAI = async () => {
+        if (aiGeneratingDescription) return;
+        setAiGeneratingDescription(true);
+        try {
+            const { description_json, description_summary } = await generateListingDescription();
+            setFormData(prev => ({
+                ...prev,
+                description_json,
+                description_summary,
+            }));
+            setHasChanges(true);
+        } catch (error) {
+            toast.error('Failed to generate description');
+        } finally {
+            setAiGeneratingDescription(false);
+        }
     };
 
     const handleFileUpload = async (files: File[]) => {
@@ -1159,7 +1179,23 @@ const AddPropertyForm = ({ onComplete, propertyId, initialTab }: AddPropertyForm
                         >
                             {/* Property Description */}
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-[#0e2e50] ml-1">Property Description</label>
+                                <div className="flex items-center justify-between gap-4">
+                                    <label className="text-sm font-bold text-[#0e2e50] ml-1">Property Description</label>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={handleGenerateDescriptionWithAI}
+                                        disabled={aiGeneratingDescription}
+                                        className="rounded-2xl gap-2 font-bold"
+                                    >
+                                        {aiGeneratingDescription ? (
+                                            <Loader2 size={16} className="animate-spin" />
+                                        ) : (
+                                            <Sparkles size={16} />
+                                        )}
+                                        Generate with AI
+                                    </Button>
+                                </div>
                                 <DescriptionEditor
                                     content={formData.description_json}
                                     onChange={(json) => {
@@ -1759,7 +1795,23 @@ const AddPropertyForm = ({ onComplete, propertyId, initialTab }: AddPropertyForm
                     {currentStep === 'amenities' && (
                         <motion.div key="amenities" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-[#0e2e50] ml-1">Property Description</label>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                    <label className="text-sm font-bold text-[#0e2e50] ml-1">Property Description</label>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={handleGenerateDescriptionWithAI}
+                                        disabled={aiGeneratingDescription}
+                                        className="rounded-2xl gap-2 font-bold w-full sm:w-auto"
+                                    >
+                                        {aiGeneratingDescription ? (
+                                            <Loader2 size={16} className="animate-spin" />
+                                        ) : (
+                                            <Sparkles size={16} />
+                                        )}
+                                        Generate with AI
+                                    </Button>
+                                </div>
                                 <DescriptionEditor
                                     content={formData.description_json}
                                     onChange={(json) => {

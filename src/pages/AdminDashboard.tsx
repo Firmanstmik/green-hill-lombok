@@ -39,7 +39,7 @@ const AdminDashboard = () => {
                 {/* Sidebar */}
                 <aside className="w-64 bg-[#0e2e50] text-white flex flex-col p-6 shrink-0 relative">
                     <div className="mb-10 px-2">
-                        <h1 className="text-xl font-bold tracking-tighter text-white">UKON ESTATE</h1>
+                        <h1 className="text-xl font-bold tracking-tighter text-white">GREEN HILL</h1>
                         <p className="text-[10px] text-white/50 uppercase tracking-widest mt-1 font-bold">{t('admin.title')}</p>
                     </div>
 

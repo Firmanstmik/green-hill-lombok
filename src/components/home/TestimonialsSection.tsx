@@ -34,12 +34,12 @@ export function TestimonialsSection() {
           <div className="flex-1 h-px bg-white/15" />
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <span className="text-lg font-serif text-white/80">4.8</span>
+              <span className="text-lg font-serif text-white/80">—</span>
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={13} className="fill-amber-300/60 text-amber-300/60" />
               ))}
             </div>
-            <p className="text-white/40 text-xs tracking-[0.1em] uppercase">Based on 47+ verified Google reviews</p>
+            <p className="text-white/40 text-xs font-sans tracking-[0.12em] uppercase">Investor conversations — coming soon</p>
           </div>
           <div className="flex-1 h-px bg-white/15" />
         </div>
@@ -90,7 +90,7 @@ export function TestimonialsSection() {
               </div>
 
               {/* Review Text - Editorial Style */}
-              <p className="text-2xl md:text-3xl text-center leading-[1.75] font-serif italic text-white/90 tracking-[-0.01em] mb-4 relative z-10">
+              <p className="text-2xl md:text-3xl text-center leading-[1.55] font-display italic font-normal text-white/90 tracking-[-0.01em] mb-4 relative z-10">
                 {testimonials[currentIndex].review}
               </p>
 

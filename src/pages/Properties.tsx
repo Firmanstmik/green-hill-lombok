@@ -8,7 +8,7 @@ import { properties as mockProperties } from '@/data/mockData';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useFilters } from '@/hooks/useFilters';
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { useSavedListings } from '@/hooks/useSavedListings';
 import heroBg from '@/assets/Ukon_Estate_Hero.avif';
 import heroVideo from '@/assets/Ukon_Estate_hero-video-v2.mp4';
@@ -17,9 +17,14 @@ const Properties = () => {
   const { ref, isInView } = useInView();
   const { t } = useLanguage();
   const { isSaved, toggle } = useSavedListings();
-  const [displayProperties, setDisplayProperties] = useState<any[]>([]);
+  const [displayProperties, setDisplayProperties] = useState<any[]>(mockProperties);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setDisplayProperties(mockProperties);
+      return;
+    }
+
     const fetchProperties = async () => {
       try {
         const { data, error } = await supabase

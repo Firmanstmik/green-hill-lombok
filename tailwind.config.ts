@@ -66,8 +66,15 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Manrope', 'system-ui', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      },
+      fontSize: {
+        'gh-hero': ['clamp(2.625rem, 5.2vw, 5.5rem)', { lineHeight: '1.08', letterSpacing: '-0.02em' }],
+        'gh-section': ['clamp(2.25rem, 4.2vw, 4.25rem)', { lineHeight: '1.12', letterSpacing: '-0.02em' }],
+        'gh-body': ['1.0625rem', { lineHeight: '1.7' }],
+        'gh-nav': ['0.875rem', { lineHeight: '1.4', letterSpacing: '0.04em' }],
       },
       borderRadius: {
         lg: "var(--radius)",

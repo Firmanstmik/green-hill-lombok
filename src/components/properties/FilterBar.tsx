@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Search, ChevronDown, SlidersHorizontal, Globe } from 'lucide-react';
+import { Search, ChevronDown, SlidersHorizontal, MapPin } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { RefinePanel } from './RefinePanel';
@@ -12,6 +12,16 @@ import { PROPERTY_TYPES, BEDROOM_OPTIONS } from '@/types/filters';
 import { cn } from '@/lib/utils';
 
 type OpenPanel = 'country' | 'location' | 'price' | 'bedrooms' | 'propertyType' | 'refine' | null;
+
+/** Lombok areas — Green Hill is island-focused, not international */
+const LOMBOK_REGIONS = [
+  'South Lombok',
+  'Central Lombok',
+  'Northwest Lombok',
+  'East Lombok',
+  'West Lombok',
+  'Kuta Selatan',
+] as const;
 
 interface FilterBarProps {
   filters: FilterState;
@@ -112,7 +122,7 @@ export function FilterBar({
           {/* Divider */}
           <div className="w-px h-6 bg-border/25 flex-shrink-0" />
 
-          {/* Country Dropdown */}
+          {/* Region / lokasi Dropdown */}
           <div className="relative flex-shrink-0">
             <button
               onClick={() => setMobileCountryOpen((prev) => !prev)}
@@ -123,8 +133,8 @@ export function FilterBar({
                   : 'text-muted-foreground'
               )}
             >
-              <Globe size={13} />
-              {filters.country || t('filters.country') || 'Country'}
+              <MapPin size={13} />
+              {filters.country || t('filters.country')}
               <ChevronDown
                 size={12}
                 className={cn(
@@ -141,7 +151,7 @@ export function FilterBar({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="absolute left-0 top-[calc(100%+8px)] z-50 w-48
+                  className="absolute left-0 top-[calc(100%+8px)] z-50 w-52
                              rounded-xl shadow-xl border border-border/25 py-2 backdrop-blur-lg bg-background/95"
                 >
                   <div className="flex flex-col">
@@ -157,23 +167,23 @@ export function FilterBar({
                           : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                       )}
                     >
-                      All Countries
+                      {t('filters.allRegions')}
                     </button>
-                    {['Indonesia', 'Netherlands', 'Spain', 'Italy', 'Portugal'].map((country) => (
+                    {LOMBOK_REGIONS.map((region) => (
                       <button
-                        key={country}
+                        key={region}
                         onClick={() => {
-                          setFilter('country', country);
+                          setFilter('country', region);
                           setMobileCountryOpen(false);
                         }}
                         className={cn(
                           'px-4 py-2.5 text-sm text-left transition-colors',
-                          filters.country === country
+                          filters.country === region
                             ? 'bg-ukon-red/8 text-ukon-red font-medium'
                             : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                         )}
                       >
-                        {country}
+                        {region}
                       </button>
                     ))}
                   </div>
@@ -275,7 +285,7 @@ export function FilterBar({
           {/* Divider */}
           <div className="w-px h-8 bg-border/25 self-center flex-shrink-0" />
 
-          {/* Section 2: Country */}
+          {/* Section 2: Wilayah / lokasi */}
           <div className="relative flex-shrink-0">
             <button
               onClick={() => toggle('country')}
@@ -286,8 +296,8 @@ export function FilterBar({
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <Globe size={15} />
-              {filters.country || t('filters.country') || 'Country'}
+              <MapPin size={15} />
+              {filters.country || t('filters.country')}
               <ChevronDown
                 size={14}
                 className={cn(
@@ -326,23 +336,23 @@ export function FilterBar({
                           : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                       )}
                     >
-                      All Countries
+                      {t('filters.allRegions')}
                     </button>
-                    {['Indonesia', 'Netherlands', 'Spain', 'Italy', 'Portugal'].map((country) => (
+                    {LOMBOK_REGIONS.map((region) => (
                       <button
-                        key={country}
+                        key={region}
                         onClick={() => {
-                          setFilter('country', country);
+                          setFilter('country', region);
                           setOpenPanel(null);
                         }}
                         className={cn(
                           'px-4 py-2.5 text-sm text-left transition-colors',
-                          filters.country === country
+                          filters.country === region
                             ? 'bg-ukon-red/8 text-ukon-red font-medium'
                             : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                         )}
                       >
-                        {country}
+                        {region}
                       </button>
                     ))}
                   </div>

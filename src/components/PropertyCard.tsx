@@ -152,7 +152,7 @@ export function PropertyCard({ property, index = 0, eager, isSaved: externalIsSa
 
           {/* Status Badge - Top Right */}
           <div
-            className={`absolute top-4 right-4 ${statusColors[propertyStatus] || 'bg-white/90'} px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm`}
+            className={`absolute top-4 right-4 ${statusColors[propertyStatus] || 'bg-white/90'} px-3 py-1.5 rounded-full text-[11px] font-sans font-medium tracking-[0.12em] uppercase backdrop-blur-sm`}
           >
             {t(statusLabelKeys[propertyStatus]) || t('properties.available')}
           </div>
@@ -161,9 +161,9 @@ export function PropertyCard({ property, index = 0, eager, isSaved: externalIsSa
         {/* Content */}
         <div className="space-y-2">
           {/* Location */}
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <MapPin size={14} className="text-ukon-red" />
-            <span className="text-sm">
+          <div className="flex items-center gap-1 text-[#2D3621]/55">
+            <MapPin size={14} className="text-[#2D3621]/40" />
+            <span className="gh-meta">
               {propertyAddress.includes(',')
                 ? propertyAddress.split(',').slice(-2).join(',').trim()
                 : propertyAddress}
@@ -171,12 +171,12 @@ export function PropertyCard({ property, index = 0, eager, isSaved: externalIsSa
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-semibold text-foreground group-hover:text-ukon-red transition-colors">
+          <h3 className="gh-card-title text-[#2D3621] group-hover:text-[#3D4636] transition-colors">
             {propertyTitle}
           </h3>
 
           {/* Specs Row */}
-          <div className="flex items-center gap-4 text-muted-foreground text-sm">
+          <div className="flex items-center gap-4 text-[#2D3621]/50 gh-meta">
             <div className="flex items-center gap-1">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
@@ -201,11 +201,17 @@ export function PropertyCard({ property, index = 0, eager, isSaved: externalIsSa
             </div>
           </div>
 
-          {/* Price */}
-          <p className="text-lg font-bold text-foreground pt-1">
-            {formatPrice(property.price, currency, language)}
-            {propertyStatus === 'rent' && (
-              <span className="text-sm font-normal text-muted-foreground ml-1">{t('propertyDetail.perMonth')}</span>
+          {/* Price — 0 means undisclosed / on request (demo Green Hill data) */}
+          <p className="gh-price text-[#2D3621] pt-1">
+            {property.price > 0 ? (
+              <>
+                {formatPrice(property.price, currency, language)}
+                {propertyStatus === 'rent' && (
+                  <span className="text-sm font-normal text-[#2D3621]/50 ml-1">{t('propertyDetail.perMonth')}</span>
+                )}
+              </>
+            ) : (
+              <span className="tracking-[0.04em]">On request</span>
             )}
           </p>
         </div>

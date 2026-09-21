@@ -49,10 +49,10 @@ const About = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12">
               {[
-                { value: '12', label: 'Years of Experience' },
-                { value: '628', label: 'Properties Transacted' },
-                { value: '274', label: 'Private Clients Represented' },
-                { value: '98%', label: 'Client Satisfaction' },
+                { value: '—', label: 'Years of Experience' },
+                { value: '—', label: 'Properties Transacted' },
+                { value: '—', label: 'Private Clients Represented' },
+                { value: '—', label: 'Client Satisfaction' },
               ].map((stat, i) => (
                 <div
                   key={stat.label}
@@ -85,17 +85,12 @@ const About = () => {
               </div>
               <div className="space-y-6 max-w-lg">
                 <p className="text-muted-foreground text-lg leading-[1.85]">
-                  Ukon Estate was founded on a simple conviction: that the world's most
-                  significant property decisions deserve more than transactional service.
-                  They demand strategic counsel, cultural fluency, and an unwavering
-                  commitment to client outcomes.
+                  Green Hill is in early development. This page currently shows placeholder
+                  copy only — not claims from any prior project or live business metrics.
                 </p>
                 <p className="text-muted-foreground text-lg leading-[1.85]">
-                  From our origins advising private clients across Europe and the Middle
-                  East, we have grown into a trusted brokerage operating at the
-                  intersection of global markets and local expertise. Every engagement
-                  is shaped by deep market knowledge, discretion, and a long-term view
-                  of value.
+                  Strategic content, market positioning, and real client outcomes will be
+                  added once Green Hill branding and data sources are established.
                 </p>
               </div>
             </div>

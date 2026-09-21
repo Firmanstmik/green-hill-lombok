@@ -6,7 +6,6 @@ import {
     Bus, Plane, Info, CheckCircle2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ukonLogo from '@/assets/Ukon Estate-02.png';
 import { DescriptionRenderer } from '@/components/property/DescriptionRenderer';
 import { getEmbedUrl } from '@/lib/video-utils';
 
@@ -152,11 +151,11 @@ const ListingPreview = ({ data, onClose, embedded = false }: ListingPreviewProps
                             <div className="p-8 rounded-[2.5rem] bg-[#0e2e50] text-white shadow-2xl relative overflow-hidden">
                                 <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
                                 <div className="flex items-center gap-4 mb-6 relative z-10">
-                                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center p-2">
-                                        <img src={ukonLogo} alt="Ukon" className="w-full object-contain" />
+                                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center p-2 text-[#0e2e50] font-serif text-sm text-center leading-tight">
+                                        Green<br />Hill
                                     </div>
                                     <div>
-                                        <h4 className="font-black uppercase tracking-wider">Ukon Estate Agent</h4>
+                                        <h4 className="font-black uppercase tracking-wider">Green Hill Agent</h4>
                                         <p className="text-xs text-white/60">Professional Representative</p>
                                     </div>
                                     <div className="ml-auto w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/20">

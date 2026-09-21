@@ -3,27 +3,11 @@ import { MapPin } from 'lucide-react';
 import { agents } from '@/data/mockData';
 import { useRef, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import ginoBeeltPhoto from '@/assets/members/Gino_Beelt.avif';
-import pakKumisPhoto from '@/assets/members/Pak_Kumis.avif';
-import paulWenninkPhoto from '@/assets/members/Paul_Wennink.avif';
-import raffyUkonPhoto from '@/assets/members/Raffy_Ukon.avif';
-import roselynnChaiPhoto from '@/assets/members/Roselynn_Chai.avif';
-import marcoLoureiroPhoto from '@/assets/members/Marco_Loureiro.avif';
-import jeroenEgbersPhoto from '@/assets/members/Jeroen_Egbers.avif';
-import hendrikUkonPhoto from '@/assets/members/Hendrik_Ukon.avif';
-import afifahUkonPhoto from '@/assets/members/Afifah_Ukon.avif';
 
-const agentPhotos: Record<string, string> = {
-  '1': ginoBeeltPhoto,
-  '2': pakKumisPhoto,
-  '3': paulWenninkPhoto,
-  '4': raffyUkonPhoto,
-  '5': roselynnChaiPhoto,
-  '6': marcoLoureiroPhoto,
-  '7': jeroenEgbersPhoto,
-  '8': hendrikUkonPhoto,
-  '9': afifahUkonPhoto,
-};
+/** Photos come from local demo agent data — original carousel structure preserved */
+const agentPhotos: Record<string, string> = Object.fromEntries(
+  agents.map((a) => [a.id, a.photo])
+);
 
 export function AgentsCarousel() {
   const { t } = useLanguage();
@@ -86,10 +70,10 @@ export function AgentsCarousel() {
   return (
     <section className="py-24 bg-background overflow-hidden w-full relative">
       <div className="container mx-auto px-4 mb-12 text-center">
-        <span className="inline-block px-4 py-2 bg-ukon-red/10 text-ukon-red rounded-full text-sm font-medium mb-4">
+        <span className="gh-label inline-block text-[#2D3621]/50 mb-5">
           {t('agents.ourTeam')}
         </span>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+        <h2 className="gh-section-display">
           {t('agents.meetOurExperts')}
         </h2>
       </div>
@@ -127,7 +111,7 @@ export function AgentsCarousel() {
                 />
               </div>
               <div className="flex flex-col items-start px-2">
-                <h3 className="text-xl font-bold text-foreground leading-tight">
+                <h3 className="text-xl font-sans font-semibold tracking-[-0.01em] text-[#2D3621] leading-tight">
                   {agent.name}
                 </h3>
                 <div className="flex items-center gap-1.5 text-muted-foreground mt-1.5">

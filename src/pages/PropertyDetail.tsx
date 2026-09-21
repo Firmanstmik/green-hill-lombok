@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+﻿import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
@@ -37,14 +37,13 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { PropertyCard } from '@/components/PropertyCard';
-import ukonLogo from '@/assets/Ukon Estate-02.png';
 import { Lightbox } from '@/components/ui/Lightbox';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { PropertyMap } from '@/components/map/PropertyMap';
 import NearbyAmenities from '@/components/property/NearbyAmenities';
 import { DescriptionRenderer } from '@/components/property/DescriptionRenderer';
@@ -73,6 +72,14 @@ const PropertyDetail = () => {
     useEffect(() => {
         const fetchProperty = async () => {
             try {
+                // Green Hill isolation: use local demo data unless a GH database is configured
+                if (!isSupabaseConfigured) {
+                    const mockProperty = mockProperties.find((p) => p.id === id) || mockProperties[0];
+                    setProperty(mockProperty || null);
+                    setLoading(false);
+                    return;
+                }
+
                 // Try fetching from Supabase first
                 const { data, error } = await supabase
                     .from('properties')
@@ -544,7 +551,7 @@ const PropertyDetail = () => {
                         {/* Right Column: Sticky Overview & Contact */}
                         <div className="lg:w-1/3 relative">
                             <div className="sticky top-28 space-y-6">
-                                {/* Verified Partner Badge - Only shown for Ukon Estate partners */}
+                                {/* Verified Partner Badge */}
                                 {sellerProfile?.is_ukon_partner && (
                                     <motion.div
                                         initial={{ opacity: 0, y: -20 }}
@@ -554,7 +561,7 @@ const PropertyDetail = () => {
                                         <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/5 rounded-full blur-2xl" />
 
                                         <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 overflow-hidden bg-white">
-                                            <img src={ukonLogo} alt="Ukon Estate Logo" className="w-full h-full object-cover" />
+                                            <span className="text-[10px] font-serif text-center leading-tight text-[#0e2e50]">Green<br />Hill</span>
                                         </div>
                                         <div className="relative z-10 flex-1">
                                             <h5 className="font-black text-sm uppercase tracking-wider mb-0.5 leading-none">
@@ -629,16 +636,12 @@ const PropertyDetail = () => {
                                                             className="w-full h-full object-cover rounded-full"
                                                         />
                                                     ) : (
-                                                        <img
-                                                            src={ukonLogo}
-                                                            alt="Ukon Estate"
-                                                            className="w-full h-full object-cover rounded-full"
-                                                        />
+                                                        <span className="w-full h-full flex items-center justify-center text-[10px] font-serif text-center leading-tight text-[#0e2e50]">GH</span>
                                                     )}
                                                 </div>
                                                 <div>
                                                     <p className="font-bold text-foreground">
-                                                        {sellerProfile?.agency_name || 'Ukon Estate'}
+                                                        {sellerProfile?.agency_name || 'Green Hill'}
                                                     </p>
                                                 </div>
                                             </div>

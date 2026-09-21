@@ -225,7 +225,7 @@ const PartnerManagement = () => {
                         <AlertDialogDescription>
                             {confirmDialog.currentValue
                                 ? `This will remove the Verified Partner badge from "${confirmDialog.agencyName}". Their listings will no longer display partner verification.`
-                                : `This will grant Verified Partner status to "${confirmDialog.agencyName}". Their listings will display the official Ukon Estate partner badge.`
+                                : `This will grant Verified Partner status to "${confirmDialog.agencyName}". Their listings will display the official Green Hill partner badge.`
                             }
                         </AlertDialogDescription>
                     </AlertDialogHeader>

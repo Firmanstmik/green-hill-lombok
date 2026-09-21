@@ -1,73 +1,107 @@
-# Welcome to your Lovable project
+# Green Hill Lombok
 
-## Project info
+Private land and investment advisory platform for opportunities across Lombok.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Green Hill is built as a curated editorial experience — not a generic property marketplace. The site presents selected land and investment opportunities with a quiet-luxury visual language: forest green, ivory, restrained gold, Prata, and Jost.
 
-## How can I edit this code?
+**Repository:** [Firmanstmik/green-hill-lombok](https://github.com/Firmanstmik/green-hill-lombok)
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+| Layer | Technology |
+|--------|------------|
+| App | React 18, TypeScript, Vite |
+| UI | Tailwind CSS, Radix / shadcn patterns |
+| Motion | Framer Motion |
+| Backend | Supabase (auth, data, edge functions) |
+| Maps | Mapbox (optional) |
+| i18n | English, Indonesian, Dutch, Spanish |
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Getting started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Requirements
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js 20+ (recommended)
+- npm
 
-Follow these steps:
+### Setup
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+git clone https://github.com/Firmanstmik/green-hill-lombok.git
+cd green-hill-lombok
+npm install
+cp .env.example .env
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Fill `.env` with your Supabase project values (and Mapbox token if needed):
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+# VITE_MAPBOX_ACCESS_TOKEN=
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Develop
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Quality checks
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm test
+npm run build
+npx tsc --noEmit
+```
 
-**Use GitHub Codespaces**
+### Preview production build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run build
+npm run preview
+```
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## Project structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```text
+src/
+  assets/greenhill/     Brand photography & logo masters
+  components/
+    brand/              Shared brand marks (e.g. curve signature)
+    home/               Homepage sections (hero, founder, opportunities…)
+    layout/             Navbar, footer, mobile nav
+  contexts/             Language, currency, auth
+  pages/                Routes
+  lib/                  Supabase, i18n, helpers
+supabase/               Migrations & edge functions
+```
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Brand notes
 
-## Can I connect a custom domain to my Lovable project?
+- **Hero** — full-bleed masters, chapter navigation, restrained motion  
+- **Founder** — editorial story with Green Hill signature mark  
+- **Selected Opportunities** — curated catalogue (featured + editorial list), not marketplace cards  
+- Gold is an accent; forest green carries the brand  
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Environment & secrets
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Never commit `.env` — it is gitignored  
+- Use `.env.example` as the public template  
+- Rotate keys if they were ever shared outside a secure channel  
+
+---
+
+## License
+
+Private / proprietary unless otherwise stated by the repository owner.
