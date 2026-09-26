@@ -289,7 +289,7 @@ function Editor({ loaded, reference }: { loaded: Opportunity | null; reference: 
             <div className="gha-editor-head__meta">
               {o.reference ? <span className="gha-meta gha-mono">{o.reference}</span> : null}
               <StatusBadge status={baselineStatus} />
-              <VisibilityBadge visibility={o.visibility} />
+              <VisibilityBadge visibility={o.visibility} teaser={o.privateTeaser} />
               <span className="gha-save" data-state={saveState} role="status" aria-live="polite">
                 <span className="gha-save__dot" aria-hidden />
                 {labelText}

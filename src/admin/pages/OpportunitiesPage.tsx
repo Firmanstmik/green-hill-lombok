@@ -321,7 +321,7 @@ function OpportunityRow({ o }: { o: Opportunity }) {
         <StatusBadge status={o.status} />
       </td>
       <td>
-        <VisibilityBadge visibility={o.visibility} />
+        <VisibilityBadge visibility={o.visibility} teaser={o.privateTeaser} />
       </td>
       <td>{o.featured ? <FeaturedMark /> : null}</td>
       <td className="gha-meta" style={{ whiteSpace: 'nowrap' }}>{formatDate(o.updatedAt)}</td>
@@ -351,7 +351,7 @@ function OpportunityCardRow({ o }: { o: Opportunity }) {
         </span>
         <div className="gha-rowcard__meta">
           <StatusBadge status={o.status} />
-          <VisibilityBadge visibility={o.visibility} />
+          <VisibilityBadge visibility={o.visibility} teaser={o.privateTeaser} />
           {o.featured ? <FeaturedMark /> : null}
           <span className="gha-meta">Updated {formatDate(o.updatedAt)}</span>
         </div>

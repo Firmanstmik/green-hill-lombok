@@ -64,6 +64,12 @@
   border-radius: var(--gha-radius-sm);
 }
 
+/* One icon family (lucide), drawn with a finer, architectural line. */
+.gh-admin svg.lucide,
+.gha-portal svg.lucide {
+  stroke-width: 1.75;
+}
+
 .gha-sr-only {
   position: absolute;
   width: 1px;
@@ -2834,15 +2840,6 @@ a.gha-signal:hover {
 }
 .gha-auth__notice--success strong {
   overflow-wrap: anywhere;
-}
-
-.gha-auth__checking {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 24px 0 0;
-  font-size: 14.5px;
-  color: var(--gha-muted);
 }
 
 .gha-auth__rules {

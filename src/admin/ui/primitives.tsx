@@ -85,11 +85,12 @@ export function EnquiryStatusBadge({ status }: { status: EnquiryStatus }) {
   return <span className={`gha-status gha-status--${status}`}>{ENQUIRY_STATUS_LABEL[status]}</span>;
 }
 
-export function VisibilityBadge({ visibility }: { visibility: Visibility }) {
+/** Private opportunities presented as a Green Hill Private teaser do appear on the website (only disclosed fields). */
+export function VisibilityBadge({ visibility, teaser }: { visibility: Visibility; teaser?: boolean }) {
   return visibility === 'private' ? (
-    <span className="gha-vis gha-vis--private">
+    <span className="gha-vis gha-vis--private" title={teaser ? 'Shown on Green Hill Private as a teaser' : 'Never shown on the website'}>
       <Lock size={11} aria-hidden />
-      Private
+      {teaser ? 'Private · Teaser' : 'Private'}
     </span>
   ) : (
     <span className="gha-vis">Public</span>

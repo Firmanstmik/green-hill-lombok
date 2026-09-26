@@ -3,6 +3,7 @@ import { Check, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 import '@/admin/admin.css';
+import { GreenHillLoader } from '@/components/brand/GreenHillLoader';
 import { AuthHeading, AuthNotice, AuthShell, PasswordInput } from '@/admin/auth/AuthShell';
 import { AUTH_MESSAGES, authErrorMessage, resetLinkProblem } from '@/admin/auth/authMessages';
 import { PASSWORD_RULES, meetsPasswordPolicy } from '@/admin/auth/passwordPolicy';
@@ -90,17 +91,10 @@ const UpdatePassword = () => {
 
   const mismatch = confirmPassword.length > 0 && confirmPassword !== password;
 
+  if (linkState === 'checking') return <GreenHillLoader label="Verifying your link" />;
+
   return (
     <AuthShell homeHref={`/${language}`}>
-      {linkState === 'checking' ? (
-        <>
-          <AuthHeading title="Set a new password" />
-          <p className="gha-auth__checking" role="status">
-            <Loader2 size={16} className="gha-spin" aria-hidden />
-            Verifying your reset link…
-          </p>
-        </>
-      ) : null}
 
       {linkState === 'expired' || linkState === 'invalid' ? (
         <>

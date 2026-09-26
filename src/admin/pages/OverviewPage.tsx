@@ -198,7 +198,7 @@ export function OverviewPage() {
                       </span>
                       <span className="gha-list__end">
                         <StatusBadge status={o.status} />
-                        {o.visibility === 'private' ? <VisibilityBadge visibility="private" /> : null}
+                        {o.visibility === 'private' ? <VisibilityBadge visibility="private" teaser={o.privateTeaser} /> : null}
                       </span>
                     </Link>
                   </li>

@@ -6,7 +6,7 @@ import { publicLocationLine } from '../domain/opportunity';
 import { OpportunityActions } from '../opportunityActions';
 import { useAdminPath } from '../paths';
 import { formatDate } from '../ui/format';
-import { EmptyState, PageHead, SkeletonRows, StatusBadge, Thumb } from '../ui/primitives';
+import { EmptyState, ErrorState, PageHead, SkeletonRows, StatusBadge, Thumb, VisibilityBadge } from '../ui/primitives';
 import { EnquiryWorkspace } from './EnquiriesPage';
 
 export function PrivatePage() {
@@ -27,16 +27,17 @@ export function PrivatePage() {
       <PageHead
         eyebrow="Green Hill Private"
         title="Private"
-        lead="Opportunities and conversations handled directly through Green Hill. Nothing on this page is shown on the website."
+        lead="Large opportunities and the investors asking about them, handled directly through Green Hill."
       />
 
       <div className="gha-alert gha-alert--info" style={{ marginBottom: 8 }}>
         <Lock size={17} aria-hidden color="var(--gha-forest)" />
         <div>
-          <span className="gha-alert__title">Kept off the website</span>
+          <span className="gha-alert__title">What visitors can see</span>
           <span>
-            Private opportunities are never sent to visitors’ browsers. The public Green Hill Private page only knows how
-            many exist.
+            A private opportunity is never listed on the website. If you present it as a <strong>Teaser</strong>, Green
+            Hill Private shows its page with only the details you switch on; everything else, including the investment
+            memorandum and your internal notes, never leaves the database.
           </span>
         </div>
       </div>
@@ -53,6 +54,10 @@ export function PrivatePage() {
         <div className="gha-panel" style={{ marginTop: 12 }}>
           {opportunities.isLoading ? (
             <SkeletonRows rows={2} />
+          ) : opportunities.isError ? (
+            <div style={{ padding: 16 }}>
+              <ErrorState message={(opportunities.error as Error).message} onRetry={() => void opportunities.refetch()} />
+            </div>
           ) : privateOpps.length === 0 ? (
             <EmptyState
               compact
@@ -78,6 +83,7 @@ export function PrivatePage() {
                       </span>
                     </span>
                     <span className="gha-list__end">
+                      <VisibilityBadge visibility="private" teaser={o.privateTeaser} />
                       <StatusBadge status={o.status} />
                     </span>
                   </Link>

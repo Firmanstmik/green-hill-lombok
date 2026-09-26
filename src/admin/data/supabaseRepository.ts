@@ -40,10 +40,11 @@ import {
   randomName,
   type AdminRepository,
 } from './repository';
+import { friendlyError, type BackendError } from './errors';
 
-function fail(error: { message?: string; code?: string } | null, fallback: string): never {
+function fail(error: BackendError, fallback: string): never {
   if (error?.code === '23505') throw new Error('That URL slug is already used by another opportunity.');
-  throw new Error(error?.message || fallback);
+  throw new Error(friendlyError(error, fallback));
 }
 
 async function currentUserId(): Promise<string | null> {

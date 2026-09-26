@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, type ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './admin.css';
+import { GreenHillLoader } from '@/components/brand/GreenHillLoader';
 import { AdminSessionProvider, useAdminSession } from './AdminSession';
 import { AdminShell } from './AdminShell';
 import { AdminLogin } from './AdminLogin';
@@ -41,13 +42,7 @@ function EditorFallback() {
 function RequireAdmin({ children }: { children: ReactNode }) {
   const { status } = useAdminSession();
   const { admin } = useAdminPath();
-  if (status === 'loading') {
-    return (
-      <div className="gh-admin" role="status" aria-live="polite" style={{ display: 'grid', placeItems: 'center' }}>
-        <span className="gha-meta">Opening Green Hill Admin…</span>
-      </div>
-    );
-  }
+  if (status === 'loading') return <GreenHillLoader label="Opening Green Hill Admin" />;
   if (status !== 'ready') return <Navigate to={admin('/login')} replace />;
   return <>{children}</>;
 }

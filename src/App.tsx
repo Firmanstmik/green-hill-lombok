@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { lazy, Suspense, useEffect, useRef } from "react";
+import { GreenHillLoader } from "@/components/brand/GreenHillLoader";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ContentProvider } from "@/content/ContentContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
@@ -110,7 +111,7 @@ function HomeRedirect() {
 }
 
 function PageLoader() {
-  return <div className="min-h-screen bg-background" />;
+  return <GreenHillLoader />;
 }
 
 function AppRoutes() {

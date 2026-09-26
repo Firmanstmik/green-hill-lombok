@@ -6,6 +6,7 @@ import { useAdminPath } from './paths';
 import { Field } from './ui/primitives';
 import { AuthHeading, AuthNotice, AuthShell, PasswordInput } from './auth/AuthShell';
 import { AUTH_MESSAGES, isValidEmail } from './auth/authMessages';
+import { GreenHillLoader } from '@/components/brand/GreenHillLoader';
 
 type View = 'sign-in' | 'reset' | 'reset-sent';
 
@@ -26,6 +27,7 @@ export function AdminLogin() {
   }, [view]);
 
   if (status === 'ready') return <Navigate to={admin()} replace />;
+  if (status === 'loading') return <GreenHillLoader label="Checking your session" />;
 
   const go = (next: View) => {
     setError('');
@@ -107,16 +109,6 @@ export function AdminLogin() {
 
   return (
     <AuthShell homeHref={site('/')}>
-      {status === 'loading' ? (
-        <>
-          <AuthHeading title="Sign in" />
-          <p className="gha-auth__checking" role="status">
-            <Loader2 size={16} className="gha-spin" aria-hidden />
-            Checking your session…
-          </p>
-        </>
-      ) : null}
-
       {status === 'unavailable' ? (
         <>
           <AuthHeading title="Sign in" />
