@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { properties as mockProperties, type Property } from '@/data/mockData';
+import { demoOpportunities as mockProperties, type Property } from '@/data/mockData';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { useContentText } from '@/content/hooks';
+import { publicOpportunities } from '@/lib/publicOpportunities';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { CuratedOpportunityCard } from './opportunities/CuratedOpportunityCard';
 import { selectCuratedOpportunities } from './opportunities/selectCuratedOpportunities';
@@ -20,7 +22,9 @@ export function SelectedOpportunities() {
   const { ref, isInView } = useInView({ threshold: 0.12 });
   const { language, t } = useLanguage();
   const reduce = useReducedMotion();
-  const [source, setSource] = useState<Property[]>(mockProperties);
+  // Without a database: the demo set in development or an explicit demo build, otherwise nothing.
+  const [source, setSource] = useState<Property[]>(isSupabaseConfigured ? [] : mockProperties);
+  const [loaded, setLoaded] = useState(!isSupabaseConfigured);
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
@@ -32,15 +36,13 @@ export function SelectedOpportunities() {
 
     const fetchProperties = async () => {
       try {
-        const { data, error } = await supabase
-          .from('properties')
-          .select('*')
+        const { data, error } = await publicOpportunities()
           .order('created_at', { ascending: false });
 
         if (error) throw error;
         if (cancelled) return;
 
-        const rows = data && data.length > 0 ? data : mockProperties;
+        const rows = data ?? [];
         const normalized = rows.map((p: Record<string, unknown>) => ({
           ...p,
           image: (p.image_url as string) || (p.image as string),
@@ -57,13 +59,14 @@ export function SelectedOpportunities() {
           status: (p.status as Property['status']) || 'sale',
           images: (p.images as string[]) || [],
           features: (p.features as Record<string, string>) || {},
-          isUkonAgent: Boolean(p.is_ukon_agent || p.isUkonAgent),
         })) as Property[];
 
         setSource(normalized);
       } catch (err) {
         console.error('Error fetching curated opportunities:', err);
-        if (!cancelled) setSource(mockProperties);
+        if (!cancelled) setSource([]);
+      } finally {
+        if (!cancelled) setLoaded(true);
       }
     };
 
@@ -73,7 +76,10 @@ export function SelectedOpportunities() {
     };
   }, []);
 
-  const curated = useMemo(() => selectCuratedOpportunities(source), [source]);
+  // Reece chooses 3–6 in the admin (brief §4); the shipped default otherwise.
+  const countSetting = Number(useContentText('cms.home.selected.count'));
+  const count = Number.isFinite(countSetting) && countSetting >= 3 && countSetting <= 6 ? countSetting : undefined;
+  const curated = useMemo(() => selectCuratedOpportunities(source, count), [source, count]);
 
   /*
    * Choreography mirrors Section 02: mark draws first, eyebrow settles, then
@@ -119,6 +125,9 @@ export function SelectedOpportunities() {
         </header>
 
         <div className="gh-opp__collection">
+          {loaded && curated.length === 0 ? (
+            <p className="gh-opp__lead">{t('selected.empty')}</p>
+          ) : null}
           {curated[0] && (
             <CuratedOpportunityCard
               property={curated[0]}

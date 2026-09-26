@@ -37,7 +37,7 @@ function ToolbarButton({ onClick, isActive, children, title }: ToolbarButtonProp
             title={title}
             className={`p-1.5 rounded-lg transition-colors ${
                 isActive
-                    ? 'bg-[#0e2e50]/10 text-[#0e2e50]'
+                    ? 'bg-[#17382e]/10 text-[#17382e]'
                     : 'text-muted-foreground hover:bg-secondary/10 hover:text-foreground'
             }`}
         >
@@ -111,7 +111,7 @@ export function DescriptionEditor({
     return (
         <div
             className={`tiptap-editor rounded-[2rem] bg-secondary/5 border overflow-hidden transition-colors ${
-                error ? 'border-ukon-red ring-1 ring-ukon-red' : 'border-border'
+                error ? 'border-brand-danger ring-1 ring-brand-danger' : 'border-border'
             }`}
         >
             {/* Toolbar */}

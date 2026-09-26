@@ -22,9 +22,9 @@ export interface CurrencyContextType {
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 const SUPPORTED_CURRENCIES: SupportedCurrency[] = ['USD', 'EUR', 'IDR', 'GBP'];
-const STORAGE_KEY = 'ukon_currency_preference';
-const EXCHANGE_RATES_KEY = 'ukon_exchange_rates';
-const EXCHANGE_RATES_TIMESTAMP_KEY = 'ukon_exchange_rates_timestamp';
+const STORAGE_KEY = 'greenhill_currency_preference';
+const EXCHANGE_RATES_KEY = 'greenhill_exchange_rates';
+const EXCHANGE_RATES_TIMESTAMP_KEY = 'greenhill_exchange_rates_timestamp';
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 // Map country code to default currency

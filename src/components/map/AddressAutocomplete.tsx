@@ -213,10 +213,10 @@ export function AddressAutocomplete({
           }
           className={cn(
             'w-full pl-10 pr-10 h-14 rounded-2xl bg-secondary/5 font-medium text-sm',
-            'border focus:outline-none focus:ring-2 focus:ring-[#0e2e50]/15',
+            'border focus:outline-none focus:ring-2 focus:ring-[#17382e]/15',
             'transition-colors duration-150 disabled:opacity-50 placeholder:text-muted-foreground/50',
             error
-              ? 'border-ukon-red ring-1 ring-ukon-red'
+              ? 'border-brand-danger ring-1 ring-brand-danger'
               : 'border-border hover:border-border/80'
           )}
         />
@@ -247,8 +247,8 @@ export function AddressAutocomplete({
       {/* Form validation error */}
       {error && (
         <div className="flex items-center gap-1.5 mt-1.5 ml-1">
-          <AlertCircle size={12} className="text-ukon-red flex-shrink-0" />
-          <p className="text-xs text-ukon-red">{error}</p>
+          <AlertCircle size={12} className="text-brand-danger flex-shrink-0" />
+          <p className="text-xs text-brand-danger">{error}</p>
         </div>
       )}
 

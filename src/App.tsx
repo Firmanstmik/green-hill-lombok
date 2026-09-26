@@ -3,41 +3,67 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ContentProvider } from "@/content/ContentContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { trackPageView } from "@/lib/analytics";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AuthPanelProvider, useAuthPanel } from "@/contexts/AuthPanelContext";
-import { AuthPanel } from "@/components/auth/AuthPanel";
 
 // Route-based code splitting — each page loads on demand
 const Index = lazy(() => import("./pages/Index"));
 const Properties = lazy(() => import("./pages/Properties"));
+const Private = lazy(() => import("./pages/Private"));
 const PropertyDetail = lazy(() => import("./pages/PropertyDetail"));
+const Enquire = lazy(() => import("./pages/Enquire"));
 const About = lazy(() => import("./pages/About"));
-const Agents = lazy(() => import("./pages/Agents"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BuyingInLombok = lazy(() => import("./pages/BuyingInLombok"));
-const Login = lazy(() => import("./pages/Login"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Account = lazy(() => import("./pages/Account"));
+const WhyLombok = lazy(() => import("./pages/WhyLombok"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const UpdatePassword = lazy(() => import("./pages/UpdatePassword"));
-const BuyerSettings = lazy(() => import("./pages/BuyerSettings"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const Partners = lazy(() => import("./pages/Partners"));
-const Invoice = lazy(() => import("./pages/Invoice"));
+// Green Hill Admin: one lazily loaded chunk, nothing admin-related ships with public pages.
+const AdminApp = lazy(() => import("./admin/AdminApp"));
+// Developer tool only: the invoice holds personal payment details and must
+// never ship in a production build (the PDF script imports it directly).
+const Invoice = import.meta.env.DEV ? lazy(() => import("./pages/Invoice")) : null;
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-function ScrollToTop() {
+/** GA4 / Meta Pixel page views; does nothing unless Green Hill's IDs are configured. */
+function RouteTracker() {
   const { pathname } = useLocation();
   useEffect(() => {
+    trackPageView(pathname);
+  }, [pathname]);
+  return null;
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  const prevPathRef = useRef(pathname);
+
+  useEffect(() => {
+    const stripLang = (path: string) => {
+      const parts = path.split("/").filter(Boolean);
+      if (parts[0] === "en" || parts[0] === "id" || parts[0] === "nl" || parts[0] === "es") {
+        return `/${parts.slice(1).join("/")}`;
+      }
+      return path;
+    };
+
+    const prevRest = stripLang(prevPathRef.current);
+    const nextRest = stripLang(pathname);
+    prevPathRef.current = pathname;
+
+    // Language-only swap (e.g. /en/properties → /id/properties) — keep scroll.
+    if (prevRest === nextRest) return;
+
     window.scrollTo(0, 0);
   }, [pathname]);
+
   return null;
 }
 
@@ -64,6 +90,25 @@ function AuthCallbackRedirect() {
  * AppRoutes contains all the language-prefixed routes
  * Structure: /:lang/path (where lang is en, id, nl, es)
  */
+/**
+ * The inherited agent dashboard (/dashboard) and admin panel (/dashboard/admin)
+ * are retired. Old links land in the Green Hill Admin instead.
+ */
+function AdminRedirect() {
+  const { language } = useLanguage();
+  return <Navigate to={`/${language}/admin`} replace />;
+}
+
+/**
+ * Inherited marketplace workflows (agent directory, buyer accounts, agent
+ * partner sign-up, buyer/agent messaging) have no place in Green Hill. Their pages stay on disk
+ * but are no longer routable; old links land on the homepage.
+ */
+function HomeRedirect() {
+  const { language } = useLanguage();
+  return <Navigate to={`/${language}`} replace />;
+}
+
 function PageLoader() {
   return <div className="min-h-screen bg-background" />;
 }
@@ -79,23 +124,30 @@ function AppRoutes() {
       <Route path="/auth/callback" element={<AuthCallbackRedirect />} />
 
       {/* Isolated invoice preview / PDF export (not language-routed) */}
-      <Route path="/invoice" element={<Invoice />} />
+      {Invoice ? <Route path="/invoice" element={<Invoice />} /> : null}
+
+      {/* Green Hill Admin */}
+      <Route path="/admin/*" element={<AdminRedirect />} />
+      <Route path="/:lang/admin/*" element={<AdminApp />} />
 
       {/* Language-prefixed routes */}
       <Route path="/:lang" element={<Index />} />
       <Route path="/:lang/properties" element={<Properties />} />
+      <Route path="/:lang/private" element={<Private />} />
       <Route path="/:lang/property/:id" element={<PropertyDetail />} />
+      <Route path="/:lang/private/:id" element={<PropertyDetail teaser />} />
+      <Route path="/:lang/enquire" element={<Enquire />} />
       <Route path="/:lang/about" element={<About />} />
-      <Route path="/:lang/network" element={<Agents />} />
-      <Route path="/:lang/partners" element={<Partners />} />
+      <Route path="/:lang/network" element={<HomeRedirect />} />
+      <Route path="/:lang/partners" element={<HomeRedirect />} />
       <Route path="/:lang/intelligence" element={<Blog />} />
       <Route path="/:lang/intelligence/:slug" element={<BlogPost />} />
       <Route path="/:lang/buying-in-lombok" element={<BuyingInLombok />} />
-      <Route path="/:lang/login" element={<Login />} />
-      <Route path="/:lang/dashboard" element={<Dashboard />} />
-      <Route path="/:lang/dashboard/admin" element={<AdminDashboard />} />
-      <Route path="/:lang/account" element={<Account />} />
-      <Route path="/:lang/account/settings" element={<BuyerSettings />} />
+      <Route path="/:lang/why-lombok" element={<WhyLombok />} />
+      <Route path="/:lang/login" element={<HomeRedirect />} />
+      <Route path="/:lang/dashboard" element={<AdminRedirect />} />
+      <Route path="/:lang/dashboard/admin" element={<AdminRedirect />} />
+      <Route path="/:lang/account/*" element={<HomeRedirect />} />
       <Route path="/:lang/auth/callback" element={<AuthCallback />} />
       <Route path="/:lang/auth/update-password" element={<UpdatePassword />} />
 
@@ -106,41 +158,25 @@ function AppRoutes() {
   );
 }
 
-function AuthPanelGlobal() {
-  const { isAuthPanelOpen, closeAuthPanel, initialMode } = useAuthPanel();
-  const { language } = useLanguage();
-  const location = useLocation();
-
-  // Only show global variant on non-home pages
-  const isHomePage = location.pathname === `/${language}` || location.pathname === '/' || location.pathname === `/${language}/`;
-
-  if (isHomePage) return null;
-
-  return (
-    <AuthPanel
-      variant="global"
-      isOpen={isAuthPanelOpen}
-      onClose={closeAuthPanel}
-      initialMode={initialMode}
-    />
-  );
-}
-
+/**
+ * Green Hill has no visitor accounts. The inherited buyer/agent sign-up panel
+ * and its auth context are no longer mounted; the admin has its own session
+ * (src/admin/AdminSession.tsx).
+ */
 function AppContent() {
   return (
-    <AuthPanelProvider>
-      <AuthProvider>
-        <ScrollToTop />
-        <AppRoutes />
-        <AuthPanelGlobal />
-      </AuthProvider>
-    </AuthPanelProvider>
+    <>
+      <ScrollToTop />
+      <RouteTracker />
+      <AppRoutes />
+    </>
   );
 }
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+      <ContentProvider>
       <LanguageProvider>
         <CurrencyProvider>
           <TooltipProvider>
@@ -150,6 +186,7 @@ const App = () => (
           </TooltipProvider>
         </CurrencyProvider>
       </LanguageProvider>
+      </ContentProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );

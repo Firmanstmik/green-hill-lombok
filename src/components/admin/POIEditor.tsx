@@ -93,8 +93,8 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
     <div className="space-y-8">
       {/* Header */}
       <div className="pb-6 border-b border-border/50">
-        <h3 className="text-xl font-black text-[#0e2e50] flex items-center gap-2">
-          <MapPin size={24} className="text-[#0e2e50]" />
+        <h3 className="text-xl font-black text-[#17382e] flex items-center gap-2">
+          <MapPin size={24} className="text-[#17382e]" />
           Nearby Points of Interest
         </h3>
         <p className="text-sm text-muted-foreground mt-2">
@@ -110,7 +110,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
           <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
             <MapPin size={32} className="text-muted-foreground" />
           </div>
-          <p className="text-base font-bold text-[#0e2e50]">
+          <p className="text-base font-bold text-[#17382e]">
             No nearby amenities detected
           </p>
           <p className="text-sm text-muted-foreground mt-2 max-w-sm mx-auto">
@@ -127,7 +127,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
               {/* Category Header */}
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{config.icon}</span>
-                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-[#0e2e50]">
+                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-[#17382e]">
                   {config.label}
                   <span className="text-xs font-normal text-muted-foreground ml-2">
                     ({categoryPois.length})
@@ -143,13 +143,13 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
                     className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-br from-white to-secondary/5 border border-border/50 hover:border-border hover:shadow-md transition-all group"
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-[#0e2e50] truncate leading-tight">
+                      <p className="font-semibold text-sm text-[#17382e] truncate leading-tight">
                         {poi.name}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
                         {poi.distance_display}
                         {poi.custom && (
-                          <span className="ml-2 inline-block px-2 py-0.5 bg-ukon-green/10 text-ukon-green rounded-md text-[10px] font-bold">
+                          <span className="ml-2 inline-block px-2 py-0.5 bg-brand-forest/10 text-brand-forest rounded-md text-[10px] font-bold">
                             Custom
                           </span>
                         )}
@@ -162,7 +162,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
                         const allIndex = pois.findIndex((p) => p === poi);
                         if (allIndex >= 0) removePOI(allIndex);
                       }}
-                      className="h-8 w-8 p-0 text-muted-foreground hover:text-ukon-red hover:bg-ukon-red/10 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                      className="h-8 w-8 p-0 text-muted-foreground hover:text-brand-danger hover:bg-brand-danger/10 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                     >
                       <Trash2 size={16} />
                     </Button>
@@ -179,21 +179,21 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
         {!showAddForm ? (
           <Button
             onClick={() => setShowAddForm(true)}
-            className="w-full h-12 rounded-2xl border-2 border-dashed border-[#0e2e50]/20 bg-gradient-to-r from-[#0e2e50]/5 to-secondary/5 hover:from-[#0e2e50]/10 hover:to-secondary/10 text-[#0e2e50] font-bold text-base transition-all hover:border-[#0e2e50]/40"
+            className="w-full h-12 rounded-2xl border-2 border-dashed border-[#17382e]/20 bg-gradient-to-r from-[#17382e]/5 to-secondary/5 hover:from-[#17382e]/10 hover:to-secondary/10 text-[#17382e] font-bold text-base transition-all hover:border-[#17382e]/40"
           >
             <Plus size={20} className="mr-2" />
             Add Custom Amenity
           </Button>
         ) : (
           <div className="space-y-5 p-6 bg-gradient-to-b from-secondary/10 to-secondary/5 rounded-3xl border-2 border-border/50">
-            <h4 className="text-sm font-black text-[#0e2e50] uppercase tracking-[0.1em]">
+            <h4 className="text-sm font-black text-[#17382e] uppercase tracking-[0.1em]">
               Add New Amenity
             </h4>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Category Select */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-[#0e2e50] uppercase tracking-wider">
+                <label className="text-xs font-bold text-[#17382e] uppercase tracking-wider">
                   Category
                 </label>
                 <Select
@@ -220,7 +220,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
 
               {/* Name Input */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-[#0e2e50] uppercase tracking-wider">
+                <label className="text-xs font-bold text-[#17382e] uppercase tracking-wider">
                   Name
                 </label>
                 <Input
@@ -240,7 +240,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
 
               {/* Distance Input */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-[#0e2e50] uppercase tracking-wider">
+                <label className="text-xs font-bold text-[#17382e] uppercase tracking-wider">
                   Distance (m)
                 </label>
                 <Input
@@ -265,7 +265,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
               <Button
                 onClick={addCustomPOI}
                 disabled={!customPOI.name.trim() || loading}
-                className="flex-1 h-11 rounded-xl bg-[#0e2e50] hover:bg-[#0e2e50]/90 text-white font-bold text-base shadow-md hover:shadow-lg transition-all"
+                className="flex-1 h-11 rounded-xl bg-[#17382e] hover:bg-[#17382e]/90 text-white font-bold text-base shadow-md hover:shadow-lg transition-all"
               >
                 {loading ? (
                   <>
@@ -290,7 +290,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
                 }}
                 disabled={loading}
                 variant="outline"
-                className="flex-1 h-11 rounded-xl text-[#0e2e50] border-border hover:bg-white/80 font-bold"
+                className="flex-1 h-11 rounded-xl text-[#17382e] border-border hover:bg-white/80 font-bold"
               >
                 Cancel
               </Button>
@@ -304,7 +304,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
         <div className="pt-8 mt-8 border-t border-border/50">
           <div className="flex items-center justify-center gap-6 flex-wrap">
             <div className="text-center">
-              <p className="text-2xl font-black text-[#0e2e50]">
+              <p className="text-2xl font-black text-[#17382e]">
                 {pois.filter((p) => !p.custom).length}
               </p>
               <p className="text-xs text-muted-foreground mt-1">Auto-Detected</p>
@@ -313,7 +313,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
               <>
                 <div className="h-8 w-px bg-border/30"></div>
                 <div className="text-center">
-                  <p className="text-2xl font-black text-ukon-green">
+                  <p className="text-2xl font-black text-brand-forest">
                     {pois.filter((p) => p.custom).length}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">Custom Added</p>
@@ -322,7 +322,7 @@ const POIEditor = ({ pois, onChange, loading = false }: POIEditorProps) => {
             )}
             <div className="h-8 w-px bg-border/30"></div>
             <div className="text-center">
-              <p className="text-2xl font-black text-[#0e2e50]">
+              <p className="text-2xl font-black text-[#17382e]">
                 {pois.length}
               </p>
               <p className="text-xs text-muted-foreground mt-1">Total</p>

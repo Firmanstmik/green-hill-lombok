@@ -1,7 +1,13 @@
 /**
- * GREEN HILL — local demo data for public pages.
- * Compatible with original PropertyCard / Services / Agents / Testimonials components.
+ * GREEN HILL — demo opportunities (not real inventory).
+ *
+ * Used to seed the development-only local admin preview, and shown on the
+ * public site only through `demoOpportunities` below: never when a Green Hill
+ * database is connected, and in a production build only when a demo build is
+ * requested explicitly (VITE_DEMO_OPPORTUNITIES=true). A production build with
+ * a real (even empty) database shows real records or an honest empty state.
  */
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 import landCoastal from '@/assets/greenhill/land-coastal.jpg';
 import villaPool from '@/assets/greenhill/villa-pool.jpg';
@@ -15,11 +21,11 @@ export interface Property {
   title: string;
   address: string;
   price: number;
-  priceType: 'sale' | 'rent';
+  priceType: 'sale';
   bedrooms: number;
   bathrooms: number;
   sqft: number;
-  status: 'rent' | 'sale' | 'investment';
+  status: 'sale' | 'investment';
   image: string;
   images: string[];
   featured: boolean;
@@ -36,50 +42,8 @@ export interface Property {
     distance: string;
     type: 'school' | 'hospital' | 'shopping' | 'transport' | 'airport' | 'park';
   }[];
-  /** Legacy field — architecture compatibility */
-  isUkonAgent: boolean;
 }
 
-export interface Agent {
-  id: string;
-  name: string;
-  location: string;
-  country: string;
-  region: 'europe' | 'southeast-asia';
-  photo: string;
-  specialty: string;
-  languages?: string;
-  experience?: string;
-}
-
-export interface Testimonial {
-  id: string;
-  clientName: string;
-  clientType: string;
-  photo: string;
-  review: string;
-  rating: number;
-  location?: string;
-}
-
-export interface Service {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  image: string;
-  date: string;
-  author: string;
-}
-
-/** Curated Green Hill Lombok opportunities — demo examples (AI stills) */
 export const properties: Property[] = [
   {
     id: 'gh-1',
@@ -99,7 +63,6 @@ export const properties: Property[] = [
     surfaceArea: '2,450 m²',
     description: 'Elevated coastal land suited to a discreet villa compound.',
     features: { Type: 'Land', Status: 'Available' },
-    isUkonAgent: false,
   },
   {
     id: 'gh-2',
@@ -120,7 +83,6 @@ export const properties: Property[] = [
     surfaceArea: '1,200 m²',
     description: 'A considered villa setting framed by agricultural landscape.',
     features: { Type: 'Villa', Status: 'Available' },
-    isUkonAgent: false,
   },
   {
     id: 'gh-3',
@@ -140,7 +102,6 @@ export const properties: Property[] = [
     surfaceArea: '3,800 m²',
     description: 'A larger holding positioned for thoughtful residential development.',
     features: { Type: 'Development', Status: 'Available' },
-    isUkonAgent: false,
   },
   {
     id: 'gh-4',
@@ -160,7 +121,6 @@ export const properties: Property[] = [
     surfaceArea: '1,800 m²',
     description: 'Quiet hillside parcel with long-term holding potential.',
     features: { Type: 'Land', Status: 'Available' },
-    isUkonAgent: false,
   },
   {
     id: 'gh-5',
@@ -180,7 +140,6 @@ export const properties: Property[] = [
     buildingArea: '920 m²',
     description: 'Garden-oriented villa opportunity with strong lifestyle appeal.',
     features: { Type: 'Villa', Status: 'Available' },
-    isUkonAgent: false,
   },
   {
     id: 'gh-6',
@@ -200,67 +159,13 @@ export const properties: Property[] = [
     surfaceArea: '5,200 m²',
     description: 'Larger land holding for investors seeking scale in Lombok.',
     features: { Type: 'Investment', Status: 'Available' },
-    isUkonAgent: false,
   },
 ];
 
-/** Green Hill focus areas — same 6-card services layout */
-export const services: Service[] = [
-  { id: '1', title: 'Land Opportunities', description: 'Carefully selected land parcels across Lombok’s most promising locations.', icon: 'Home' },
-  { id: '2', title: 'Villa Opportunities', description: 'Private villa sites and residences suited to lifestyle and long-term holding.', icon: 'Users' },
-  { id: '3', title: 'Development Plots', description: 'Larger holdings positioned for thoughtful residential or hospitality use.', icon: 'Key' },
-  { id: '4', title: 'Investment Guidance', description: 'Clear, considered advice shaped around your criteria and timeline.', icon: 'TrendingUp' },
-  { id: '5', title: 'Site Evaluation', description: 'Access, orientation, context and fit reviewed with local knowledge.', icon: 'BarChart' },
-  { id: '6', title: 'Tailored Search', description: 'A focused process — not a marketplace — for the opportunities that matter.', icon: 'Settings' },
-];
+/** Whether the public site may show the demo opportunities above. */
+// The build-time part comes first so a normal production build drops the demo data entirely.
+export const DEMO_OPPORTUNITIES_ENABLED =
+  (import.meta.env.DEV || import.meta.env.VITE_DEMO_OPPORTUNITIES === 'true') && !isSupabaseConfigured;
 
-/** Placeholder advisors — not prior-project people */
-export const agents: Agent[] = [
-  { id: '1', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80', specialty: 'Land & Investment', languages: 'English, Indonesian', experience: '—' },
-  { id: '2', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80', specialty: 'Villa Opportunities', languages: 'English', experience: '—' },
-  { id: '3', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80', specialty: 'Development', languages: 'English, Indonesian', experience: '—' },
-  { id: '4', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80', specialty: 'Investor Relations', languages: 'English', experience: '—' },
-  { id: '5', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', specialty: 'Site Visits', languages: 'English, Indonesian', experience: '—' },
-  { id: '6', name: 'Advisor Placeholder', location: 'Lombok, Indonesia', country: 'Indonesia', region: 'southeast-asia', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80', specialty: 'Local Coordination', languages: 'Indonesian, English', experience: '—' },
-];
-
-export const testimonials: Testimonial[] = [
-  {
-    id: '1',
-    clientName: 'Demo Client',
-    clientType: 'Investor',
-    location: 'Lombok',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
-    review: '[Placeholder] Sample investor feedback for layout only. Not a real Green Hill client review.',
-    rating: 5,
-  },
-  {
-    id: '2',
-    clientName: 'Demo Client',
-    clientType: 'Buyer',
-    location: 'Lombok',
-    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
-    review: '[Placeholder] Sample feedback for layout only. Not a real Green Hill client review.',
-    rating: 5,
-  },
-  {
-    id: '3',
-    clientName: 'Demo Client',
-    clientType: 'Investor',
-    location: 'Lombok',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
-    review: '[Placeholder] Sample feedback for layout only. Not a real Green Hill client review.',
-    rating: 5,
-  },
-];
-
-export const blogPosts: BlogPost[] = [];
-
-export const stats = { projects: 0, clients: 0, value: 0 };
-
-/** Contact CTA — placeholder until Green Hill channels are finalised */
-export const contactInfo = {
-  email: 'hello@greenhill.example',
-  phone: '+44 7810 062383',
-  address: 'Lombok, Indonesia',
-};
+/** The demo set for the public site: empty unless DEMO_OPPORTUNITIES_ENABLED. */
+export const demoOpportunities: Property[] = DEMO_OPPORTUNITIES_ENABLED ? properties : [];

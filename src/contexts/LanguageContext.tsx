@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useTransition, ReactNode, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import enTranslations from '@/lib/i18n/translations/en.json';
+import idTranslations from '@/lib/i18n/translations/id.json';
+import nlTranslations from '@/lib/i18n/translations/nl.json';
+import esTranslations from '@/lib/i18n/translations/es.json';
+import { useContentState } from '@/content/ContentContext';
 
 export type SupportedLanguage = 'en' | 'id' | 'nl' | 'es';
 
@@ -17,19 +22,17 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['en', 'id', 'nl', 'es'];
 const STORAGE_KEY = 'greenhill_language_preference';
-const LEGACY_STORAGE_KEY = 'ukon_language_preference';
 
-async function loadTranslations(lang: SupportedLanguage): Promise<Record<string, any>> {
-  try {
-    const module = await import(`@/lib/i18n/translations/${lang}.json`);
-    return module.default;
-  } catch (error) {
-    console.warn(`Failed to load translations for ${lang}, falling back to English`, error);
-    if (lang !== 'en') {
-      return loadTranslations('en');
-    }
-    return {};
-  }
+/** Static map — avoids Vite dynamic JSON import() failures (raw application/json). */
+const TRANSLATIONS: Record<SupportedLanguage, Record<string, any>> = {
+  en: enTranslations,
+  id: idTranslations,
+  nl: nlTranslations,
+  es: esTranslations,
+};
+
+function loadTranslations(lang: SupportedLanguage): Record<string, any> {
+  return TRANSLATIONS[lang] ?? TRANSLATIONS.en;
 }
 
 function resolveKey(key: string, obj: Record<string, any>): string | undefined {
@@ -56,7 +59,7 @@ export function getLangFromPath(pathname: string): SupportedLanguage | undefined
 }
 
 function readStoredLanguage(): SupportedLanguage | undefined {
-  const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+  const stored = localStorage.getItem(STORAGE_KEY);
   if (stored && SUPPORTED_LANGUAGES.includes(stored as SupportedLanguage)) {
     return stored as SupportedLanguage;
   }
@@ -82,34 +85,16 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<SupportedLanguage>(() =>
     resolveLanguage(urlLang)
   );
-  const [translations, setTranslations] = useState<Record<string, any>>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [translations, setTranslations] = useState<Record<string, any>>(() =>
+    loadTranslations(resolveLanguage(urlLang))
+  );
+  const [isLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const enFallbackRef = useRef<Record<string, any>>({});
+  const enFallbackRef = useRef<Record<string, any>>(TRANSLATIONS.en);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const load = async () => {
-      setIsLoading(true);
-
-      if (Object.keys(enFallbackRef.current).length === 0) {
-        enFallbackRef.current = await loadTranslations('en');
-      }
-
-      const trans =
-        language === 'en' ? enFallbackRef.current : await loadTranslations(language);
-
-      if (isMounted) {
-        setTranslations(trans);
-        setIsLoading(false);
-      }
-    };
-
-    load();
-    return () => {
-      isMounted = false;
-    };
+    setTranslations(loadTranslations(language));
+    enFallbackRef.current = TRANSLATIONS.en;
   }, [language]);
 
   // URL is authoritative when it contains a supported lang prefix
@@ -127,7 +112,14 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       if (newLang === language) return;
 
       localStorage.setItem(STORAGE_KEY, newLang);
-      localStorage.setItem(LEGACY_STORAGE_KEY, newLang);
+
+      // Pin scroll through the URL swap so a deep-page language change stays put.
+      const scrollY = window.scrollY;
+      const restoreScroll = () => {
+        if (Math.abs(window.scrollY - scrollY) > 1) {
+          window.scrollTo({ top: scrollY, left: 0 });
+        }
+      };
 
       startTransition(() => {
         setLanguageState(newLang);
@@ -140,15 +132,29 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
         }
 
         const nextPath = `/${pathSegments.join('/')}${location.search}${location.hash}`;
-        navigate(nextPath);
+        navigate(nextPath, { preventScrollReset: true });
       });
+
+      restoreScroll();
+      requestAnimationFrame(() => {
+        restoreScroll();
+        requestAnimationFrame(restoreScroll);
+      });
+      window.setTimeout(restoreScroll, 0);
+      window.setTimeout(restoreScroll, 80);
     },
     [language, location.pathname, location.search, location.hash, navigate]
   );
 
+  // Copy Reece edited in the admin (published, or drafts in his preview).
+  const content = useContentState();
+
   const t = useCallback(
     (key?: string): string => {
       if (typeof key !== 'string') return '';
+
+      const custom = content.fields[language]?.[key];
+      if (typeof custom === 'string' && custom.trim() !== '') return custom;
 
       const value = resolveKey(key, translations);
       if (value !== undefined) return value;
@@ -158,7 +164,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
       return key;
     },
-    [translations, language]
+    [translations, language, content]
   );
 
   const value = useMemo<LanguageContextType>(
@@ -175,7 +181,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   );
 
   if (isLoading) {
-    return <div className="min-h-screen bg-background" />;
+    return <div className="min-h-screen bg-background" aria-busy="true" />;
   }
 
   return (

@@ -2,11 +2,10 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Green Hill isolation gate.
- * When credentials are absent, no network calls are made to any Supabase project
- * (including the former Ukon Estate project). Architecture is preserved for a
- * future Green Hill database connection.
+ * When credentials are absent, no network calls are made to any Supabase project.
+ * Only a dedicated Green Hill project's credentials may ever be configured.
  */
-const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim() ?? '';
+export const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim() ?? '';
 const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim() ?? '';
 
 export const isSupabaseConfigured = Boolean(

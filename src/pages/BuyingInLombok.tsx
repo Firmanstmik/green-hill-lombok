@@ -5,6 +5,9 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BUYING_KEYS } from '@/components/home/trustEducationKeys';
+import { useCmsPageSeo } from '@/content/hooks';
+import { contentValue, useContentState } from '@/content/ContentContext';
+import { BUYING_EXTRA_TOPICS } from '@/content/schema';
 
 /**
  * Educational gateway — structure first.
@@ -13,6 +16,14 @@ import { BUYING_KEYS } from '@/components/home/trustEducationKeys';
 export default function BuyingInLombok() {
   const { language, t } = useLanguage();
   const location = useLocation();
+  const content = useContentState();
+  useCmsPageSeo({ titleKey: 'cms.buying.seo.title', descriptionKey: 'cms.buying.seo.description', imageSlot: 'buying.seo.image', path: '/buying-in-lombok' });
+  // Further topics Reece has written (brief §7); each appears once it has a title.
+  const extraTopics = BUYING_EXTRA_TOPICS.map((id) => ({
+    id,
+    title: contentValue(content, `cms.buying.topic.${id}.title`, language),
+    detail: contentValue(content, `cms.buying.topic.${id}.detail`, language),
+  })).filter((topic) => topic.title);
 
   useEffect(() => {
     const hash = location.hash.replace('#', '');
@@ -51,6 +62,15 @@ export default function BuyingInLombok() {
                 </div>
               </li>
             ))}
+            {extraTopics.map((topic, i) => (
+              <li key={topic.id} id={topic.id} className="gh-buy__item">
+                <span className="gh-buy__num">{String(BUYING_KEYS.length + i + 1).padStart(2, '0')}</span>
+                <div className="gh-buy__item-copy">
+                  <h2 className="gh-buy__item-title">{topic.title}</h2>
+                  {topic.detail ? <p className="gh-buy__item-body">{topic.detail}</p> : null}
+                </div>
+              </li>
+            ))}
           </ol>
 
           <div className="gh-buy__actions">
@@ -58,7 +78,7 @@ export default function BuyingInLombok() {
               <span>{t('trust.talkCta')}</span>
               <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
             </button>
-            <Link to={`/${language}/#why-lombok`} className="gh-buy__back">
+            <Link to={`/${language}/why-lombok`} className="gh-buy__back">
               {t('trust.backToWhy')}
             </Link>
           </div>

@@ -4,6 +4,7 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 import type { FilterState } from '@/types/filters';
 import { DEFAULT_FILTERS } from '@/types/filters';
 import type { Property } from '@/data/mockData';
+import { landSizeM2 } from '@/components/properties/opportunityMeta';
 
 // Minimal debounce hook
 function useDebounce<T>(value: T, delay: number): T {
@@ -40,11 +41,6 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
   useEffect(() => {
     const fromURL: Partial<FilterState> = {};
 
-    const tt = searchParams.get('tt');
-    if (tt && ['all', 'sale', 'rent'].includes(tt)) {
-      fromURL.transactionType = tt as FilterState['transactionType'];
-    }
-
     const country = searchParams.get('country');
     if (country) fromURL.country = country;
 
@@ -63,7 +59,7 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
     }
 
     const pt = searchParams.get('pt');
-    if (pt && ['all', 'Villa', 'Apartment', 'Penthouse', 'Commercial', 'Land'].includes(pt)) {
+    if (pt && ['all', 'Villa', 'Land'].includes(pt)) {
       fromURL.propertyType = pt as FilterState['propertyType'];
     }
 
@@ -78,8 +74,14 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
     const maxS = searchParams.get('maxS');
     if (maxS) fromURL.maxSize = maxS;
 
-    const tags = searchParams.get('tags');
-    if (tags) fromURL.lifestyle = tags.split(',').filter(Boolean);
+    const cat = searchParams.get('cat');
+    if (cat && ['land', 'villa', 'development', 'private'].includes(cat)) {
+      fromURL.collection = cat as FilterState['collection'];
+    } else if (fromURL.propertyType === 'Villa') {
+      fromURL.collection = 'villa';
+    } else if (fromURL.propertyType === 'Land') {
+      fromURL.collection = 'land';
+    }
 
     if (Object.keys(fromURL).length > 0) {
       setFilters((prev) => ({ ...prev, ...fromURL }));
@@ -90,17 +92,16 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (filters.transactionType !== 'all') params.set('tt', filters.transactionType);
     if (filters.country) params.set('country', filters.country);
     if (filters.location) params.set('loc', filters.location);
     if (filters.minPrice) params.set('minP', filters.minPrice);
     if (filters.maxPrice) params.set('maxP', filters.maxPrice);
     if (filters.bedrooms !== 'any') params.set('bed', filters.bedrooms);
     if (filters.propertyType !== 'all') params.set('pt', filters.propertyType);
+    if (filters.collection !== 'all') params.set('cat', filters.collection);
     if (filters.bathrooms !== 'any') params.set('bath', filters.bathrooms);
     if (filters.minSize) params.set('minS', filters.minSize);
     if (filters.maxSize) params.set('maxS', filters.maxSize);
-    if (filters.lifestyle.length > 0) params.set('tags', filters.lifestyle.join(','));
 
     setSearchParams(params, { replace: true });
   }, [filters, setSearchParams]);
@@ -124,17 +125,7 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
     const maxSizeNum = debouncedMaxSize ? parseFloat(debouncedMaxSize) : null;
 
     return allProperties.filter((p) => {
-      // 1. Transaction type
-      if (filters.transactionType !== 'all') {
-        const status = p.status || p.priceType || 'sale';
-        const matchesSale =
-          filters.transactionType === 'sale'
-            ? status === 'sale' || status === 'investment'
-            : status === filters.transactionType;
-        if (!matchesSale) return false;
-      }
-
-      // 2. Region / wilayah filter (matches Lombok area in address/title)
+      // 1. Region / wilayah filter (matches Lombok area in address/title)
       if (filters.country) {
         const needle = filters.country.toLowerCase();
         const haystack = [
@@ -191,31 +182,19 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
         if (p.bathrooms < Number(filters.bathrooms)) return false;
       }
 
-      // 8. Size range (sqft is in m²)
-      if (minSizeNum !== null && p.sqft < minSizeNum) return false;
-      if (maxSizeNum !== null && p.sqft > maxSizeNum) return false;
-
-      // 9. Lifestyle tags
-      if (filters.lifestyle.length > 0) {
-        const featureKeys = Object.keys(p.features || {}).map((k) => k.toLowerCase());
-        const amenityNames = (p.nearbyAmenities || []).map((a) => a.name.toLowerCase());
-        const allTags = [...featureKeys, ...amenityNames];
-        const hasAllTags = filters.lifestyle.every((tag) =>
-          allTags.some((t) => t.includes(tag.toLowerCase()))
-        );
-        if (!hasAllTags) return false;
-      }
+      // 8. Size range — same square metres shown on the opportunity card
+      const sizeM2 = landSizeM2(p);
+      if (minSizeNum !== null && (sizeM2 === null || sizeM2 < minSizeNum)) return false;
+      if (maxSizeNum !== null && (sizeM2 === null || sizeM2 > maxSizeNum)) return false;
 
       return true;
     });
   }, [
     allProperties,
-    filters.transactionType,
     filters.country,
     filters.bedrooms,
     filters.propertyType,
     filters.bathrooms,
-    filters.lifestyle,
     debouncedLocation,
     debouncedMinPrice,
     debouncedMaxPrice,
@@ -227,15 +206,14 @@ export function useFilters(allProperties: Property[]): UseFiltersReturn {
   // Count active filters (excluding defaults)
   const activeFilterCount = useMemo(() => {
     let count = 0;
-    if (filters.transactionType !== 'all') count++;
     if (filters.country !== '') count++;
     if (filters.location !== '') count++;
     if (filters.minPrice !== '' || filters.maxPrice !== '') count++;
     if (filters.bedrooms !== 'any') count++;
     if (filters.propertyType !== 'all') count++;
+    if (filters.collection !== 'all' && filters.propertyType === 'all') count++;
     if (filters.bathrooms !== 'any') count++;
     if (filters.minSize !== '' || filters.maxSize !== '') count++;
-    count += filters.lifestyle.length;
     return count;
   }, [filters]);
 

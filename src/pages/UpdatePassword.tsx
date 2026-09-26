@@ -102,7 +102,7 @@ const UpdatePassword = () => {
           </p>
           <Button
             onClick={() => navigate(`/${language}/`, { replace: true })}
-            className="h-14 px-8 text-base font-semibold rounded-xl bg-ukon-navy text-white hover:bg-ukon-navy/90 hover:shadow-lg hover:shadow-ukon-navy/20 transition-all duration-300"
+            className="h-14 px-8 text-base font-semibold rounded-xl bg-brand-ink text-white hover:bg-brand-ink/90 hover:shadow-lg hover:shadow-brand-ink/20 transition-all duration-300"
           >
             Return home
           </Button>
@@ -151,7 +151,7 @@ const UpdatePassword = () => {
                   if (e.key === 'Enter') handleUpdatePassword();
                 }}
                 disabled={loading}
-                className="h-14 pl-12 pr-12 text-base rounded-xl border-border/50 focus:border-ukon-navy/50 focus:ring-2 focus:ring-ukon-navy/10 transition-all duration-200"
+                className="h-14 pl-12 pr-12 text-base rounded-xl border-border/50 focus:border-brand-ink/50 focus:ring-2 focus:ring-brand-ink/10 transition-all duration-200"
               />
               <button
                 type="button"
@@ -186,7 +186,7 @@ const UpdatePassword = () => {
                   if (e.key === 'Enter') handleUpdatePassword();
                 }}
                 disabled={loading}
-                className="h-14 pl-12 pr-5 text-base rounded-xl border-border/50 focus:border-ukon-navy/50 focus:ring-2 focus:ring-ukon-navy/10 transition-all duration-200"
+                className="h-14 pl-12 pr-5 text-base rounded-xl border-border/50 focus:border-brand-ink/50 focus:ring-2 focus:ring-brand-ink/10 transition-all duration-200"
               />
             </div>
           </div>
@@ -194,7 +194,7 @@ const UpdatePassword = () => {
           <Button
             onClick={handleUpdatePassword}
             disabled={loading}
-            className="w-full h-14 text-base font-semibold rounded-xl bg-ukon-navy text-white hover:bg-ukon-navy/90 hover:shadow-lg hover:shadow-ukon-navy/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 text-base font-semibold rounded-xl bg-brand-ink text-white hover:bg-brand-ink/90 hover:shadow-lg hover:shadow-brand-ink/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Updating...' : 'Update password'}
           </Button>

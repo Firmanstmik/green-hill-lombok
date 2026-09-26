@@ -1,10 +1,12 @@
 import { Fragment } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Signature } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 /* Master only — no srcset ladder (rungs looked soft vs the original). */
 import founderPortrait from '@/assets/greenhill/founder/green-hill-reece-green.webp';
+import { useContentImage } from '@/content/hooks';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -14,6 +16,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * Anchored as #about so Hero "Meet Reece" continues to scroll here.
  */
 export function FounderSection() {
+  const portrait = useContentImage('home.founder.portrait', founderPortrait, 'cms.home.founder.portrait.alt');
   const { ref, isInView } = useInView({ threshold: 0.16 });
   const { t } = useLanguage();
   const reduce = useReducedMotion();
@@ -43,11 +46,6 @@ export function FounderSection() {
         <div className="gh-founder__grid">
           <div className="gh-founder__copy">
             <header className="gh-founder__intro">
-              {/*
-                Choreography: the mark starts forming, the eyebrow follows one
-                beat later, the headline keeps its existing timing. Three
-                moments of one composition rather than three animations.
-              */}
               <p className="gh-founder__eyebrow">
                 <BrandCurveMark className="gh-founder__eyebrow-mark" isInView={isInView} />
                 <motion.span {...reveal(0.14, 8)}>{t('founder.eyebrow')}</motion.span>
@@ -79,7 +77,6 @@ export function FounderSection() {
             </div>
 
             <motion.blockquote className="gh-founder__quote" {...reveal(0.52, 14)}>
-              <span className="gh-founder__quote-rule" aria-hidden />
               <p className="gh-founder__quote-text">
                 {quoteLines.map((line, i) => (
                   <Fragment key={i}>
@@ -89,13 +86,19 @@ export function FounderSection() {
                 ))}
               </p>
               <footer className="gh-founder__quote-attr">
+                <Signature
+                  className="gh-founder__quote-icon"
+                  size={15}
+                  strokeWidth={1.5}
+                  aria-hidden
+                />
                 <cite className="gh-founder__quote-name">{t('founder.name')}</cite>
                 <span className="gh-founder__quote-title">{t('founder.roleShort')}</span>
               </footer>
             </motion.blockquote>
           </div>
 
-          <figure className="gh-founder__media">
+          <div className="gh-founder__media">
             {/*
               Editorial passepartout: thin mat + gold hairline. Gallery framing,
               not a marketplace card — no glass, no soft multi-shadow stack.
@@ -108,8 +111,8 @@ export function FounderSection() {
                 transition={{ duration: reduce ? 0.45 : 0.85, delay: reduce ? 0 : 0.16, ease: EASE }}
               >
                 <img
-                  src={founderPortrait}
-                  alt="Reece Green at a villa overlooking the South Lombok coast at golden hour"
+                  src={portrait.src}
+                  alt={portrait.alt || 'Reece Green at a villa overlooking the South Lombok coast at golden hour'}
                   width={1087}
                   height={1447}
                   className="gh-founder__img"
@@ -117,13 +120,13 @@ export function FounderSection() {
                   decoding="async"
                   fetchPriority="high"
                 />
+                <p className="gh-founder__caption">
+                  <span className="gh-founder__caption-name">{t('founder.name')}</span>
+                  <span className="gh-founder__caption-role">{t('founder.role')}</span>
+                </p>
               </motion.div>
             </div>
-            <motion.figcaption className="gh-founder__caption" {...reveal(0.3, 12)}>
-              <span className="gh-founder__caption-name">{t('founder.name')}</span>
-              <span className="gh-founder__caption-role">{t('founder.role')}</span>
-            </motion.figcaption>
-          </figure>
+          </div>
         </div>
       </div>
     </section>

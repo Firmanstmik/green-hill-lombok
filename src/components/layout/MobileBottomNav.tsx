@@ -1,4 +1,5 @@
 import { Home, Map, Leaf, MessageCircle } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 type TabKey = 'home' | 'opportunities' | 'why-lombok' | 'contact';
@@ -15,25 +16,42 @@ interface MobileBottomNavProps {
    * navigations should never be on screen at once.
    */
   hidden?: boolean;
+  /** Only mark Home active on the homepage, not on Private/Archive/etc. */
+  isHome?: boolean;
 }
 
-const tabs: { key: TabKey; label: string; hash?: string; icon: typeof Home }[] = [
+const tabs: {
+  key: TabKey;
+  label: string;
+  hash?: string;
+  path?: string;
+  icon: typeof Home;
+}[] = [
   { key: 'home', label: 'Home', icon: Home },
   { key: 'opportunities', label: 'Explore', hash: 'opportunities', icon: Map },
-  { key: 'why-lombok', label: 'Lombok', hash: 'why-lombok', icon: Leaf },
-  { key: 'contact', label: 'Contact', hash: 'contact', icon: MessageCircle },
+  { key: 'why-lombok', label: 'Lombok', path: '/why-lombok', icon: Leaf },
+  { key: 'contact', label: 'Reece', hash: 'contact', icon: MessageCircle },
 ];
 
 /**
  * Premium mobile app tab bar — Android-style bottom navigation.
  * Desktop: hidden (lg+).
  */
-export function MobileBottomNav({ activeHash, onHome, onNavigate, hidden = false }: MobileBottomNavProps) {
+export function MobileBottomNav({
+  activeHash,
+  onHome,
+  onNavigate,
+  hidden = false,
+  isHome = true,
+}: MobileBottomNavProps) {
   const { language } = useLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (tab: (typeof tabs)[number]) => {
-    if (tab.key === 'home') return !activeHash;
-    return activeHash === tab.hash;
+    if (tab.key === 'home') return isHome && !activeHash;
+    if (tab.path) return location.pathname.includes(tab.path);
+    return isHome && activeHash === tab.hash;
   };
 
   return (
@@ -63,8 +81,15 @@ export function MobileBottomNav({ activeHash, onHome, onNavigate, hidden = false
                 key={tab.key}
                 type="button"
                 onClick={() => {
-                  if (tab.key === 'home') onHome();
-                  else if (tab.hash) onNavigate(tab.hash);
+                  if (tab.key === 'home') {
+                    onHome();
+                    return;
+                  }
+                  if (tab.path) {
+                    navigate(`/${language}${tab.path}`);
+                    return;
+                  }
+                  if (tab.hash) onNavigate(tab.hash);
                 }}
                 className="relative flex flex-col items-center justify-center gap-0.5 transition-colors duration-200 active:scale-[0.96]"
                 aria-current={active ? 'page' : undefined}
@@ -91,7 +116,6 @@ export function MobileBottomNav({ activeHash, onHome, onNavigate, hidden = false
           })}
         </div>
       </div>
-      {/* language prefix unused but kept for future deep links */}
       <span className="sr-only">{language}</span>
     </nav>
   );

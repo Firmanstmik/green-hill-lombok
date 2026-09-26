@@ -1,693 +1,1075 @@
-﻿import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useCurrency } from '@/contexts/CurrencyContext';
-import { motion } from 'framer-motion';
-import { toast } from 'sonner';
-import {
-    Bed,
-    Bath,
-    Square,
-    MapPin,
-    ArrowLeft,
-    Share2,
-    Heart,
-    MessageCircle,
-    ChevronRight,
-    ChevronLeft,
-    ShieldCheck,
-    Calendar,
-    Info,
-    CheckCircle2,
-    Facebook,
-    Twitter,
-    Linkedin,
-    Send,
-    Link as LinkIcon,
-    School,
-    Hospital,
-    ShoppingBag,
-    Bus,
-    Plane,
-    Trees
-} from 'lucide-react';
-import { properties as mockProperties } from '@/data/mockData';
-import ListingContactForm from '@/components/messaging/ListingContactForm';
+﻿import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { Button } from '@/components/ui/button';
-import { PropertyCard } from '@/components/PropertyCard';
-import { Lightbox } from '@/components/ui/Lightbox';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
-import { PropertyMap } from '@/components/map/PropertyMap';
-import NearbyAmenities from '@/components/property/NearbyAmenities';
+import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
+import { GhIconArrow, GhIconViewfinder } from '@/components/brand/GhIcons';
 import { DescriptionRenderer } from '@/components/property/DescriptionRenderer';
+import { OpportunityCard } from '@/components/properties/OpportunityCard';
+import {
+  isPrivateOpportunity,
+  landSizeLabel,
+  opportunityImage,
+  opportunityLensOf,
+  rawStatus,
+  statusTranslationKey,
+} from '@/components/properties/opportunityMeta';
+import { demoOpportunities as mockProperties, type Property } from '@/data/mockData';
+import founderPortrait from '@/assets/greenhill/founder/green-hill-reece-green.webp';
+import privatePhoto from '@/assets/greenhill/green-hill-private.webp';
+import talkBackdrop from '@/assets/greenhill/bg-sec-talk-to-reece.webp';
+import talkPhoto1 from '@/assets/greenhill/sec-talk-to-reece1.webp';
+import talkPhoto2 from '@/assets/greenhill/sec-talk-to-reece2.webp';
+import CardSwap, { Card } from '@/components/ui/CardSwap';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useInView } from '@/hooks/useInView';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { publicOpportunities, publicOpportunityByKey } from '@/lib/publicOpportunities';
+import { useOpportunityPriceDetail } from '@/lib/opportunityPrice';
+import { fetchPrivateTeaser } from '@/lib/privateTeasers';
+import { getPublicWhatsAppUrl } from '@/lib/contact';
+import { useContactSettings, useContentImage } from '@/content/hooks';
+import { trackContact } from '@/lib/analytics';
+import { isPreviewRequest, readOpportunityPreview } from '@/lib/opportunityPreview';
 import { getEmbedUrl } from '@/lib/video-utils';
-import { useSavedListings } from '@/hooks/useSavedListings';
 
-const PropertyDetail = () => {
-    const { id } = useParams();
-    const { t, language } = useLanguage();
-    const { isSaved: isPropertySaved, toggle: toggleSaved } = useSavedListings();
-    const { currency, formatPrice: formatCurrencyPrice } = useCurrency();
-    const [property, setProperty] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    const [isSaved, setIsSaved] = useState(false);
-    const [savedId, setSavedId] = useState<string | null>(null);
-    const [user, setUser] = useState<any>(null);
-    const [saving, setSaving] = useState(false);
-    const [sellerProfile, setSellerProfile] = useState<{
-        agency_name: string | null;
-        profile_image_url: string | null;
-        is_ukon_partner: boolean;
-    } | null>(null);
+const PropertyMap = lazy(() =>
+  import('@/components/map/PropertyMap').then((mod) => ({ default: mod.PropertyMap })),
+);
 
-    useEffect(() => {
-        const fetchProperty = async () => {
-            try {
-                // Green Hill isolation: use local demo data unless a GH database is configured
-                if (!isSupabaseConfigured) {
-                    const mockProperty = mockProperties.find((p) => p.id === id) || mockProperties[0];
-                    setProperty(mockProperty || null);
-                    setLoading(false);
-                    return;
-                }
+const EASE = [0.22, 1, 0.36, 1] as const;
+const MAX_IMAGES = 8;
+const MOSAIC_THUMBS = 4;
 
-                // Try fetching from Supabase first
-                const { data, error } = await supabase
-                    .from('properties')
-                    .select('*')
-                    .eq('id', id)
-                    .single();
+function orderedImages(values: string[], fallback = ''): string[] {
+  const seen = new Set<string>();
+  const list: string[] = [];
+  for (const src of values) {
+    const clean = src.trim();
+    if (!clean || seen.has(clean)) continue;
+    seen.add(clean);
+    list.push(clean);
+    if (list.length === MAX_IMAGES) break;
+  }
+  if (list.length === 0 && fallback.trim()) list.push(fallback.trim());
+  return list;
+}
 
-                if (data) {
-                    const normalized = {
-                        ...data,
-                        image: data.image_url || data.image,
-                        sqft: data.m2 || data.sqft || 0,
-                        priceType: data.price_type || data.priceType,
-                        isUkonAgent: data.is_ukon_agent || data.isUkonAgent,
-                        buildingArea: data.building_area || data.buildingArea,
-                        surfaceArea: data.surface_area || data.surfaceArea,
-                        yearBuilt: data.year_built || data.yearBuilt,
-                        listingCode: data.listing_code || data.listingCode,
-                        description: data.description || data.description,
-                        nearbyAmenities: data.nearby_amenities || data.nearbyAmenities,
-                        images: data.images || [data.image_url || data.image],
-                        video_url: data.video_url
-                    };
-                    setProperty(normalized);
+const TYPE_KEY: Record<string, string> = {
+  land: 'properties.archive.land',
+  villa: 'properties.exampleVilla',
+  development: 'properties.archive.development',
+  private: 'properties.archive.private',
+};
 
-                    // Fetch seller profile for partner badge and agent info
-                    if (data.user_id) {
-                        try {
-                            const { data: sellerData } = await supabase.rpc(
-                                'get_seller_profile_for_property',
-                                { p_user_id: data.user_id }
-                            );
-                            if (sellerData && sellerData.length > 0) {
-                                setSellerProfile(sellerData[0]);
-                            }
-                        } catch (sellerErr) {
-                            console.error('Error fetching seller profile:', sellerErr);
-                        }
-                    }
+type OpportunityRecord = Property & {
+  descriptionJson?: unknown;
+  videoUrl?: string;
+  latitude?: number;
+  longitude?: number;
+  landSize?: number;
+  slug?: string;
+  whyGreenHill?: string;
+  summary?: string;
+  imageAlt?: Record<string, string>;
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  priceAmount?: number;
+  priceCurrency?: string;
+  priceOnRequest?: boolean;
+  roadAccess?: string;
+  utilities?: string;
+  developmentPotential?: string;
+  developerName?: string;
+  brochureUrl?: string;
+  masterplanUrl?: string;
+};
 
-                    // Track view on page load
-                    try {
-                        await supabase.rpc('increment_property_views', { p_property_id: data.id });
-                    } catch (viewError) {
-                        console.error('Error tracking view:', viewError);
-                    }
-                } else {
-                    // Fallback to mock data
-                    const mock = mockProperties.find(p => p.id === id);
-                    if (mock) {
-                        setProperty({
-                            ...mock,
-                            images: mock.images || [mock.image]
-                        });
-                    } else {
-                        setProperty(null);
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching property:', err);
-                const mock = mockProperties.find(p => p.id === id);
-                setProperty(mock || null);
-            } finally {
-                setLoading(false);
-            }
-        };
+type GlanceItem = { label: string; value: string };
+type NearbyLine = { name: string; distance: string };
 
-        fetchProperty();
-    }, [id]);
+function str(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
 
-    // Check if property is saved and get user
-    useEffect(() => {
-        const checkSavedStatus = async () => {
-            try {
-                const { data: { user: authUser } } = await supabase.auth.getUser();
-                setUser(authUser);
+function positive(value: unknown): number | undefined {
+  const n = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+}
 
-                if (authUser && id) {
-                    const { data: savedData } = await supabase
-                        .from('saved_listings')
-                        .select('id')
-                        .eq('property_id', id)
-                        .eq('user_id', authUser.id)
-                        .maybeSingle();
+function coordinate(value: unknown): number | undefined {
+  if (value == null || value === '') return undefined;
+  const n = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(n) ? n : undefined;
+}
 
-                    if (savedData) {
-                        setIsSaved(true);
-                        setSavedId(savedData.id);
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking saved status:', error);
-            }
-        };
+function fill(template: string, vars: Record<string, string>) {
+  return template
+    .replace(/\{(\w+)\}/g, (_, key: string) => vars[key] ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
-        checkSavedStatus();
-    }, [id]);
+function offered(data: Record<string, unknown>, key: 'brochure' | 'masterplan', value: unknown): string | undefined {
+  const url = str(value);
+  if (!/^https?:\/\//.test(url)) return undefined;
+  if (data.private_teaser === true) return url;
+  const disclosure = data.disclosure as Record<string, unknown> | undefined;
+  return disclosure && disclosure[key] === true ? url : undefined;
+}
 
-    const handleShare = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: property?.title,
-                    text: `Check out this property: ${property?.title}`,
-                    url: window.location.href,
-                });
-            } catch (error) {
-                console.error('Error sharing:', error);
-            }
-        } else {
-            navigator.clipboard.writeText(window.location.href);
-            alert('Link copied to clipboard!');
-        }
-    };
+function fromRow(data: Record<string, unknown>): OpportunityRecord {
+  const image = str(data.image_url) || str(data.image);
+  const images = Array.isArray(data.images)
+    ? data.images.map((item) => str(item)).filter(Boolean)
+    : [];
+  const features =
+    data.features && typeof data.features === 'object' && !Array.isArray(data.features)
+      ? Object.fromEntries(
+          Object.entries(data.features as Record<string, unknown>).map(([key, value]) => [
+            key,
+            String(value ?? ''),
+          ]),
+        )
+      : {};
+  const status = str(data.status);
 
-    const handleSave = async () => {
-        if (!user) {
-            toast.error('Sign in to save properties');
+  return {
+    id: str(data.id),
+    title: str(data.title),
+    address: str(data.address),
+    price: positive(data.price) ?? 0,
+    priceType: 'sale',
+    bedrooms: positive(data.bedrooms) ?? 0,
+    bathrooms: positive(data.bathrooms) ?? 0,
+    sqft: positive(data.m2) ?? positive(data.sqft) ?? 0,
+    status: (status || 'sale') as Property['status'],
+    image,
+    images: orderedImages(images, image),
+    featured: Boolean(data.featured),
+    type: str(data.type),
+    listingCode: str(data.listing_code) || str(data.listingCode) || undefined,
+    ownership: str(data.ownership) || undefined,
+    yearBuilt: str(data.year_built) || str(data.yearBuilt) || undefined,
+    surfaceArea: str(data.surface_area) || str(data.surfaceArea) || undefined,
+    buildingArea: str(data.building_area) || str(data.buildingArea) || undefined,
+    description: str(data.description) || undefined,
+    features,
+    nearbyAmenities: Array.isArray(data.nearbyAmenities)
+      ? (data.nearbyAmenities as Property['nearbyAmenities'])
+      : Array.isArray(data.nearby_amenities)
+        ? (data.nearby_amenities as Property['nearbyAmenities'])
+        : undefined,
+    descriptionJson: data.description_json,
+    videoUrl: str(data.video_url) || undefined,
+    latitude: coordinate(data.latitude),
+    longitude: coordinate(data.longitude),
+    landSize: positive(data.land_size),
+    slug: str(data.slug) || undefined,
+    whyGreenHill: str(data.why_green_hill) || undefined,
+    summary: str(data.summary) || undefined,
+    imageAlt:
+      data.image_alt && typeof data.image_alt === 'object' && !Array.isArray(data.image_alt)
+        ? (data.image_alt as Record<string, string>)
+        : undefined,
+    seoTitle: str(data.seo_title) || undefined,
+    seoDescription: str(data.seo_description) || undefined,
+    ogImage: str(data.og_image) || undefined,
+    canonicalUrl: str(data.canonical_url) || undefined,
+    priceAmount: positive(data.price_amount),
+    priceCurrency: str(data.price_currency) || undefined,
+    priceOnRequest: data.price_on_request === true,
+    roadAccess: str(data.road_access) || undefined,
+    utilities: str(data.utilities) || undefined,
+    developmentPotential: str(data.development_potential) || undefined,
+    developerName: str(data.developer_name) || undefined,
+    // Only real public links that Reece chose to offer; private references never render.
+    // (Teaser rows arrive already filtered by the server.)
+    brochureUrl: offered(data, 'brochure', data.brochure_url),
+    masterplanUrl: offered(data, 'masterplan', data.masterplan_url),
+  };
+}
+
+/**
+ * Memo calls to action (brief §6, §11, §21). Standard: Talk to Reece on
+ * WhatsApp (prefilled with the opportunity) and an investor enquiry.
+ * Green Hill Private teaser: Request investment memorandum first.
+ */
+function MemoActions({
+  teaser,
+  whatsapp,
+  talkHref,
+  enquireHref,
+  secondaryHref,
+  secondaryLabel,
+}: {
+  teaser: boolean;
+  whatsapp: (() => void) | null;
+  talkHref: string;
+  enquireHref: string;
+  secondaryHref: string;
+  secondaryLabel: string;
+}) {
+  const { t } = useLanguage();
+  const talk = whatsapp ? (
+    <button type="button" className={`gh-final__cta ${teaser ? 'gh-final__cta--secondary' : 'gh-final__cta--primary'}`} onClick={whatsapp}>
+      <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
+      <GhIconArrow size={teaser ? 14 : 15} />
+    </button>
+  ) : (
+    <a className={`gh-final__cta ${teaser ? 'gh-final__cta--secondary' : 'gh-final__cta--primary'}`} href={talkHref}>
+      <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
+      <GhIconArrow size={teaser ? 14 : 15} />
+    </a>
+  );
+  const enquire = (
+    <Link className={`gh-final__cta ${teaser ? 'gh-final__cta--primary' : 'gh-final__cta--secondary'}`} to={enquireHref}>
+      <span className="gh-final__cta-label">
+        {t(teaser ? 'properties.memo.requestMemorandum' : 'properties.memo.sendEnquiry')}
+      </span>
+      <GhIconArrow size={teaser ? 15 : 14} />
+    </Link>
+  );
+  return (
+    <>
+      {teaser ? enquire : talk}
+      {teaser ? talk : enquire}
+      {secondaryHref.startsWith('/') ? (
+        <Link className="gh-final__cta gh-final__cta--secondary" to={secondaryHref}>
+          <span className="gh-final__cta-label">{secondaryLabel}</span>
+          <GhIconArrow size={14} />
+        </Link>
+      ) : null}
+    </>
+  );
+}
+
+function fromMock(property: Property): OpportunityRecord {
+  return {
+    ...property,
+    images: orderedImages(property.images || [], property.image),
+  };
+}
+
+function sizeLabel(property: OpportunityRecord): string | null {
+  const label = landSizeLabel(property);
+  const m2 = property.landSize ?? (label ? Number(label.replace(/[^\d.]/g, '')) || null : null);
+  // Large sites read in hectares first so their scale is clear (brief §19).
+  if (m2 && m2 >= 10000) {
+    const ha = (m2 / 10000).toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return `${ha} ha · ${Math.round(m2).toLocaleString('en-US')} m²`;
+  }
+  if (label) return label;
+  if (property.landSize) return `${property.landSize.toLocaleString('en-US')} m²`;
+  return null;
+}
+
+function placeLine(address: string): string {
+  return address
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join(', ');
+}
+
+function nearbyLines(property: OpportunityRecord): NearbyLine[] {
+  const raw = property.nearbyAmenities;
+  if (!Array.isArray(raw)) return [];
+  return raw.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const record = item as { name?: string; distance?: string; distance_meters?: number };
+    const name = str(record.name);
+    if (!name) return [];
+    const distance =
+      str(record.distance) ||
+      (typeof record.distance_meters === 'number' ? `${record.distance_meters} m` : '');
+    return [{ name, distance }];
+  });
+}
+
+function coordinates(property: OpportunityRecord): { lat: number; lng: number } | null {
+  const lat = property.latitude;
+  const lng = property.longitude;
+  if (lat == null || lng == null) return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  if (lat === 0 && lng === 0) return null;
+  return { lat, lng };
+}
+
+function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
+  let el = document.head.querySelector(`meta[${attr}="${key}"][data-gh-memo]`);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, key);
+    el.setAttribute('data-gh-memo', '');
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+
+function Shell({ children }: { children: ReactNode }) {
+  return (
+    <div className="gh-memo min-h-screen">
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  );
+}
+
+function Reveal({
+  children,
+  className,
+  labelledBy,
+}: {
+  children: ReactNode;
+  className?: string;
+  labelledBy?: string;
+}) {
+  const { ref, isInView } = useInView({ threshold: 0.18 });
+  const reduce = useReducedMotion();
+  return (
+    <section className={className} aria-labelledby={labelledBy}>
+      <motion.div
+        ref={ref}
+        initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+        animate={isInView ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: reduce ? 0 : 0.7, ease: EASE }}
+      >
+        {children}
+      </motion.div>
+    </section>
+  );
+}
+
+/** `teaser`: a Green Hill Private teaser page (brief §17), fed only with what Reece disclosed. */
+const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
+  const { id } = useParams();
+  const { search } = useLocation();
+  const preview = isPreviewRequest(search);
+  const { t, language } = useLanguage();
+  const reduce = useReducedMotion();
+  const close = useInView({ threshold: 0.25 });
+  const portrait = useContentImage('site.reece.portrait', founderPortrait);
+  const contact = useContactSettings();
+  const [property, setProperty] = useState<OpportunityRecord | null>(null);
+  const [others, setOthers] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [photoIndex, setPhotoIndex] = useState<number | null>(null);
+  const swipeStart = useRef<number | null>(null);
+  const imagesRef = useRef<string[]>([]);
+
+  useEffect(() => {
+    let active = true;
+
+    const pickOthers = (list: Property[], currentId: string | undefined) =>
+      list.filter((item) => item.id !== currentId).slice(0, 3);
+
+    const load = async () => {
+      setLoading(true);
+      setProperty(null);
+      setOthers([]);
+      setPhotoIndex(null);
+
+      try {
+        if (preview && id) {
+          const draft = readOpportunityPreview(id);
+          if (draft) {
+            if (active) setProperty(fromRow(draft));
             return;
+          }
         }
 
-        setSaving(true);
-        try {
-            if (isSaved && savedId) {
-                // Delete saved listing
-                await supabase
-                    .from('saved_listings')
-                    .delete()
-                    .eq('id', savedId);
-                setIsSaved(false);
-                setSavedId(null);
-                toast.success('Property removed from saved');
-            } else {
-                // Insert new saved listing
-                const { data, error } = await supabase
-                    .from('saved_listings')
-                    .insert({ property_id: id, user_id: user.id })
-                    .select('id')
-                    .single();
-
-                if (error) throw error;
-                setIsSaved(true);
-                setSavedId(data?.id ?? null);
-                toast.success('Property saved');
-            }
-        } catch (error) {
-            console.error('Error saving property:', error);
-            toast.error('Failed to save property');
-        } finally {
-            setSaving(false);
+        if (teaser) {
+          const row = await fetchPrivateTeaser(id ?? '');
+          if (active) {
+            setProperty(row ? fromRow(row) : null);
+            setOthers([]);
+          }
+          return;
         }
+
+        if (!isSupabaseConfigured) {
+          const mock = mockProperties.find((item) => item.id === id);
+          if (active) {
+            setProperty(mock ? fromMock(mock) : null);
+            setOthers(pickOthers(mockProperties, id));
+          }
+          return;
+        }
+
+        const { data, error } = await publicOpportunityByKey(id ?? '').maybeSingle();
+        if (!active) return;
+
+        if (data && !error) {
+          const record = fromRow(data as Record<string, unknown>);
+          setProperty(record);
+          const { data: siblings } = await publicOpportunities()
+            .neq('id', record.id)
+            .limit(3);
+          if (!active) return;
+          setOthers((siblings ?? []).map((row) => fromRow(row as Record<string, unknown>)));
+          return;
+        }
+
+        setProperty(null);
+        setOthers([]);
+      } catch (err) {
+        console.error('Error fetching property:', err);
+        if (!active) return;
+        setProperty(null);
+        setOthers([]);
+      } finally {
+        if (active) setLoading(false);
+      }
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center">
-                <div className="w-12 h-12 border-4 border-[#0e2e50] border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
+    load();
+    return () => {
+      active = false;
+    };
+  }, [id, preview, teaser]);
+
+  useEffect(() => {
+    if (photoIndex == null) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPhotoIndex(null);
+      const total = imagesRef.current.length;
+      if (!total) return;
+      if (event.key === 'ArrowRight') {
+        setPhotoIndex((current) => (current == null ? current : (current + 1) % total));
+      }
+      if (event.key === 'ArrowLeft') {
+        setPhotoIndex((current) => (current == null ? current : (current - 1 + total) % total));
+      }
+    };
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [photoIndex]);
+
+  useEffect(() => {
+    const previousTitle = document.title;
+    if (loading) return;
+
+    const title = property
+      ? property.seoTitle || `${property.title} · Green Hill Lombok`
+      : `${t('properties.notFound')} · Green Hill Lombok`;
+    const description = property
+      ? property.seoDescription ||
+        property.summary ||
+        property.description?.trim() ||
+        (sizeLabel(property) && placeLine(property.address)
+          ? fill(
+              t(
+                opportunityLensOf(property) === 'land'
+                  ? 'properties.memo.factualLand'
+                  : 'properties.memo.factualTyped',
+              ),
+              { size: sizeLabel(property) || '', place: placeLine(property.address) },
+            )
+          : property.title)
+      : t('properties.memo.notFoundLead');
+    const image = property ? property.ogImage || opportunityImage(property) : '';
+    const imageUrl = image ? new URL(image, window.location.origin).href : '';
+    const canonical =
+      property?.canonicalUrl ||
+      (teaser
+        ? `${window.location.origin}/${language}/private/${property?.listingCode || id || ''}`
+        : `${window.location.origin}/${language}/property/${property?.slug || id || ''}`);
+
+    document.title = title;
+    upsertMeta('name', 'description', description);
+    upsertMeta('property', 'og:title', title);
+    upsertMeta('property', 'og:description', description);
+    upsertMeta('property', 'og:type', 'article');
+    if (imageUrl) upsertMeta('property', 'og:image', imageUrl);
+    upsertMeta('property', 'og:url', canonical);
+
+    let link = document.head.querySelector('link[rel="canonical"][data-gh-memo]');
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      link.setAttribute('data-gh-memo', '');
+      document.head.appendChild(link);
     }
+    link.setAttribute('href', canonical);
+    if (preview) upsertMeta('name', 'robots', 'noindex, nofollow');
 
-    if (!property) {
-        return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-                <h1 className="text-2xl font-bold mb-4 text-[#0e2e50]">{t('properties.notFound')}</h1>
-                <Link to={`/${language}/properties`}>
-                    <Button variant="default" className="bg-ukon-red hover:bg-ukon-red/90 rounded-full h-12 px-8">
-                        {t('properties.backToProperties')}
-                    </Button>
-                </Link>
-            </div>
-        );
-    }
+    return () => {
+      document.title = previousTitle;
+      document.head.querySelectorAll('[data-gh-memo]').forEach((node) => node.remove());
+    };
+  }, [property, loading, language, id, t, preview, teaser]);
 
-    const similarProperties = mockProperties
-        .filter((p) => p.id !== property.id && (p.status === property.status || p.status === (property as any).price_type))
-        .slice(0, 3);
+  const priceDetail = useOpportunityPriceDetail(property ?? {});
+  const priceLabel = priceDetail?.display ?? null;
+  const whatsappUrl = getPublicWhatsAppUrl();
+  const archiveHref = `/${language}/properties`;
+  const talkHref = `/${language}/#contact`;
+  const privateHref = `/${language}/private`;
 
+  if (loading) {
     return (
-        <div className="min-h-screen bg-background">
-            <Navbar />
-
-            <main className="pt-20 pb-16">
-                {/* Subtle Header Sectioning */}
-                <div className="bg-[#0e2e50]/[0.015] border-b border-[#0e2e50]/[0.05] mb-12">
-                    <div className="container mx-auto px-4 py-10">
-
-                        {/* Header: Title, Location & Actions */}
-                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <div className="flex items-center gap-2 text-sm text-[#0e2e50] font-bold uppercase tracking-wider mb-2">
-                                    <MapPin size={14} />
-                                    <span>{property.address.split(',')[1]?.trim() || property.address}</span>
-                                </div>
-                                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-                                    {property.title}
-                                </h1>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            className="rounded-full gap-2 border-border hover:bg-secondary px-6 h-11 bg-white shadow-sm"
-                                        >
-                                            <Share2 size={18} />
-                                            <span>{t('propertyDetail.share')}</span>
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-64 p-3 rounded-2xl border-border shadow-2xl bg-card" align="end">
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {[
-                                                {
-                                                    icon: <MessageCircle size={20} />,
-                                                    label: 'WhatsApp',
-                                                    color: 'bg-[#25D366]',
-                                                    link: `https://wa.me/?text=${encodeURIComponent(`Check out this property: ${property.title} - ${window.location.href}`)}`
-                                                },
-                                                {
-                                                    icon: <Facebook size={20} />,
-                                                    label: 'Facebook',
-                                                    color: 'bg-[#1877F2]',
-                                                    link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`
-                                                },
-                                                {
-                                                    icon: <Twitter size={20} />,
-                                                    label: 'X',
-                                                    color: 'bg-[#000000]',
-                                                    link: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this property: ${property.title}`)}&url=${encodeURIComponent(window.location.href)}`
-                                                },
-                                                {
-                                                    icon: <Linkedin size={20} />,
-                                                    label: 'LinkedIn',
-                                                    color: 'bg-[#0A66C2]',
-                                                    link: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`
-                                                }
-                                            ].map((social) => (
-                                                <a
-                                                    key={social.label}
-                                                    href={social.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-secondary transition-colors group"
-                                                >
-                                                    <div className={`w-10 h-10 ${social.color} text-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform`}>
-                                                        {social.icon}
-                                                    </div>
-                                                    <span className="text-[10px] font-medium text-muted-foreground">{social.label}</span>
-                                                </a>
-                                            ))}
-                                        </div>
-                                        <div className="mt-3 pt-3 border-t border-border">
-                                            <button
-                                                onClick={handleShare}
-                                                className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary transition-colors text-sm font-medium"
-                                            >
-                                                <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                                                    <LinkIcon size={16} />
-                                                </div>
-                                                Copy Link
-                                            </button>
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                                <Button
-                                    variant="outline"
-                                    className={`rounded-full gap-2 border-border hover:bg-secondary px-6 h-11 bg-white shadow-sm transition-all duration-300 ${isSaved ? 'text-ukon-red border-ukon-red bg-ukon-red/5' : ''
-                                        }`}
-                                    onClick={handleSave}
-                                    disabled={saving}
-                                >
-                                    <Heart size={18} className={isSaved ? 'fill-current' : ''} />
-                                    <span>{saving ? 'Saving...' : (isSaved ? 'Saved' : 'Save')}</span>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="container mx-auto px-4">
-                    {/* Gallery Section */}
-
-                    {/* Premium Image Gallery (Airbnb Style) */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-3xl overflow-hidden mb-12 aspect-[16/9] md:aspect-[21/9]">
-                        {/* Big Picture */}
-                        <div
-                            className="md:col-span-2 md:row-span-2 relative group overflow-hidden cursor-pointer"
-                            onClick={() => {
-                                setSelectedImageIndex(0);
-                                setIsLightboxOpen(true);
-                            }}
-                        >
-                            <img
-                                src={property.images[0] || property.image}
-                                alt={property.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-                        </div>
-                        {/* 4 Smaller Pictures */}
-                        {property.images.slice(1, 5).map((img, idx) => (
-                            <div
-                                key={idx}
-                                className="relative group hidden md:block overflow-hidden cursor-pointer"
-                                onClick={() => {
-                                    setSelectedImageIndex(idx + 1);
-                                    setIsLightboxOpen(true);
-                                }}
-                            >
-                                <img
-                                    src={img}
-                                    alt={`${property.title} ${idx + 2}`}
-                                    loading="lazy"
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-                                {idx === 3 && property.images.length > 5 && (
-                                    <div
-                                        className="absolute inset-0 flex items-center justify-center bg-black/40 text-white font-bold hover:bg-black/50 transition-colors"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedImageIndex(5);
-                                            setIsLightboxOpen(true);
-                                        }}
-                                    >
-                                        {t('propertyDetail.showAllPhotos')} ({property.images.length})
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-
-                    <Lightbox
-                        images={property.images}
-                        initialIndex={selectedImageIndex}
-                        isOpen={isLightboxOpen}
-                        onClose={() => setIsLightboxOpen(false)}
-                    />
-
-                    <div className="flex flex-col lg:flex-row gap-12">
-                        {/* Left Column: Information */}
-                        <div className="lg:w-2/3 space-y-12">
-                            {/* Description */}
-                            <section>
-                                <h3 className="text-2xl font-bold mb-6">{t('propertyDetail.description')}</h3>
-                                {property.description_json ? (
-                                    <DescriptionRenderer json={property.description_json} />
-                                ) : property.description ? (
-                                    <div className="max-w-[680px] text-lg leading-[1.75] text-muted-foreground">
-                                        <p>{property.description}</p>
-                                    </div>
-                                ) : (
-                                    <div className="max-w-[680px] text-lg leading-[1.75] text-muted-foreground">
-                                        <p>
-                                            Experience the pinnacle of luxury living in this exquisite {property.title.toLowerCase()}.
-                                            Nestled in a prime location, this property offers a rare
-                                            combination of modern design, unmatched comfort, and strategic location.
-                                        </p>
-                                        <p className="mt-4">
-                                            The interior boasts high ceilings, floor-to-ceiling windows that flood the rooms with natural light,
-                                            and premium finishes throughout. Whether you're looking for a permanent residence or an
-                                            investment opportunity, this property delivers on every front.
-                                        </p>
-                                    </div>
-                                )}
-                            </section>
-
-                            {/* Video Tour */}
-                            {property.video_url && getEmbedUrl(property.video_url) && (
-                                <section>
-                                    <h3 className="text-2xl font-bold mb-6">Video Tour</h3>
-                                    <div className="rounded-2xl overflow-hidden border border-border/50 aspect-video">
-                                        <iframe
-                                            src={getEmbedUrl(property.video_url)!}
-                                            className="w-full h-full"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            title="Property Video Tour"
-                                        />
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Property Details & Amenities */}
-                            <section>
-                                <h3 className="text-2xl font-bold mb-8">{t('propertyDetail.homeInfoAmenities')}</h3>
-                                <div className="space-y-10">
-                                    {/* Features Grid */}
-                                    <div className="space-y-4">
-                                        <h4 className="text-lg font-bold text-[#0e2e50] flex items-center gap-2">
-                                            <div className="w-1 h-6 bg-[#0e2e50] rounded-full" />
-                                            Property Details
-                                        </h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-border rounded-2xl overflow-hidden">
-                                            {Object.entries(property.features || {}).map(([key, value], idx) => (
-                                                <div
-                                                    key={key}
-                                                    className={`flex justify-between items-center p-4 ${idx % 2 === 0 ? 'bg-secondary/20' : ''} border-b border-border md:border-b-0`}
-                                                >
-                                                    <span className="text-muted-foreground font-medium">{key}</span>
-                                                    <span className="font-bold text-foreground">{value as any}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Nearby Amenities */}
-                                    {(property.nearbyAmenities || property.nearby_amenities) && (
-                                        <div className="space-y-4">
-                                            <h4 className="text-lg font-bold text-[#0e2e50] flex items-center gap-2">
-                                                <div className="w-1 h-6 bg-[#0e2e50] rounded-full" />
-                                                {t('propertyDetail.nearbyPointsOfInterest')}
-                                            </h4>
-                                            <NearbyAmenities
-                                                amenities={property.nearbyAmenities || property.nearby_amenities}
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* Empty state when no amenities */}
-                                    {!(property.nearbyAmenities || property.nearby_amenities) && (
-                                        <div className="space-y-4">
-                                            <h4 className="text-lg font-bold text-[#0e2e50] flex items-center gap-2">
-                                                <div className="w-1 h-6 bg-[#0e2e50] rounded-full" />
-                                                {t('propertyDetail.nearbyPointsOfInterest')}
-                                            </h4>
-                                            <NearbyAmenities
-                                                amenities={undefined}
-                                                showEmpty={true}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            </section>
-
-                            {/* Location (Mapbox Interactive Map) */}
-                            <section>
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-2xl font-bold">{t('propertyDetail.location')}</h3>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="rounded-full gap-2 text-[#0e2e50] border-[#0e2e50] hover:bg-[#0e2e50]/5"
-                                        onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.address)}`, '_blank')}
-                                    >
-                                        <MapPin size={16} />
-                                        {t('propertyDetail.openInGoogleMaps')}
-                                    </Button>
-                                </div>
-                                {property.latitude && property.longitude ? (
-                                    <PropertyMap
-                                        latitude={property.latitude}
-                                        longitude={property.longitude}
-                                        address={property.address}
-                                        title={property.title}
-                                        height="aspect-video"
-                                    />
-                                ) : (
-                                    <div className="w-full aspect-video rounded-3xl bg-muted flex items-center justify-center border border-border">
-                                        <div className="text-center text-muted-foreground">
-                                            <MapPin size={32} className="mx-auto mb-2" />
-                                            <p className="font-medium">{t('propertyDetail.locationCoordinatesNotAvailable')}</p>
-                                        </div>
-                                    </div>
-                                )}
-                            </section>
-                        </div>
-
-                        {/* Right Column: Sticky Overview & Contact */}
-                        <div className="lg:w-1/3 relative">
-                            <div className="sticky top-28 space-y-6">
-                                {/* Verified Partner Badge */}
-                                {sellerProfile?.is_ukon_partner && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="relative overflow-hidden rounded-3xl p-5 flex items-center gap-4 bg-gradient-to-br from-[#0e2e50] to-[#1a4a7a] text-white shadow-xl shadow-[#0e2e50]/20"
-                                    >
-                                        <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/5 rounded-full blur-2xl" />
-
-                                        <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 overflow-hidden bg-white">
-                                            <span className="text-[10px] font-serif text-center leading-tight text-[#0e2e50]">Green<br />Hill</span>
-                                        </div>
-                                        <div className="relative z-10 flex-1">
-                                            <h5 className="font-black text-sm uppercase tracking-wider mb-0.5 leading-none">
-                                                {t('propertyDetail.verifiedPartner')}
-                                            </h5>
-                                            <p className="text-xs text-white/80">
-                                                {t('propertyDetail.verifiedPartnerDesc')}
-                                            </p>
-                                        </div>
-
-                                        <motion.div
-                                            animate={{
-                                                y: [0, -4, 0],
-                                                scale: [1, 1.1, 1],
-                                                rotateY: [0, 15, 0]
-                                            }}
-                                            transition={{
-                                                duration: 3,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
-                                            }}
-                                            className="ml-auto w-8 h-8 flex items-center justify-center bg-[#22c55e] rounded-full shadow-lg shadow-green-500/30 border-2 border-white/20"
-                                            style={{ perspective: '1000px' }}
-                                        >
-                                            <CheckCircle2 className="text-white" size={18} />
-                                        </motion.div>
-                                    </motion.div>
-                                )}
-
-                                {/* Overview Card */}
-                                <div className="bg-card border border-border rounded-3xl p-8 shadow-sm overflow-hidden relative">
-                                    {/* Branding Accent */}
-                                    <div className="absolute top-0 left-0 w-2 h-full bg-[#0e2e50]" />
-
-                                    <div className="mb-8 p-4 bg-secondary/30 rounded-2xl">
-                                        <p className="text-muted-foreground text-sm mb-1">{t('propertyDetail.pricingStartingFrom')}</p>
-                                        <h2 className="text-4xl font-black text-[#0e2e50]">
-                                            {formatCurrencyPrice(property.price, currency, language)}
-                                            {property.priceType === 'rent' && <span className="text-lg font-normal text-muted-foreground">{t('propertyDetail.perMonth')}</span>}
-                                        </h2>
-                                    </div>
-
-                                    <div className="space-y-6">
-                                        <h4 className="text-lg font-bold border-b border-border pb-2">{t('propertyDetail.overview')}</h4>
-                                        <div className="space-y-4">
-                                            {[
-                                                { labelKey: 'propertyDetail.propertyCode', value: property.listing_code || property.listingCode },
-                                                { labelKey: 'propertyDetail.bedrooms', value: property.bedrooms },
-                                                { labelKey: 'propertyDetail.bathrooms', value: property.bathrooms },
-                                                { labelKey: 'propertyDetail.buildingArea', value: property.m2 ? `${property.m2} m²` : null },
-                                                { labelKey: 'propertyDetail.landSize', value: property.land_size ? `${property.land_size} m²` : null },
-                                                { labelKey: 'propertyDetail.yearBuilt', value: property.year_built || property.yearBuilt },
-                                                { labelKey: 'propertyDetail.ownership', value: property.ownership },
-                                                { labelKey: 'propertyDetail.furnishing', value: ({ 'unfurnished': 'Unfurnished', 'semi-furnished': 'Semi-Furnished', 'fully-furnished': 'Fully Furnished' } as Record<string, string>)[property.furnishing] || property.furnishing },
-                                                { labelKey: 'propertyDetail.parking', value: ({ 'private': 'Private Garage', 'carport': 'Carport', 'shared': 'Shared', 'street': 'Street' } as Record<string, string>)[property.parking_type] || property.parking_type },
-                                            ].map((item) => (
-                                                <div key={item.labelKey} className="flex justify-between text-sm">
-                                                    <span className="text-muted-foreground">{t(item.labelKey)}</span>
-                                                    <span className="font-bold text-foreground">{item.value || 'N/A'}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div className="pt-6 border-t border-border">
-                                            <h4 className="text-lg font-bold mb-4">{t('propertyDetail.contactAgent')}</h4>
-                                            <div className="flex items-center gap-4 mb-6">
-                                                <div className="w-14 h-14 rounded-full bg-secondary overflow-hidden shrink-0 border-2 border-[#0e2e50]/20 p-0.5">
-                                                    {sellerProfile?.profile_image_url ? (
-                                                        <img
-                                                            src={sellerProfile.profile_image_url}
-                                                            alt="Agent"
-                                                            className="w-full h-full object-cover rounded-full"
-                                                        />
-                                                    ) : (
-                                                        <span className="w-full h-full flex items-center justify-center text-[10px] font-serif text-center leading-tight text-[#0e2e50]">GH</span>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <p className="font-bold text-foreground">
-                                                        {sellerProfile?.agency_name || 'Green Hill'}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <ListingContactForm
-                                                listingId={property.id}
-                                                sellerId={property.user_id}
-                                                listingTitle={property.title}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Similar Properties */}
-                    <section className="mt-24 border-t border-border pt-16">
-                        <div className="flex items-center justify-between mb-12">
-                            <div>
-                                <h3 className="text-3xl font-bold mb-2">{t('propertyDetail.similarProperties')}</h3>
-                                <p className="text-muted-foreground">{t('propertyDetail.discoverOtherProperties')}</p>
-                            </div>
-                            <Link to={`/${language}/properties`} className="text-ukon-red font-bold flex items-center gap-1 group">
-                                {t('propertyDetail.seeMore')} <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {similarProperties.map((p, index) => (
-                                <PropertyCard
-                                    key={p.id}
-                                    property={p}
-                                    index={index}
-                                    isSaved={isPropertySaved(p.id)}
-                                    onToggleSave={() => toggleSaved(p.id)}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                </div>
-            </main>
-
-            <Footer />
-        </div>
+      <Shell>
+        <main className="gh-memo-state" aria-busy="true">
+          <p>{t('properties.memo.loading')}</p>
+        </main>
+      </Shell>
     );
+  }
+
+  if (!property) {
+    return (
+      <Shell>
+        <main className="gh-memo-state">
+          <h1>{t('properties.notFound')}</h1>
+          <p>{t('properties.memo.notFoundLead')}</p>
+          <Link className="gh-final__cta gh-final__cta--primary" to={archiveHref}>
+            <span className="gh-final__cta-label">{t('properties.memo.exploreAll')}</span>
+            <GhIconArrow size={15} />
+          </Link>
+        </main>
+      </Shell>
+    );
+  }
+
+  const discreet = teaser || isPrivateOpportunity(property);
+  const reference = property.listingCode;
+  // Brief §11: prepopulate WhatsApp with the opportunity so the lead's source is clear.
+  const whatsappMessage = fill(t('properties.memo.whatsappMessage'), {
+    title: property.title,
+    reference: reference ? `(${reference})` : '',
+  });
+  const openWhatsApp = () => {
+    if (!whatsappUrl) return;
+    trackContact({ channel: 'whatsapp', opportunity: reference || property.title, teaser: teaser ? 'yes' : 'no' });
+    const text = encodeURIComponent(`${whatsappMessage}\n${window.location.origin}${window.location.pathname}`);
+    window.open(`${whatsappUrl}?text=${text}`, '_blank', 'noopener,noreferrer');
+  };
+  const enquireHref = teaser
+    ? `/${language}/enquire?private=${encodeURIComponent(reference || property.id)}`
+    : `/${language}/enquire?opportunity=${encodeURIComponent(property.slug || property.id)}`;
+  const documents = [
+    property.brochureUrl ? { label: t('properties.memo.brochure'), url: property.brochureUrl } : null,
+    property.masterplanUrl ? { label: t('properties.memo.masterplan'), url: property.masterplanUrl } : null,
+  ].filter((item): item is { label: string; url: string } => Boolean(item));
+  const lens = opportunityLensOf(property);
+  const typeKey = TYPE_KEY[lens];
+  const typeLabel = typeKey ? t(typeKey) : property.type;
+  const statusKey = statusTranslationKey(property);
+  const status = statusKey ? t(statusKey) : rawStatus(property);
+  const size = sizeLabel(property);
+  const place = placeLine(property.address);
+  const price = priceLabel ?? t('selected.priceOnRequest');
+  const altFor = (src: string, fallback: string) => property.imageAlt?.[src]?.trim() || fallback;
+  const images = orderedImages(property.images || [], opportunityImage(property));
+  imagesRef.current = images;
+  const heroImage = images[0] || '';
+  const showMoreOverlay = images.length > MOSAIC_THUMBS + 1;
+  const mosaicThumbs = showMoreOverlay
+    ? images.slice(1, MOSAIC_THUMBS + 1)
+    : images.slice(1);
+  const showBedrooms = lens === 'villa' && property.bedrooms > 0;
+  const showBathrooms = lens === 'villa' && property.bathrooms > 0;
+  const building =
+    property.buildingArea && property.buildingArea !== size ? property.buildingArea : '';
+  const written = property.description?.trim() || '';
+  const factual =
+    !written && !property.descriptionJson
+      ? size && place
+        ? fill(t(lens === 'land' ? 'properties.memo.factualLand' : 'properties.memo.factualTyped'), {
+            size,
+            place,
+          })
+        : place
+          ? fill(t('properties.memo.factualPlace'), { place })
+          : ''
+      : '';
+  const video = property.videoUrl ? getEmbedUrl(property.videoUrl) : null;
+  const nearby = nearbyLines(property);
+  const point = coordinates(property);
+  const mapReady = Boolean(point && import.meta.env.VITE_MAPBOX_ACCESS_TOKEN);
+  const meta = [
+    typeLabel,
+    size,
+    showBedrooms ? `${property.bedrooms} ${t('properties.archive.bedroomsWord')}` : '',
+    status,
+  ].filter((item): item is string => Boolean(item));
+
+  const overview: GlanceItem[] = [
+    place ? { label: t('properties.memo.location'), value: place } : null,
+    size ? { label: t('properties.memo.landSize'), value: size } : null,
+    typeLabel ? { label: t('properties.memo.type'), value: typeLabel } : null,
+    status ? { label: t('properties.memo.status'), value: status } : null,
+    showBedrooms
+      ? { label: t('properties.memo.bedrooms'), value: String(property.bedrooms) }
+      : null,
+    showBathrooms
+      ? { label: t('properties.memo.bathrooms'), value: String(property.bathrooms) }
+      : null,
+    building ? { label: t('properties.memo.building'), value: building } : null,
+    property.listingCode
+      ? { label: t('properties.memo.reference'), value: property.listingCode }
+      : null,
+    property.yearBuilt ? { label: t('properties.memo.year'), value: property.yearBuilt } : null,
+    property.ownership
+      ? { label: t('properties.memo.ownership'), value: property.ownership }
+      : null,
+    property.roadAccess ? { label: t('properties.memo.roadAccess'), value: property.roadAccess } : null,
+    property.utilities ? { label: t('properties.memo.utilities'), value: property.utilities } : null,
+    property.developerName ? { label: t('properties.memo.developer'), value: property.developerName } : null,
+    ...Object.entries(property.features || {}).flatMap(([key, value]) => {
+      const normalized = key.toLowerCase();
+      if (normalized === 'type' || normalized === 'status' || normalized === 'private') return [];
+      const text = String(value ?? '').trim();
+      if (!text) return [];
+      return [{ label: key, value: text }];
+    }),
+  ].filter((item): item is GlanceItem => Boolean(item));
+
+  const openPhoto = (index: number) => setPhotoIndex(index);
+  const shiftPhoto = (delta: number) => {
+    setPhotoIndex((current) => {
+      if (current == null || images.length === 0) return current;
+      return (current + delta + images.length) % images.length;
+    });
+  };
+
+  const mosaicCount = Math.min(images.length, 1 + mosaicThumbs.length);
+  const viewAllLabel = fill(t('properties.memo.viewAllPhotos'), {
+    count: String(images.length).padStart(2, '0'),
+  });
+
+  return (
+    <Shell>
+      <main>
+        <header className="gh-memo-head">
+          <div className="gh-memo-head__copy">
+            <p className="gh-memo-kicker">
+              <BrandCurveMark className="gh-memo-kicker__mark" isInView />
+              <motion.span
+                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.12, ease: EASE }}
+              >
+                {discreet ? t('properties.memo.privateOpportunity') : t('properties.memo.selected')}
+              </motion.span>
+            </p>
+            <div className="gh-memo-head__place">
+              {place ? <p className="gh-memo-where">{place}</p> : null}
+              {property.listingCode ? (
+                <p className="gh-memo-code">{property.listingCode}</p>
+              ) : null}
+            </div>
+            <motion.h1
+              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 0.18, ease: EASE }}
+            >
+              {property.title}
+            </motion.h1>
+            {meta.length > 0 ? (
+              <ul className="gh-memo-meta">
+                {meta.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+          <Link className="gh-memo-back" to={archiveHref}>
+            {t('properties.memo.exploreAll')}
+            <GhIconArrow size={14} />
+          </Link>
+        </header>
+
+        {heroImage ? (
+          <div
+            className="gh-memo-mosaic"
+            data-count={mosaicCount}
+            data-more={showMoreOverlay ? 'true' : 'false'}
+          >
+            <button
+              type="button"
+              className="gh-memo-mosaic__lead"
+              onClick={() => openPhoto(0)}
+              aria-label={`${t('properties.memo.viewPhoto')}: ${property.title}`}
+            >
+              <motion.img
+                src={heroImage}
+                alt={altFor(heroImage, property.title)}
+                width={1600}
+                height={1200}
+                fetchPriority="high"
+                loading="eager"
+                initial={reduce ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.01 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: reduce ? 0 : 1.05, ease: EASE }}
+              />
+              <span className="gh-memo-mosaic__full" aria-hidden="true">
+                <GhIconViewfinder size={16} />
+                <span>{t('properties.memo.fullView')}</span>
+              </span>
+            </button>
+            {mosaicThumbs.length > 0 ? (
+              <div className="gh-memo-mosaic__grid">
+                {mosaicThumbs.map((src, thumbIndex) => {
+                  const imageIndex = thumbIndex + 1;
+                  const isLast = showMoreOverlay && thumbIndex === mosaicThumbs.length - 1;
+                  return (
+                    <button
+                      key={`${src}-${imageIndex}`}
+                      type="button"
+                      className="gh-memo-mosaic__shot"
+                      onClick={() => openPhoto(imageIndex)}
+                      aria-label={
+                        isLast
+                          ? viewAllLabel
+                          : `${t('properties.memo.viewPhoto')} ${String(imageIndex + 1).padStart(2, '0')}`
+                      }
+                    >
+                      <img
+                        src={src}
+                        alt={altFor(src, `${property.title}, ${String(imageIndex + 1).padStart(2, '0')}`)}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      {isLast ? (
+                        <span className="gh-memo-mosaic__more">
+                          <span>{viewAllLabel}</span>
+                        </span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="gh-memo-body">
+          <div className="gh-memo-body__main">
+            <Reveal className="gh-memo-block" labelledBy="gh-memo-opportunity">
+              <p className="gh-memo-chapter">
+                <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                <span>{t('properties.memo.theOpportunity')}</span>
+              </p>
+              <h2 id="gh-memo-opportunity" className="gh-memo-block__title">
+                {t('properties.memo.opportunityTitle')}
+              </h2>
+              <p className="gh-memo-note">
+                <BrandCurveMark className="gh-memo-note__mark" isInView />
+                <span>{t('hero.subheadline')}</span>
+              </p>
+              {written ? <p className="gh-memo-copy">{written}</p> : null}
+              {!written && property.descriptionJson ? (
+                <div className="gh-memo-rich">
+                  <DescriptionRenderer json={property.descriptionJson as never} />
+                </div>
+              ) : null}
+              {factual ? <p className="gh-memo-copy">{factual}</p> : null}
+              {property.whyGreenHill ? (
+                <>
+                  <p className="gh-memo-chapter">
+                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                    <span>{t(teaser ? 'properties.memo.whyLookingAtThis' : 'properties.memo.whyGreenHill')}</span>
+                  </p>
+                  <p className="gh-memo-copy">{property.whyGreenHill}</p>
+                </>
+              ) : null}
+              {property.developmentPotential ? (
+                <>
+                  <p className="gh-memo-chapter">
+                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                    <span>{t('properties.memo.developmentPotential')}</span>
+                  </p>
+                  <p className="gh-memo-copy">{property.developmentPotential}</p>
+                  <p className="gh-memo-disclaimer">{t('properties.memo.conceptsNote')}</p>
+                </>
+              ) : null}
+            </Reveal>
+
+            {place ? (
+              <Reveal className="gh-memo-block" labelledBy="gh-memo-place">
+                <div className="gh-memo-place-head">
+                  <p className="gh-memo-chapter">
+                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                    <span>{t('properties.memo.location')}</span>
+                  </p>
+                  <h2 id="gh-memo-place" className="gh-memo-block__title">
+                    {place}
+                  </h2>
+                </div>
+                {property.address && property.address.trim() !== place ? (
+                  <p className="gh-memo-place-line">{property.address.trim()}</p>
+                ) : null}
+                {nearby.length > 0 ? (
+                  <div className="gh-memo-nearby">
+                    <h3>{t('properties.memo.nearby')}</h3>
+                    <ul>
+                      {nearby.map((item) => (
+                        <li key={`${item.name}-${item.distance}`}>
+                          <span>{item.name}</span>
+                          {item.distance ? <span>{item.distance}</span> : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {mapReady && point ? (
+                  <div className="gh-memo-map">
+                    <Suspense fallback={<div className="gh-memo-map__hold" aria-hidden />}>
+                      <PropertyMap
+                        latitude={point.lat}
+                        longitude={point.lng}
+                        address={property.address}
+                        title={property.title}
+                        height="gh-memo-map__canvas"
+                      />
+                    </Suspense>
+                  </div>
+                ) : null}
+              </Reveal>
+            ) : null}
+
+            {video ? (
+              <Reveal className="gh-memo-block" labelledBy="gh-memo-film">
+                <h2 id="gh-memo-film" className="gh-memo-block__title">
+                  {t('properties.memo.film')}
+                </h2>
+                <div className="gh-memo-film">
+                  <iframe
+                    src={video}
+                    title={property.title}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </Reveal>
+            ) : null}
+          </div>
+
+          <aside className="gh-memo-rail" aria-label={t('properties.memo.overview')}>
+            <div className="gh-memo-rail__inner">
+              <div className="gh-memo-rail__price">
+                <span>{t('properties.memo.price')}</span>
+                <strong>{price}</strong>
+                {priceDetail?.approximate ? (
+                  <span className="gh-memo-rail__price-source">
+                    {fill(t('properties.memo.priceSource'), { price: priceDetail.source })}
+                  </span>
+                ) : null}
+              </div>
+
+              {overview.length > 0 ? (
+                <div className="gh-memo-rail__overview">
+                  <h2>{t('properties.memo.overview')}</h2>
+                  <dl>
+                    {overview.map((item) => (
+                      <div key={`${item.label}-${item.value}`} className="gh-memo-rail__row">
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : null}
+
+              {documents.length > 0 ? (
+                <div className="gh-memo-rail__overview gh-memo-rail__docs">
+                  <h2>{t('properties.memo.documents')}</h2>
+                  <ul>
+                    {documents.map((doc) => (
+                      <li key={doc.url}>
+                        <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                          {doc.label}
+                          <span className="sr-only"> {t('properties.memo.opensNewTab')}</span>
+                          <GhIconArrow size={13} />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              <div className="gh-memo-rail__contact">
+                <h2>{t('properties.memo.speakWith')}</h2>
+                <div className="gh-memo-rail__agent">
+                  <img
+                    src={portrait.src}
+                    alt=""
+                    width={72}
+                    height={96}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div>
+                    <p className="gh-memo-rail__name">{contact.name}</p>
+                    <p className="gh-memo-rail__role">{t('properties.memo.reeceRole')}</p>
+                  </div>
+                </div>
+                <div className="gh-memo-rail__actions">
+                  <MemoActions
+                    teaser={teaser}
+                    whatsapp={whatsappUrl ? openWhatsApp : null}
+                    talkHref={talkHref}
+                    enquireHref={enquireHref}
+                    secondaryHref={teaser ? privateHref : archiveHref}
+                    secondaryLabel={t(teaser ? 'properties.archive.closePrivate' : 'properties.memo.exploreOther')}
+                  />
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {others.length > 0 ? (
+          <Reveal className="gh-memo-others" labelledBy="gh-memo-others">
+            <div className="gh-memo-others__head">
+              <div>
+                <h2 id="gh-memo-others">{t('properties.memo.otherOpportunities')}</h2>
+                <p>{t('properties.memo.otherLead')}</p>
+              </div>
+              <Link className="gh-memo-others__more" to={archiveHref}>
+                {t('properties.memo.seeMore')}
+                <GhIconArrow size={14} />
+              </Link>
+            </div>
+            <div className="gh-memo-others__grid">
+              {others.map((item, index) => (
+                <OpportunityCard key={item.id} property={item} index={index} />
+              ))}
+            </div>
+          </Reveal>
+        ) : null}
+
+        <section className="gh-memo-close" aria-labelledby="gh-memo-close" ref={close.ref}>
+          <div className="gh-memo-close__backdrop" aria-hidden>
+            <img src={talkBackdrop} alt="" width={1920} height={1080} loading="lazy" decoding="async" />
+          </div>
+          <div className="gh-memo-close__inner">
+            <div className="gh-memo-close__copy">
+              <p className="gh-memo-close__eyebrow">
+                <BrandCurveMark className="gh-memo-close__mark" isInView={close.isInView} />
+                <span>
+                  {discreet ? t('properties.memo.privateOpportunity') : t('hero.subheadline')}
+                </span>
+              </p>
+              <h2 id="gh-memo-close">{t('properties.memo.interested')}</h2>
+              <p className="gh-memo-close__lead">
+                {t(teaser ? 'properties.memo.privateInformation' : 'properties.memo.interestedLead')}
+              </p>
+              <div className="gh-memo-close__actions">
+                <MemoActions
+                  teaser={teaser}
+                  whatsapp={whatsappUrl ? openWhatsApp : null}
+                  talkHref={talkHref}
+                  enquireHref={enquireHref}
+                  secondaryHref={teaser ? privateHref : archiveHref}
+                  secondaryLabel={t(teaser ? 'properties.archive.closePrivate' : 'properties.memo.exploreOther')}
+                />
+              </div>
+            </div>
+
+            <div className="gh-memo-close__stage" aria-hidden>
+              <div className="gh-memo-close__swap">
+                <CardSwap
+                  width={320}
+                  height={420}
+                  cardDistance={48}
+                  verticalDistance={58}
+                  delay={4800}
+                  pauseOnHover
+                  skewAmount={4}
+                  easing="linear"
+                >
+                  <Card>
+                    <img src={privatePhoto} alt="" width={960} height={1280} loading="lazy" decoding="async" />
+                  </Card>
+                  <Card>
+                    <img src={talkPhoto1} alt="" width={720} height={960} loading="lazy" decoding="async" />
+                  </Card>
+                  <Card>
+                    <img src={talkPhoto2} alt="" width={720} height={960} loading="lazy" decoding="async" />
+                  </Card>
+                </CardSwap>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {photoIndex != null && images[photoIndex] ? (
+        <div
+          className="gh-memo-light"
+          role="dialog"
+          aria-modal="true"
+          aria-label={property.title}
+          onClick={() => setPhotoIndex(null)}
+          onTouchStart={(event) => {
+            swipeStart.current = event.changedTouches[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(event) => {
+            if (swipeStart.current == null) return;
+            const delta = (event.changedTouches[0]?.clientX ?? swipeStart.current) - swipeStart.current;
+            swipeStart.current = null;
+            if (Math.abs(delta) < 48) return;
+            shiftPhoto(delta < 0 ? 1 : -1);
+          }}
+        >
+          <button
+            type="button"
+            className="gh-memo-light__close"
+            onClick={() => setPhotoIndex(null)}
+            autoFocus
+          >
+            {t('navigation.close')}
+          </button>
+          {images.length > 1 ? (
+            <p className="gh-memo-light__count">
+              {String(photoIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+            </p>
+          ) : null}
+          <img
+            src={images[photoIndex]}
+            alt={altFor(images[photoIndex], property.title)}
+            onClick={(event) => event.stopPropagation()}
+          />
+          {images.length > 1 ? (
+            <div className="gh-memo-light__nav">
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  shiftPhoto(-1);
+                }}
+              >
+                {t('properties.memo.previous')}
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  shiftPhoto(1);
+                }}
+              >
+                {t('properties.memo.next')}
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </Shell>
+  );
 };
 
 export default PropertyDetail;

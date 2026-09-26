@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { MapPin, AlertCircle, Loader } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { isValidUKCoordinates } from '@/lib/mapbox';
+import { isValidCoordinates } from '@/lib/mapbox';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -41,19 +41,16 @@ export const PropertyMap = memo(function PropertyMap({
   const map = useRef<mapboxgl.Map | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Validate coordinates
-  if (!isValidUKCoordinates(latitude, longitude)) {
-    return <MapErrorFallback error="Invalid location coordinates" />;
-  }
-
   const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
-
-  if (!token) {
-    return <MapErrorFallback error="Map service not configured" />;
-  }
+  const unavailable = !isValidCoordinates(latitude, longitude)
+    ? 'Invalid location coordinates'
+    : !token
+      ? 'Map service not configured'
+      : null;
 
   // Setup Intersection Observer for lazy loading
   useEffect(() => {
+    if (unavailable) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !mapLoaded) {
@@ -72,11 +69,11 @@ export const PropertyMap = memo(function PropertyMap({
     return () => {
       observer.disconnect();
     };
-  }, [mapLoaded]);
+  }, [mapLoaded, unavailable]);
 
   // Initialize map when visible
   useEffect(() => {
-    if (!isVisible || !mapContainer.current || map.current) {
+    if (unavailable || !isVisible || !mapContainer.current || map.current) {
       return;
     }
 
@@ -97,7 +94,7 @@ export const PropertyMap = memo(function PropertyMap({
 
       // Create marker element
       const el = document.createElement('div');
-      el.className = 'w-8 h-8 bg-[#0e2e50] rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform';
+      el.className = 'w-8 h-8 bg-[#17382e] rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform';
       el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
 
       // Add marker
@@ -112,7 +109,7 @@ export const PropertyMap = memo(function PropertyMap({
         closeOnClick: false,
       })
         .setLngLat([longitude, latitude])
-        .setHTML(`<div class="p-3">${title ? `<p class="font-bold text-sm text-[#0e2e50] mb-1">${title}</p>` : ''}<p class="text-xs text-muted-foreground leading-relaxed">${address}</p></div>`);
+        .setHTML(`<div class="p-3">${title ? `<p class="font-bold text-sm text-[#17382e] mb-1">${title}</p>` : ''}<p class="text-xs text-muted-foreground leading-relaxed">${address}</p></div>`);
 
       // Click handler for marker
       el.addEventListener('click', () => {
@@ -141,7 +138,7 @@ export const PropertyMap = memo(function PropertyMap({
         map.current = null;
       }
     };
-  }, [isVisible, token, longitude, latitude, zoom, interactive, title, address]);
+  }, [unavailable, isVisible, token, longitude, latitude, zoom, interactive, title, address]);
 
   // Handle resize
   useEffect(() => {
@@ -155,6 +152,8 @@ export const PropertyMap = memo(function PropertyMap({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  if (unavailable) return <MapErrorFallback error={unavailable} />;
+
   return (
     <div
       ref={mapContainer}
@@ -167,7 +166,7 @@ export const PropertyMap = memo(function PropertyMap({
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-secondary/50 to-secondary/30 z-10">
           <div className="text-center">
-            <Loader size={32} className="mx-auto mb-2 text-[#0e2e50] animate-spin" />
+            <Loader size={32} className="mx-auto mb-2 text-[#17382e] animate-spin" />
             <p className="text-sm text-muted-foreground font-medium">Loading map...</p>
           </div>
         </div>

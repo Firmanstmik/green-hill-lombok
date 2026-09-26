@@ -5,7 +5,8 @@ import { HeroContent } from './hero/HeroContent';
 import { HeroFounder } from './hero/HeroFounder';
 import { HeroLocations } from './hero/HeroLocations';
 import { HeroScrollCue } from './hero/HeroScrollCue';
-import { HERO_AUTO_MS, HERO_SLIDES } from './hero/heroData';
+import { HERO_AUTO_MS, HERO_SLIDES, type HeroSlide } from './hero/heroData';
+import { useContentImage, useContentText } from '@/content/hooks';
 
 /** Matches the navbar's solid height so anchored scrolls clear it. */
 const NAV_OFFSET = 104;
@@ -13,9 +14,10 @@ const NAV_OFFSET = 104;
 /**
  * Preload the LCP master — single untouched WebP, same URL the carousel uses.
  */
-function useHeroPreload() {
+function useHeroPreload(slides: HeroSlide[]) {
+  const firstSrc = slides[0].src;
   useEffect(() => {
-    const first = HERO_SLIDES[0];
+    const first = slides[0];
     const link = document.createElement('link');
     link.rel = 'preload';
     link.setAttribute('as', 'image');
@@ -24,15 +26,17 @@ function useHeroPreload() {
     link.setAttribute('fetchpriority', 'high');
     document.head.appendChild(link);
     return () => link.remove();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstSrc]);
 }
 
 /**
  * Warm the next master before the crossfade so the plate never flashes empty.
  */
-function useHeroPrefetch(nextIndex: number) {
+function useHeroPrefetch(slides: HeroSlide[], nextIndex: number) {
+  const nextSrc = slides[nextIndex]?.src;
   useEffect(() => {
-    const next = HERO_SLIDES[nextIndex];
+    const next = slides[nextIndex];
     if (!next) return;
 
     const link = document.createElement('link');
@@ -43,7 +47,33 @@ function useHeroPrefetch(nextIndex: number) {
     link.setAttribute('fetchpriority', 'low');
     document.head.appendChild(link);
     return () => link.remove();
-  }, [nextIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nextIndex, nextSrc]);
+}
+
+/** The three hero chapters with Reece's published photographs, names and descriptions. */
+function useEditableHeroSlides(): HeroSlide[] {
+  const i1 = useContentImage('home.hero.slide1', HERO_SLIDES[0].src, 'cms.home.hero.slide1.alt');
+  const i2 = useContentImage('home.hero.slide2', HERO_SLIDES[1].src, 'cms.home.hero.slide2.alt');
+  const i3 = useContentImage('home.hero.slide3', HERO_SLIDES[2].src, 'cms.home.hero.slide3.alt');
+  const t1 = useContentText('cms.home.hero.slide1.title');
+  const t2 = useContentText('cms.home.hero.slide2.title');
+  const t3 = useContentText('cms.home.hero.slide3.title');
+  return [
+    [i1, t1],
+    [i2, t2],
+    [i3, t3],
+  ].map(([image, title], index) => {
+    const base = HERO_SLIDES[index];
+    const img = image as ReturnType<typeof useContentImage>;
+    return {
+      ...base,
+      src: img.src,
+      alt: img.alt || base.alt,
+      title: (title as string | undefined) || base.title,
+      focus: img.custom && img.focus ? { desktop: img.focus, mobile: img.focus } : base.focus,
+    };
+  });
 }
 
 /**
@@ -61,7 +91,8 @@ export function HeroSection() {
    */
   const [holds, setHolds] = useState({ focus: false, offscreen: false, hidden: false });
   const paused = holds.focus || holds.offscreen || holds.hidden;
-  const total = HERO_SLIDES.length;
+  const slides = useEditableHeroSlides();
+  const total = slides.length;
   const pauseRef = useRef(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -71,8 +102,8 @@ export function HeroSection() {
     []
   );
 
-  useHeroPreload();
-  useHeroPrefetch((slide + 1) % total);
+  useHeroPreload(slides);
+  useHeroPrefetch(slides, (slide + 1) % total);
 
   const goTo = useCallback(
     (index: number) => {
@@ -175,7 +206,7 @@ export function HeroSection() {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hold('focus', false);
       }}
     >
-      <HeroCarousel slides={HERO_SLIDES} activeIndex={slide} reduceMotion={!!reduceMotion} />
+      <HeroCarousel slides={slides} activeIndex={slide} reduceMotion={!!reduceMotion} />
 
       <div className="gh-hero-frame">
         <div className="gh-hero-grid">
@@ -185,7 +216,7 @@ export function HeroSection() {
 
         <div className="gh-hero-bottom">
           <HeroLocations
-            slides={HERO_SLIDES}
+            slides={slides}
             activeIndex={slide}
             onSelect={goTo}
             progress={reduceMotion ? 1 : progress}
@@ -195,7 +226,7 @@ export function HeroSection() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {HERO_SLIDES[slide].number} {HERO_SLIDES[slide].title}
+        {slides[slide].number} {slides[slide].title}
       </p>
     </section>
   );

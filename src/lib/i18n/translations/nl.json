@@ -1,15 +1,7 @@
 {
   "navigation": {
-    "home": "Home",
-    "services": "Diensten",
-    "properties": "Aanbod",
     "about": "Over ons",
-    "agents": "Global Network",
-    "blog": "Intelligence",
-    "signIn": "Inloggen",
-    "contact": "Contact",
-    "contactUsNow": "Neem Nu Contact Met Ons Op",
-    "logout": "Afmelden",
+    "private": "Green Hill Private",
     "opportunities": "Kansen",
     "whyLombok": "Waarom Lombok",
     "speakWithUs": "Praat met Reece",
@@ -21,98 +13,129 @@
     "headline": "Geselecteerde vastgoed- &|investeringskansen|in Zuid-Lombok.",
     "headlineMobile": "Geselecteerde|vastgoed- &|investeringskansen|in Zuid-Lombok.",
     "subheadline": "Geselecteerd ter plaatse. Overwogen voor de lange termijn.",
-    "exploreProperties": "Ontdek Kansen",
-    "stats": {
-      "projectsComplete": "Projecten Voltooid",
-      "propertiesTransacted": "Transacties",
-      "happyClients": "Cliënten",
-      "projectValue": "Transactiewaarde",
-      "googleReviews": "Green Hill · Lombok",
-      "rating": "Curated property & land"
-    },
-    "eyebrow": "Green Hill / Lombok",
-    "badge": "Kansen in Zuid-Lombok",
     "locationLabel": "Zuid-Lombok, Indonesië",
-    "headlineBefore": "Ontdek",
-    "headlineHighlight": "zorgvuldig geselecteerde vastgoedkansen",
-    "headlineAfter": "in Zuid-Lombok.",
     "speakWithUs": "Spreek met Reece",
-    "foundedBy": "Opgericht door Reece Green",
     "founderName": "Reece Green",
     "founderRole": "Oprichter · Investeerder · Zuid-Lombok",
     "founderNote": "Ik bezoek en selecteer persoonlijk de kansen die wij vertegenwoordigen.",
     "meetReece": "Ontmoet Reece",
-    "founderQuote": "Buitengewone plekken creëren buitengewone kansen.",
-    "founderAttr": "Reece Green / Founder",
-    "microTrust": "Geselecteerd in Zuid-Lombok · Persoonlijk gekozen",
-    "watchFilm": "Bekijk de film",
-    "watchFilmCaption": "Een ander perspectief",
     "scrollExplore": "Ontdek meer",
-    "land": "Grond",
-    "villas": "Villa's",
-    "exploreOpportunities": "Ontdek Kansen",
-    "trust": {
-      "local": "Lokale kennis ter plaatse",
-      "selected": "Zorgvuldig geselecteerde kansen",
-      "personal": "Persoonlijke begeleiding van Reece"
-    },
-    "enquiry": {
-      "eyebrow": "Investeerdersaanvraag",
-      "meta": "Indicatief · vrijblijvend",
-      "title": "Start een gesprek over kansen op Lombok.",
-      "question": "Waar zoekt u naar?",
-      "optLand": "Grondperceel",
-      "optVilla": "Villa",
-      "optDev": "Ontwikkelingskavel",
-      "optGuide": "Investeringsadvies",
-      "optLifestyle": "Lifestyle-woning",
-      "optExploring": "Nog aan het oriënteren",
-      "ctaContinue": "Verder",
-      "ctaSubmit": "Praat met Reece",
-      "back": "Terug",
-      "contactTitle": "Hoe kan Reece u bereiken?",
-      "name": "Uw naam",
-      "namePlaceholder": "Volledige naam",
-      "contact": "E-mail of WhatsApp",
-      "contactPlaceholder": "u@email.com of +31…",
-      "doneTitle": "Alles staat klaar.",
-      "doneBody": "WhatsApp opent zodat u het gesprek rechtstreeks met Reece kunt voortzetten."
-    }
+    "exploreOpportunities": "Ontdek Kansen"
   },
   "properties": {
-    "featured": "Uitgelichte Kansen",
-    "featuredSubtitle": "Geselecteerde kansen|met langetermijnpotentieel.",
-    "viewAllProperties": "Bekijk Alle Woningen",
-    "findYourPerfect": "Vind Uw Perfecte Woning",
-    "browseDescription": "Blader door onze exclusieve collectie panden te koop, te huur en investeringsmogelijkheden.",
-    "search": "Zoek panden...",
-    "allProperties": "Alle Woningen",
-    "forRent": "Te Huur",
-    "forSale": "Te Koop",
-    "forSell": "Te Koop",
-    "forInvestment": "Voor Investering",
-    "available": "Beschikbaar",
-    "backToProperties": "Terug naar Woningen",
-    "noPropertiesFound": "Geen panden gevonden die aan uw criteria voldoen.",
     "notFound": "Woning niet gevonden",
-    "featuredLead": "Voorbeeld grond- en villakansen op Lombok — gepresenteerd als curated preview.",
-    "exampleLand": "Grond",
+    "archive": {
+      "eyebrow": "Geselecteerde kansen",
+      "headline": "Geselecteerde kansen op Lombok.",
+      "lead": "Een kleine collectie kansen, ter plaatse geselecteerd op Lombok, met de context om te beoordelen wat de moeite waard is om te verkennen.",
+      "collectionLabel": "De collectie",
+      "collectionHeadline": "Een kleine selectie kansen, overwogen ter plaatse.",
+      "collectionLead": "We willen niet alles laten zien. Alleen kansen waarvan we geloven dat ze een nadere blik verdienen.",
+      "all": "Alle kansen",
+      "land": "Grond",
+      "villas": "Villa's",
+      "development": "Ontwikkeling",
+      "private": "Privé",
+      "location": "Locatie",
+      "searchPlaceholder": "Zoek op gebied, district of trefwoord...",
+      "moreFilters": "Meer filters",
+      "clearAll": "Alles wissen",
+      "size": "Oppervlakte",
+      "sizeMin": "Min m²",
+      "sizeMax": "Max m²",
+      "bedrooms": "Slaapkamers",
+      "any": "Alle",
+      "allRegions": "Alle locaties",
+      "view": "Bekijk kans",
+      "empty": "Geen kansen komen overeen met deze criteria.",
+      "clear": "Filters wissen",
+      "closeEyebrow": "Niet zeker wat past?",
+      "closeHeadline": "Vertel Reece wat u zoekt.",
+      "closeLead": "Sommige kansen bespreekt u beter privé. Heeft u een locatie, budget, tijdlijn of investeringsdoel, begin dan een gesprek.",
+      "closePrivate": "Green Hill Private",
+      "privateLabel": "Privékans",
+      "privateNote": "Beschikbaar via gesprek",
+      "talkToReece": "Spreek met Reece",
+      "statusAvailable": "Beschikbaar",
+      "statusSold": "Verkocht",
+      "statusReserved": "Gereserveerd",
+      "bedroomsWord": "slaapkamers",
+      "opportunities": "kansen",
+      "emptyCollection": "De collectie wordt samengesteld. Vertel wat u zoekt en Reece komt bij u terug met wat past.",
+      "emptyCollectionCta": "Deel uw investeerdersprofiel"
+    },
+    "memo": {
+      "selected": "Geselecteerde kans",
+      "privateOpportunity": "Private kans",
+      "theOpportunity": "De kans",
+      "whyGreenHill": "Waarom Green Hill dit waardeert",
+      "location": "Locatie",
+      "interested": "Geïnteresseerd in deze kans?",
+      "interestedLead": "Sommige kansen worden duidelijker in gesprek. Vertel Reece wat u zoekt en bekijk of deze kans past.",
+      "exploreOther": "Bekijk andere kansen",
+      "exploreAll": "Bekijk alle kansen",
+      "landSize": "Perceelgrootte",
+      "type": "Type",
+      "status": "Status",
+      "price": "Prijs",
+      "bedrooms": "Slaapkamers",
+      "bathrooms": "Badkamers",
+      "reference": "Referentie",
+      "building": "Bebouwde oppervlakte",
+      "year": "Jaar",
+      "ownership": "Eigendom",
+      "factualLand": "{size} grond in {place}.",
+      "factualTyped": "{size} in {place}.",
+      "factualPlace": "Een kans in {place}.",
+      "notFoundLead": "Dit gegeven staat niet in de huidige collectie.",
+      "loading": "Laden",
+      "previous": "Vorige foto",
+      "next": "Volgende foto",
+      "viewPhoto": "Foto bekijken",
+      "viewAllPhotos": "Foto's bekijken ({count})",
+      "fullView": "Volledig bekijken",
+      "film": "Film",
+      "nearby": "In de buurt",
+      "overview": "Overzicht",
+      "speakWith": "Spreek met",
+      "reeceRole": "Oprichter, Green Hill Lombok",
+      "opportunityTitle": "Over deze kans",
+      "otherOpportunities": "Andere kansen",
+      "otherLead": "Geselecteerde records uit de huidige collectie.",
+      "seeMore": "Meer bekijken",
+      "whatsappMessage": "Hallo Reece, ik heb interesse in {title} {reference}.",
+      "sendEnquiry": "Stuur een aanvraag",
+      "requestMemorandum": "Vraag het investeringsmemorandum aan",
+      "privateInformation": "Volledige investeringsinformatie is privé beschikbaar via Green Hill.",
+      "whyLookingAtThis": "Waarom Green Hill hiernaar kijkt",
+      "developmentPotential": "Ontwikkelingspotentieel",
+      "conceptsNote": "Alleen concepten. Elk gebruik is afhankelijk van bestemming, vergunningen, haalbaarheid en onafhankelijk professioneel advies.",
+      "priceSource": "Prijs {price}. Omgerekende bedragen zijn bij benadering.",
+      "documents": "Documenten",
+      "brochure": "Brochure (PDF)",
+      "masterplan": "Masterplan (PDF)",
+      "opensNewTab": "(opent in een nieuw tabblad)",
+      "roadAccess": "Toegangsweg",
+      "utilities": "Nutsvoorzieningen",
+      "developer": "Ontwikkelaar / verkoper"
+    },
     "exampleVilla": "Villa"
   },
   "selected": {
     "eyebrow": "Geselecteerde Kansen",
     "headline": "Een doordachte selectie|van plekken met potentieel.",
-    "lead": "Voorbeeld grond- en villakansen op Lombok — gepresenteerd als een kleine curated selectie, geen marktplaatscatalogus.",
+    "lead": "Voorbeeld grond- en villakansen op Lombok, elk gepresenteerd als onderdeel van een kleine curated selectie, geen marktplaatscatalogus.",
     "viewOpportunity": "Bekijk Kans",
     "viewAll": "Bekijk Alle Kansen",
     "priceOnRequest": "Prijs op Aanvraag",
-    "landSize": "Grondoppervlakte"
+    "empty": "Nieuwe kansen worden geselecteerd. Vertel Reece intussen waar u naar zoekt."
   },
   "private": {
     "eyebrow": "Green Hill Private",
     "headline": "Sommige kansen|kunnen beter privé worden behandeld.",
-    "lead": "Wanneer een vraag specifieker is — grotere grond, hospitality, ontwikkeling of een partnerschap — kan Green Hill rechtstreeks met u werken via een discreet, relatiegericht gesprek met Reece.",
+    "lead": "Wanneer een vraag specifieker is, zoals grotere grond, hospitality, ontwikkeling of een partnerschap, kan Green Hill rechtstreeks met u werken via een discreet, relatiegericht gesprek met Reece.",
     "cta": "Vraag een Privégesprek Aan",
+    "journey": "Ontdek Green Hill Private",
     "note": "Dit zijn aanvraagroutes, geen openbare catalogus van beschikbare projecten.",
     "pathways": {
       "land": {
@@ -121,16 +144,195 @@
       },
       "hospitality": {
         "title": "Hospitality",
-        "body": "Voor hospitality-, bestemmings- of ontwikkelingsgerichte vragen."
+        "body": "Voor hospitality, bestemmings of ontwikkelingsgerichte vragen."
       },
       "development": {
         "title": "Private Ontwikkeling",
-        "body": "Voor complexere ontwikkelings- of partnerschapsgesprekken."
+        "body": "Voor complexere ontwikkelings of partnerschapsgesprekken."
       },
       "joint": {
         "title": "Joint Ventures",
         "body": "Voor relatiegeleide kansen waarbij een gedeelde aanpak past."
       }
+    },
+    "page": {
+      "seoTitle": "Green Hill Private | Green Hill Lombok",
+      "seoDescription": "Een discrete route voor investeerders, ontwikkelaars en hospitality operators die land en ontwikkelingskansen verkennen buiten de openbare Green Hill collectie in Zuid Lombok.",
+      "eyebrow": "Green Hill Private",
+      "headline": "Op zoek naar|iets specifieks?",
+      "lead": "Voor investeerders, ontwikkelaars en hospitality operators die verder kijken dan onze openbare collectie.|Green Hill Private opent een directere weg naar kansen die ter plaatse in Lombok zijn geselecteerd.",
+      "heroAlt": "Cultuurlanden en heuvels met palmen in Zuid Lombok in warm avondlicht",
+      "heroSpine": "Ter plaatse",
+      "heroCaption": "Zuid Lombok, Persoonlijk geselecteerd",
+      "talk": "Praat met Reece",
+      "explore": "Ontdek Kansen",
+      "audience": {
+        "eyebrow": "Voor wie",
+        "title": "Een privéroute|voor wie verder kijkt|dan de openbare collectie.",
+        "lead": "Van het eerste gesprek tot de juiste introductie. Privé verkend, met helderheid in elke stap.",
+        "step": "Stap",
+        "of": "van",
+        "continue": "Verder met Reece",
+        "prev": "Vorige doelgroep",
+        "next": "Volgende doelgroep",
+        "items": {
+          "investors": {
+            "title": "Private Investeerders",
+            "body": "Geselecteerde land en vastgoedkansen die via direct gesprek worden overwogen."
+          },
+          "developers": {
+            "title": "Ontwikkelaars",
+            "body": "Grotere sites en ontwikkelingsgerichte kansen met context."
+          },
+          "hospitality": {
+            "title": "Hospitality",
+            "body": "Kansen relevant voor hospitality en bestemmingsgerichte projecten."
+          },
+          "groups": {
+            "title": "Investeringsgroepen",
+            "body": "Grotere of gestructureerde kansen die privé worden verkend met family offices en groepen."
+          }
+        }
+      },
+      "why": {
+        "eyebrow": "Waarom privé",
+        "title": "Niet alles wat de moeite waard is|hoort in een openbare catalogus.",
+        "lead": "Sommige kansen bespreekt u beter privé: grotere holdings, ontwikkelingscontext, hospitality concepten of introducties die passender rechtstreeks worden gedeeld.",
+        "imageAlt": "Heuvels in Zuid Lombok met uitzicht op kalme oceaan in gouden licht",
+        "plateLabel": "Zuid Lombok, Ter plaatse",
+        "points": {
+          "a": "Grotere grondholdings en private grondzoektochten",
+          "b": "Ontwikkeling en hospitality overwegingen",
+          "c": "Introducties die baat hebben bij context en timing",
+          "d": "Informatie die passender in gesprek wordt gedeeld"
+        }
+      },
+      "opps": {
+        "eyebrow": "Privékansen",
+        "statement": "Sommige kansen kunnen beter privé worden verkend.",
+        "empty": "In plaats van een openbare catalogus te tonen, vertelt u Reece wat u zoekt en verkent u wat relevant kan zijn.",
+        "withListings": "Een klein aantal kansen wordt via direct gesprek verkend, niet via openbare listing.",
+        "withTeasers": "Hieronder stellen we enkele grotere kansen voor. Volledige informatie wordt privé gedeeld zodra Reece begrijpt waar u naar zoekt.",
+        "teasersTitle": "Momenteel privé gepresenteerd"
+      },
+      "approach": {
+        "eyebrow": "De aanpak",
+        "title": "Een gesprek komt eerst.",
+        "steps": {
+          "understand": {
+            "title": "Begrijpen",
+            "body": "Vertel Reece wat u zoekt."
+          },
+          "consider": {
+            "title": "Overwegen",
+            "body": "Green Hill overweegt relevante kansen en context."
+          },
+          "explore": {
+            "title": "Verkennen",
+            "body": "Relevante informatie kan waar gepast worden gedeeld."
+          },
+          "discuss": {
+            "title": "Bespreken",
+            "body": "Verkennen of de kans verder de moeite waard is."
+          }
+        }
+      },
+      "reece": {
+        "eyebrow": "Ter plaatse",
+        "title": "Begin met een gesprek.",
+        "lead": "Vertel Reece waar u zoekt, wat u overweegt, en wat voor kans u hoopt te vinden.",
+        "photoAlt": "Reece Green, oprichter van Green Hill Lombok",
+        "close": "Laten we praten.",
+        "prompts": {
+          "land": "Op zoek naar grond?",
+          "hospitality": "Een hospitality project verkennen?",
+          "development": "Een grotere ontwikkelingskans overwegen?",
+          "brief": "Een specifieke locatie of brief in gedachten?"
+        }
+      },
+      "form": {
+        "eyebrow": "Privé aanvraag",
+        "title": "Vertel Reece wat u zoekt.",
+        "lead": "Deel een beetje over wat u in gedachten heeft. Reece kan dan volgen met wat relevant kan zijn."
+      },
+      "final": {
+        "eyebrow": "Green Hill Private",
+        "title": "Laten we het gesprek beginnen.",
+        "lead": "Begin met een gesprek. Vertel Reece wat u zoekt en verken wat relevant kan zijn.",
+        "explore": "Ontdek Openbare Kansen"
+      }
+    }
+  },
+  "whyLombok": {
+    "page": {
+      "seoTitle": "Waarom Lombok | Green Hill Lombok",
+      "seoDescription": "Een redactioneel perspectief op Lombok en Zuid-Lombok: landschap, levensstijl, toegang en langetermijncontext vanuit Green Hills aanpak op de grond.",
+      "eyebrow": "Waarom Lombok",
+      "headline": "Lombok is meer dan|een bestemming.",
+      "lead": "Wij beginnen bij het land, de mensen en het proces. Zo wordt de kans duidelijk.",
+      "explore": "Ontdek Kansen",
+      "talk": "Praat met Reece",
+      "buying": "Begrijp Kopen op Lombok",
+      "heroAlt": "Velden en palmen in Zuid-Lombok bij golden hour, over de baai naar de heuvels",
+      "cardPrev": "Vorige afbeelding",
+      "cardNext": "Volgende afbeelding",
+      "place": {
+        "eyebrow": "De plek",
+        "title": "Kijk eerst naar het landschap.",
+        "cardTitle": "Kijk naar het landschap",
+        "location": "Zuid-Lombok",
+        "expand": "Galerij van de plek openen",
+        "body": "Kustlijnen, heuvels en landbouwvalleien vormen settings voor persoonlijk gebruik én langetermijnbezit. Het karakter van de plek bepaalt hoe Green Hill elke kans bekijkt.",
+        "imageAlt": "Open land en heuvels onder heldere hemel op Lombok"
+      },
+      "south": {
+        "eyebrow": "Zuid-Lombok",
+        "title": "Een landschap van kust, heuvels en een ander levensritme.",
+        "body": "Het karakter van het landschap, van kust en heuvels tot valleien, vormt hoe wij naar kansen kijken.",
+        "labels": {
+          "land": "Land",
+          "coast": "Kust",
+          "lifestyle": "Levensstijl",
+          "access": "Toegang"
+        },
+        "imageAlt": "Heuvels van Zuid-Lombok met kalm oceaanlicht"
+      },
+      "access": {
+        "eyebrow": "Toegang",
+        "title": "Hoe een plek bereikt wordt, telt.",
+        "cardTitle": "Hoe een plek bereikt wordt",
+        "expand": "Galerij van toegang openen",
+        "body": "Locatie en hoe een plek bereikt wordt, zijn van belang bij het beoordelen van langetermijnpotentieel. Context rond toegang hoort bij het begrijpen van een kans, niet als voetnoot.",
+        "aside": "Route, setting, context",
+        "imageAlt": "Heuvelpaden en open landbenaderingen in Zuid-Lombok"
+      },
+      "pace": {
+        "eyebrow": "Een ander ritme",
+        "title": "Het leven hier heeft een ander ritme.",
+        "body": "Land, landschap en gemeenschap liggen achter hoe mensen hier willen wonen en eigendom houden. Het bestemmingskarakter van Zuid-Lombok is rustiger, outdoor en relationeel.",
+        "imageAlt": "Kustland en open hemel langs Zuid-Lombok"
+      },
+      "longer": {
+        "eyebrow": "De langere blik",
+        "title": "Overweeg de plek voordat u de kans overweegt.",
+        "body": "Wij wegen context en kwaliteit boven volume. Minder kansen, zorgvuldig overwogen. Langetermijndenken betekent kijken naar landkwaliteit, locatie, omgeving en de relaties die een plek werkbaar maken.",
+        "aside": "Plek vóór kans",
+        "imageAlt": "Kust en heuvels die open water ontmoeten in Zuid-Lombok"
+      },
+      "ground": {
+        "eyebrow": "Vanuit het veld",
+        "title": "Geselecteerd op de grond.|Overwogen voor de lange termijn.",
+        "body": "Green Hill verzamelt niet zomaar listings. Kansen worden persoonlijk bezocht, in context overwogen en gepresenteerd met de helderheid om te helpen beslissen wat het verkennen waard is.",
+        "note": "Ik bezoek en selecteer persoonlijk de kansen die wij vertegenwoordigen.",
+        "attr": "Reece Green, Founder, Zuid-Lombok",
+        "imageAlt": "Reece Green, oprichter van Green Hill Lombok"
+      },
+      "final": {
+        "eyebrow": "Verkennen",
+        "title": "Verken nu wat er daadwerkelijk beschikbaar is.",
+        "lead": "Ontdek de kansen die Green Hill op Lombok heeft geselecteerd, of begin bij de vragen die het kopen hier vormgeven."
+      },
+      "disclaimer": "Dit is educatief en geen juridisch, fiscaal of beleggingsadvies; er wordt geen rendement gegarandeerd. Vraag onafhankelijk juridisch, notarieel en fiscaal advies voor een aankoop."
     }
   },
   "trust": {
@@ -139,7 +341,7 @@
     "lead": "Lombok is meer dan een bestemming. Voor ons is het begrijpen van het land, de mensen en het proces deel van het begrijpen van de kans.",
     "placeLabel": "Plaats",
     "buyingLabel": "Kopen op Lombok",
-    "buyingLead": "Begin met de juiste vragen. Deze routes introduceren essentiële overwegingen — geen juridisch advies.",
+    "buyingLead": "Begin met de juiste vragen. Deze routes introduceren essentiële overwegingen, geen juridisch advies.",
     "explore": "Verkennen",
     "cta": "Verken Kopen op Lombok",
     "pageHeadline": "Het proces begrijpen",
@@ -150,7 +352,7 @@
     "place": {
       "south": {
         "title": "Zuid-Lombok",
-        "body": "Het karakter van het landschap — kust, heuvels en valleien — bepaalt hoe wij naar kansen kijken."
+        "body": "Het karakter van het landschap, van kust en heuvels tot valleien, bepaalt hoe wij naar kansen kijken."
       },
       "access": {
         "title": "Bereikbaarheid",
@@ -162,7 +364,7 @@
       },
       "perspective": {
         "title": "Langetermijnperspectief",
-        "body": "We wegen context en kwaliteit zwaarder dan volume — minder kansen, zorgvuldig overwogen."
+        "body": "We wegen context en kwaliteit zwaarder dan volume. Minder kansen, zorgvuldig overwogen."
       }
     },
     "buying": {
@@ -174,145 +376,42 @@
       "dueDiligence": {
         "title": "Due diligence",
         "body": "Wat u moet begrijpen voordat u met een kans verdergaat.",
-        "detail": "Due diligence omvat de praktische controles achter een doordachte aankoop — titel, partijen, grenzen en de geschiedenis van de grond. Het gaat om duidelijkheid, niet om snelheid."
+        "detail": "Due diligence omvat de praktische controles achter een doordachte aankoop: titel, partijen, grenzen en de geschiedenis van de grond. Het gaat om duidelijkheid, niet om snelheid."
       },
       "zoning": {
         "title": "Zoning & planning",
         "body": "Waarom grondgebruik, planning en toegestane ontwikkeling ertoe doen.",
-        "detail": "Wat er gebouwd mag worden — en hoe — hangt af van de planningscontext. Zoning en toegestaan gebruik vroeg begrijpen helpt aannames over ontwikkelingspotentieel te vermijden."
+        "detail": "Wat er gebouwd mag worden, en hoe, hangt af van de planningscontext. Zoning en toegestaan gebruik vroeg begrijpen helpt aannames over ontwikkelingspotentieel te vermijden."
       },
       "process": {
         "title": "Het koopproces",
         "body": "Een duidelijker beeld van de stappen van eerste vraag tot afronding.",
-        "detail": "Van eerste gesprek tot notarissen, lokale relaties en waar relevant architecten en bouwers — het proces is helderder wanneer elke stap in volgorde wordt begrepen. Green Hill begeleidt klanten bij ontdekking, evaluatie en volgende stappen."
+        "detail": "Van eerste gesprek tot notarissen, lokale relaties en waar relevant architecten en bouwers. Het proces is helderder wanneer elke stap in volgorde wordt begrepen. Green Hill begeleidt klanten bij ontdekking, evaluatie en volgende stappen."
       }
     }
   },
   "final": {
     "eyebrow": "Praat met Reece",
-    "headline": "Laten we praten over|wat u zoekt.",
-    "lead": "Of u nu grond, een villa, een grotere ontwikkelingskans of een privévereiste verkent — begin met een gesprek.",
-    "primaryCta": "Spreek met Reece",
-    "secondaryCta": "Bekijk Kansen",
+    "headline": "Vertel wat u zoekt.|Daar beginnen we.",
+    "lead": "Deel het gebied dat u interesseert, het type vastgoed dat u voor ogen heeft, of gewoon wat u overweegt. Reece kan u helpen kansen te zien die mogelijk relevant zijn.",
+    "primaryCta": "Praat met Reece",
+    "secondaryCta": "Verken kansen",
     "contactPending": "Een direct contactkanaal wordt binnenkort bevestigd. Verken voorlopig kansen of kom terug wanneer spreken met Reece live is.",
     "steps": {
       "start": {
-        "title": "Start een gesprek",
-        "body": "Vertel Reece wat u zoekt."
+        "title": "Vertel wat u zoekt",
+        "body": "Gebied, type vastgoed, wensen, of gewoon een eerste idee."
       },
       "discuss": {
-        "title": "Bespreek de juiste kansen",
-        "body": "Deel uw eisen en bespreek relevante mogelijkheden."
+        "title": "Bespreek de mogelijkheden",
+        "body": "Praat over kansen die bij wat u nodig heeft kunnen passen."
       },
       "explore": {
-        "title": "Verken de volgende stap",
+        "title": "Zie wat juist voelt",
         "body": "Ga verder alleen wanneer de kans en het proces goed voelen."
       }
-    }
-  },
-  "filters": {
-    "transactionType": {
-      "all": "Alle",
-      "sale": "Te Koop",
-      "rent": "Te Huur"
     },
-    "country": "Regio",
-    "location": "Locatie",
-    "locationPlaceholder": "Gebied, district, adres...",
-    "priceRange": "Prijsklasse",
-    "bedrooms": "Slaapkamers",
-    "beds": "Slaapkamers",
-    "propertyType": "Woningtype",
-    "allTypes": "Alle Types",
-    "propertyTypes": {
-      "villa": "Villa",
-      "house": "Huis",
-      "apartment": "Appartement",
-      "penthouse": "Penthouse",
-      "commercial": "Commercieel",
-      "land": "Grond"
-    },
-    "refine": "Verfijnen",
-    "any": "Alle",
-    "clearAll": "Alles Wissen",
-    "propertiesFound": "woningen gevonden",
-    "bathrooms": "Badkamers",
-    "baths": "Badkamers",
-    "interiorSize": "Interieur Oppervlakte (m²)",
-    "minSize": "Min m²",
-    "maxSize": "Max m²",
-    "lifestyle": {
-      "waterfront": "Waterkant",
-      "beachfront": "Strandlocatie",
-      "city_center": "Stadscentrum",
-      "gated": "Beveiligd",
-      "pool": "Zwembad",
-      "garden": "Tuin"
-    },
-    "minPrice": "Min",
-    "maxPrice": "Max",
-    "allRegions": "Heel Lombok"
-  },
-  "propertyDetail": {
-    "description": "Omschrijving",
-    "homeInfoAmenities": "Huisinfo & Voorzieningen",
-    "propertyDetails": "Woningdetails",
-    "nearbyPointsOfInterest": "Nabije Punten van Belang",
-    "locationCoordinatesNotAvailable": "Locatiecoördinaten niet beschikbaar",
-    "location": "Locatie",
-    "openInGoogleMaps": "Open in Google Maps",
-    "share": "Delen",
-    "save": "Opslaan",
-    "saved": "Opgeslagen",
-    "copyLink": "Link Kopiëren",
-    "whatsapp": "WhatsApp",
-    "facebook": "Facebook",
-    "x": "X",
-    "linkedIn": "LinkedIn",
-    "pricingStartingFrom": "Prijs",
-    "perMonth": "per maand",
-    "overview": "Overzicht",
-    "propertyCode": "Woningcode",
-    "bedrooms": "Slaapkamers",
-    "bathrooms": "Badkamers",
-    "buildingArea": "Bouwoppervlak",
-    "landSize": "Kavelgrootte",
-    "yearBuilt": "Bouwjaar",
-    "ownership": "Eigenaarschap",
-    "furnishing": "Inrichting",
-    "parking": "Parkeren",
-    "yearOfConstruction": "Bouwjaar",
-    "surfaceArea": "Oppervlaktegebied",
-    "status": "Status",
-    "contactAgent": "Neem contact op met agent",
-    "whatsappAgent": "WhatsApp Agent",
-    "similarProperties": "Vergelijkbare Woningen",
-    "discoverOtherProperties": "Ontdek andere uitzonderlijke panden in het gebied",
-    "seeMore": "Meer weergeven",
-    "verifiedListing": "Geverifieerde Vermelding",
-    "secureAndVerified": "Veilig en geverifieerd pand",
-    "ukonEstateAgent": "Green Hill Agent",
-    "officialCompanyRepresentative": "Officiële vertegenwoordiger van het bedrijf",
-    "verifiedPartner": "Geverifieerde Partner",
-    "verifiedPartnerDesc": "Officiële geverifieerde partner van Green Hill",
-    "showAllPhotos": "Alle foto's weergeven",
-    "sqm": "m²"
-  },
-  "services": {
-    "whatWeDo": "Wat Wij Doen",
-    "exploreOurRange": "Onze Diensten",
-    "propertySales": "Verkoopservice",
-    "propertySalesDescription": "Deskundige begeleiding door het hele verkoopproces, van listing tot sluiting. Wij maximaliseren de waarde van uw eigendom met strategische marketing.",
-    "buyerRepresentation": "Aankoopservice",
-    "buyerRepresentationDescription": "Speciale ondersteuning bij het vinden van uw droomhuis. Wij onderhandelen de beste deals en garanderen een soepele aankoopaanbod.",
-    "rentalManagement": "Vastgoedbeheer",
-    "rentalManagementDescription": "Uitgebreide huurservices voor huiseigenaren en huurders. Van screening tot onderhoud, wij regelen alles.",
-    "investmentConsulting": "Beleggingsadvisering",
-    "investmentConsultingDescription": "Strategisch advies voor vastgoedbeleggingen. Wij identificeren kansen die sterke opbrengsten leveren.",
-    "propertyValuation": "Waardebepaling",
-    "propertyValuationDescription": "Nauwkeurige marktbeoordelingen ondersteund door data en lokale expertise. Ken de werkelijke waarde van uw eigendom.",
-    "tailoredSolutions": "Maatwerk oplossingen",
-    "tailoredSolutionsDescription": "Op maat gemaakte vastgoedoplossingen voor unieke behoeften. Of het nu relocatie of downsizing is, wij passen ons aan u aan."
+    "profileCta": "Of vertel Reece over uw plannen"
   },
   "founder": {
     "eyebrow": "Van investeerder naar Green Hill",
@@ -327,379 +426,425 @@
     "roleShort": "Oprichter"
   },
   "about": {
-    "aboutUkon": "Over Green Hill",
-    "buildingDreams": "Dromen Bouwen,",
-    "creatingHomes": "Huizen Creëren",
-    "description": "Green Hill is in ontwikkeling. Deze tekst is een placeholder en vormt geen echte bedrijfsclaims.",
-    "yearsExperience": "Jaar Ervaring",
-    "propertiesSold": "Woningen Verkocht",
-    "clientSatisfaction": "Klanttevredenheid",
-    "trustedService": "Vertrouwde Service",
-    "ourVision": "Onze Visie",
-    "visionStatement": "De meest vertrouwde vastgoedpartner zijn en transformeren hoe mensen hun droomwoningen vinden en ervaren.",
-    "ourMission": "Onze Missie",
-    "missionStatement": "Uitzonderlijke service, eerlijke begeleiding en innovatieve oplossingen bieden die de verwachtingen van klanten overtreffen.",
-    "longDescription": "Green Hill placeholder copy. No historical claims from prior projects.",
-    "pageHeadline": "Jaren van Vertrouwen",
-    "pageSubheadline": "Ons Verhaal",
-    "pageTitle": "Een Erfenis van Excellentie in Onroerend Goed",
-    "foundedDescription": "Green Hill is under development. Founding story content will be written later.",
-    "todayDescription": "Vandaag blijven we ons erfgoed verder ontwikkelen, waarbij we traditionele waarden combineren met innovatieve technologie voor uitzonderlijke vastgoed ervaringen. Ons toegewijde team brengt lokale expertise en wereldwijd perspectief naar elke transactie.",
-    "ourValues": "Onze Waarden",
-    "whatDrivesUs": "Wat Ons Elke Dag Aandrijft",
-    "clientCentric": "Klantgericht",
-    "clientCentricDescription": "Uw behoeften en dromen staan in het hart van alles wat we doen.",
-    "excellence": "Excellentie",
-    "excellenceDescription": "We streven naar excellentie in elke transactie en interactie.",
-    "integrity": "Integriteit",
-    "integrityDescription": "Eerlijke, transparante en ethische praktijken vormen de basis van ons bedrijf.",
-    "readyToWorkWithUs": "Klaar om Met Ons Samen Te Werken?",
-    "letStartJourney": "Laten we vandaag uw vastgoed-reis samen beginnen. Neem contact met ons op!",
-    "visionLongStatement": "Het meest vertrouwde en innovatieve vastgoedbedrijf zijn, transformerend hoe mensen eigenschappen ontdekken, kopen, verkopen en beleven. We dromen van een wereld waarin het vinden van uw droomhuis een spannende, naadloze reis is.",
-    "missionLongStatement": "Uitzonderlijke vastgoeddiensten bieden door eerlijke begeleiding, innovatieve oplossingen en persoonlijke aandacht. We zijn ervan overtuigd dat we klantenverwachtingen overtreffen en duurzame relaties opbouwen op basis van vertrouwen en resultaten."
-  },
-  "agents": {
-    "ourTeam": "Ons Team",
-    "meetOurExperts": "Ontmoet Onze Experts",
-    "ourNetwork": "Ons Wereldwijde Netwerk",
-    "headline": "Vastgoed Zonder Grenzen.",
-    "subheadline": "Een gecoördineerd netwerk van betrouwbare lokale professionals die werken volgens een uniforme internationale standaard.",
-    "supportingLine": "Lokale expertise. Wereldwijde vertegenwoordiging.",
-    "metricCountries": "Landen",
-    "metricContinents": "Continenten",
-    "metricTransactions": "Transacties",
-    "mapHeadline": "Wereldwijde Aanwezigheid",
-    "mapSubtext": "Actieve vertegenwoordiging in belangrijke internationale markten.",
-    "regionEurope": "Europa",
-    "regionEuropeSubtext": "Strategische vertegenwoordiging in Nederland, Portugal en belangrijke Europese markten.",
-    "regionSoutheastAsia": "Zuidoost-Azië",
-    "regionSoutheastAsiaSubtext": "Diepgewortelde lokale netwerken in Indonesië en Maleisië.",
-    "viewProfile": "Bekijk Profiel",
-    "networkHeadline": "Een Uniforme Standaard Over Markten",
-    "networkDescription": "Ons operationeel model combineert centrale coördinatie met diepgaande lokale expertise. Elke partner in ons netwerk werkt volgens gedeelde prestatienormen, wat consistente kwaliteit garandeert ongeacht de geografie. Deze structuur maakt strategisch toezicht mogelijk met behoud van de lokale kennis die succesvolle transacties aandrijft.",
-    "networkGlobalCoordination": "Wereldwijde Coördinatie",
-    "networkGlobalCoordinationDesc": "Centrale strategie en transactietoezicht.",
-    "networkLocalExpertise": "Lokale Expertise",
-    "networkLocalExpertiseDesc": "Diepgaande marktkennis en regelgevingskennis.",
-    "networkClientRepresentation": "Klantvertegenwoordiging",
-    "networkClientRepresentationDesc": "Afgestemde normen van discretie en onderhandeling.",
-    "partnerHeadline": "Strategische Wereldwijde Partnerschappen",
-    "partnerSubtext": "Wij werken samen met geselecteerde vastgoedprofessionals wereldwijd die werken volgens gedeelde normen van prestatie, integriteit en discretie.",
-    "explorePartnership": "Ontdek Partnerschap",
-    "filterAll": "Alles",
-    "filterEurope": "Europa",
-    "filterSoutheastAsia": "Zuidoost-Azië",
-    "mapReinforcement": "Centrale coördinatie. Lokale uitvoering."
-  },
-  "testimonials": {
-    "testimonials": "Testimonials",
-    "whatOurClientsSay": "Wat Onze Klanten Zeggen",
-    "realStories": "Placeholder testimonials for layout only."
-  },
-  "blog": {
-    "ourBlog": "Inzichten",
-    "headline": "Vastgoed Intelligentie",
-    "subheadline": "Strategische inzichten over internationale vastgoedmarkten.",
-    "searchPlaceholder": "Zoek artikelen...",
-    "categoryAll": "Alles",
-    "categoryBuying": "Kopen",
-    "categorySelling": "Verkopen",
-    "categoryInvesting": "Investeren",
-    "categoryMarketReport": "Marktrapport",
-    "readArticle": "Lees Artikel",
-    "noArticlesFound": "Geen artikelen gevonden die aan uw criteria voldoen.",
-    "stayUpdated": "Strategische Marktupdates",
-    "subscriberDescription": "Ontvang periodieke inzichten over internationale vastgoedmarkten en grensoverschrijdende investeringstrends.",
-    "emailPlaceholder": "Voer uw e-mailadres in",
-    "subscribe": "Abonneren",
-    "backToBlog": "Terug naar Inzichten",
-    "closingLabel": "Green Hill Onderzoek",
-    "closingText": "Voor advies over internationale vastgoedinvesteringen, neem contact op met ons wereldwijde netwerk."
-  },
-  "account": {
-    "myAccount": "Mijn Account",
-    "saved": "Opgeslagen",
-    "alerts": "Waarschuwingen",
-    "settings": "Instellingen",
-    "savedProperties": "Opgeslagen Woningen",
-    "noSavedProperties": "Geen opgeslagen panden",
-    "browseProperties": "Blader door Woningen",
-    "searchAlerts": "Zoekalerts",
-    "createAlert": "Alert Maken",
-    "noSearchAlerts": "Geen zoekalerts",
-    "createAlertDescription": "Maak een alert om op de hoogte te worden gesteld van nieuwe panden die aan uw criteria voldoen",
-    "emailNotificationsEnabled": "E-mailmeldingen ingeschakeld",
-    "noNotifications": "Geen meldingen",
-    "accountSettings": "Accountinstellingen",
-    "fullName": "Volledige Naam",
-    "yourName": "Uw Naam",
-    "email": "hello@example.com",
-    "changeEmailContact": "Neem contact op met ondersteuning om uw e-mailadres te wijzigen",
-    "phoneNumber": "Telefoonnummer",
-    "phoneExample": "+1 (555) 123-4567",
-    "bio": "Bio",
-    "tellUsAbout": "Vertel ons over jezelf...",
-    "saveChanges": "Wijzigingen Opslaan",
-    "saving": "Opslaan...",
-    "signOut": "Afmelden",
-    "agentDashboard": "Agent Dashboard",
-    "myListings": "Mijn Aanbiedingen",
-    "messages": "Berichten"
+    "page": {
+      "seoTitle": "Over Reece | Green Hill Lombok",
+      "seoDescription": "Maak kennis met Reece Green, oprichter van Green Hill Lombok. Een persoonlijk verhaal over aankomen vanuit het VK, grond kopen in Are Guling, en een selectieve aanpak op de grond in Zuid-Lombok.",
+      "talk": "Praat met Reece",
+      "explore": "Ontdek Kansen",
+      "hero": {
+        "eyebrow": "Over Reece",
+        "headline": ".Ik kwam naar|~Lombok op zoek naar|*kansen*|voor mezelf.",
+        "lead": "Green Hill begon met een persoonlijke zoektocht, verhuizen vanuit het VK met zijn partner en dochter, en het proces van grond vinden in Zuid-Lombok zelf doorlopen.",
+        "imageAlt": "Reece Green, oprichter van Green Hill Lombok",
+        "captionName": "Reece Green",
+        "captionRole": "Oprichter, Zuid-Lombok",
+        "cards": {
+          "ground": {
+            "title": "Op de grond",
+            "body": "Persoonlijk bezocht, in context overwogen."
+          },
+          "selective": {
+            "title": "Selectief",
+            "body": "Niet de meeste listings. De juiste."
+          },
+          "relationship": {
+            "title": "Relatiegericht",
+            "body": "Lokale deuren die niet altijd openbaar zijn."
+          }
+        }
+      },
+      "story": {
+        "eyebrow": "Het verhaal",
+        "title": "Van een persoonlijke zoektocht|naar Green Hill.",
+        "p1": "Ik kwam oorspronkelijk naar Lombok op zoek naar kansen voor mezelf, samen met mijn partner en dochter verhuisd vanuit het Verenigd Koninkrijk.",
+        "p2": "Na het kopen van grond in Are Guling en het persoonlijk doorlopen van het proces, van grond vinden en eigendomsstructuren tot notarissen, due diligence, zoning, architecten en bouwers, begon ik relaties op te bouwen met lokale landeigenaren, ontwikkelaars en professionals in Zuid-Lombok.",
+        "p3": "Die relaties openden deuren naar kansen die niet altijd openbaar worden aangeboden. Green Hill groeide daar op natuurlijke wijze uit voort.",
+        "pull": "Ik ben niet geïnteresseerd in de meeste listings.|Ik ben geïnteresseerd in de juiste.",
+        "cardLabel": "Een persoonlijke zoektocht",
+        "cardNote": "Zuid-Lombok",
+        "imageAlt": "Reece die uitkijkt over verhoogd land in Zuid-Lombok bij golden hour"
+      },
+      "place": {
+        "eyebrow": "Een persoonlijke band",
+        "title": "Wat begon als een persoonlijke beslissing werd een diepere band met de plek.",
+        "body": "Grond kopen in Are Guling betekende de vragen van kopers zelf te leven, locatie, proces, en wat een plek op termijn werkbaar maakt. Die ervaring vormt hoe Green Hill Lombok vandaag bekijkt.",
+        "link": "Waarom Lombok",
+        "location": "Are Guling",
+        "region": "Zuid-Lombok",
+        "imageAlt": "Verhoogde vallei in Zuid-Lombok die opent naar de baai bij golden hour"
+      },
+      "relations": {
+        "eyebrow": "Relaties",
+        "title": "Aanwezigheid creëert context. Relaties openen deuren.",
+        "body": "Het proces op de grond doorlopen leidde tot relaties met lokale landeigenaren, ontwikkelaars en professionals in Zuid-Lombok, en tot kansen die niet altijd openbaar worden aangeboden.",
+        "cardAction": "Open deze deur",
+        "doorNote": "Dit is geen openbare directory. Elke deur opent via een gesprek met Reece.",
+        "doorCta": "Spreek met Reece",
+        "prev": "Vorige relatie",
+        "next": "Volgende relatie",
+        "labels": {
+          "landowners": "Landeigenaren",
+          "developers": "Ontwikkelaars",
+          "notaries": "Notarissen",
+          "professionals": "Lokale professionals"
+        },
+        "cards": {
+          "landowners": "Relaties met lokale landeigenaren in Zuid-Lombok, ontstaan door aanwezigheid op de grond.",
+          "developers": "Connecties met ontwikkelaars, gevormd tijdens het lokale proces.",
+          "notaries": "Werkrelaties ontstaan door het eigendomsproces zelf.",
+          "professionals": "Lokale professionals in Zuid-Lombok, en deuren die niet altijd openbaar zijn."
+        },
+        "prefills": {
+          "landowners": "Hoi Reece, ik wil graag vragen naar kansen via lokale landeigenaren in Zuid-Lombok.",
+          "developers": "Hoi Reece, ik wil graag vragen naar kansen via ontwikkelaars in Zuid-Lombok.",
+          "notaries": "Hoi Reece, ik wil graag vragen naar het eigendomsproces en gerelateerde kansen in Zuid-Lombok.",
+          "professionals": "Hoi Reece, ik wil graag vragen naar kansen die openen via lokale professionals in Zuid-Lombok."
+        }
+      },
+      "approach": {
+        "eyebrow": "Hoe Green Hill werkt",
+        "title": "Een doordachte manier van werken.",
+        "titleAccent": "manier van werken.",
+        "lead": "Kansen worden persoonlijk bezocht, zorgvuldig geselecteerd en voor de lange termijn overwogen, via relaties die op de grond zijn opgebouwd.",
+        "featureAlt": "Aankomen op verhoogd land in Zuid-Lombok",
+        "view": "Bekijken",
+        "prev": "Vorige principe",
+        "next": "Volgende principe",
+        "items": {
+          "ground": {
+            "title": "Op de grond",
+            "body": "Kansen worden persoonlijk bezocht en in context overwogen, niet simpelweg verzameld als listings."
+          },
+          "selective": {
+            "title": "Selectief",
+            "body": "Green Hill is niet geïnteresseerd in de meeste listings. Wel in de juiste."
+          },
+          "relationship": {
+            "title": "Relatiegericht",
+            "body": "Lokaal opgebouwde relaties openden deuren naar kansen die niet altijd openbaar worden aangeboden."
+          },
+          "longTerm": {
+            "title": "Lange termijn",
+            "body": "Geselecteerd op de grond. Overwogen voor de lange termijn, met helderheid om te helpen beslissen wat het verkennen waard is."
+          }
+        }
+      },
+      "selects": {
+        "eyebrow": "Wat Green Hill selecteert",
+        "title": "Een doordachte selectie, geen marktplaatscatalogus.",
+        "body": "Vandaag bezoekt en selecteert Reece persoonlijk de kansen die Green Hill vertegenwoordigt, van individuele bouwpercelen en villa's tot grotere grond- en ontwikkelingskansen.",
+        "action": "Meer weten",
+        "items": {
+          "land": {
+            "title": "Grond",
+            "body": "Bouwpercelen en grondkansen"
+          },
+          "villas": {
+            "title": "Villa's",
+            "body": "Geselecteerde residentiële kansen"
+          },
+          "development": {
+            "title": "Ontwikkeling",
+            "body": "Grotere kansen die een dieper gesprek kunnen vragen"
+          },
+          "private": {
+            "title": "Private",
+            "body": "Kansen die rechtstreeks met Reece worden behandeld"
+          }
+        }
+      },
+      "ground": {
+        "eyebrow": "Op de grond",
+        "title": "Geselecteerd op de grond.|Overwogen voor de lange termijn.",
+        "body": "Green Hill verzamelt niet zomaar listings. Kansen worden persoonlijk bezocht, in context overwogen en gepresenteerd met de helderheid om te helpen beslissen wat het verkennen waard is.",
+        "offer": "Wat dit betekent",
+        "cta": "Meer ontdekken",
+        "badgeValue": "Zuid",
+        "badgeLabel": "Lombok",
+        "points": {
+          "visited": {
+            "title": "Op de grond",
+            "body": "Persoonlijk bezocht en in context overwogen"
+          },
+          "selective": {
+            "title": "Selectief",
+            "body": "Niet de meeste listings. De juiste"
+          },
+          "relationships": {
+            "title": "Relatiegericht",
+            "body": "Lokale deuren die niet altijd openbaar worden aangeboden"
+          },
+          "personal": {
+            "title": "Persoonlijk geselecteerd",
+            "body": "Ik bezoek en selecteer persoonlijk de kansen die wij vertegenwoordigen"
+          }
+        },
+        "imageAlt": "Reece op verhoogd land met uitzicht op Zuid-Lombok",
+        "insetAlt": "Verhoogde vallei in Zuid-Lombok die opent naar de baai",
+        "captionName": "Reece Green",
+        "captionRole": "Oprichter"
+      },
+      "converse": {
+        "eyebrow": "Begin een gesprek",
+        "title": "Vertel Reece wat u zoekt.",
+        "body": "Deel het gebied dat u interesseert, het type vastgoed dat u voor ogen heeft, of gewoon wat u overweegt. Reece kan helpen kansen te zien die mogelijk relevant zijn, zonder druk."
+      },
+      "final": {
+        "eyebrow": "Green Hill Lombok",
+        "title": "De juiste kans begint meestal met een gesprek.",
+        "lead": "Ontdek wat beschikbaar is, of begin met een direct gesprek met Reece."
+      }
+    }
   },
   "auth": {
-    "email": {
-      "welcome": "Welkom bij Green Hill",
-      "signInDescription": "Meld u aan om panden op te slaan en gepersonaliseerde aanbevelingen te ontvangen",
-      "signUpDescription": "Maak een account aan om uw vastgoed-reis te starten",
-      "emailAddress": "E-mailadres",
-      "emailPlaceholder": "u@voorbeeld.com",
-      "continue": "Doorgaan",
-      "checking": "Controleren...",
-      "invalidEmail": "Voer een geldig e-mailadres in",
-      "dontHaveAccount": "Nog geen account?",
-      "alreadyHaveAccount": "Heeft u al een account?",
-      "signUp": "Registreren",
-      "signIn": "Inloggen"
-    },
-    "password": {
-      "back": "Terug",
-      "enterYourPassword": "Voer uw wachtwoord in",
-      "passwordLabel": "Wachtwoord",
-      "passwordPlaceholder": "Voer uw wachtwoord in",
-      "forgotPassword": "Wachtwoord vergeten?",
-      "passwordResetComing": "Wachtwoordreset volgt binnenkort",
-      "signingIn": "Aanmelden...",
-      "signInButton": "Inloggen",
-      "useMagicLink": "Gebruik in plaats daarvan magische link",
-      "incorrectCredentials": "E-mailadres of wachtwoord onjuist. Probeer het opnieuw.",
-      "verifyEmail": "Verifieer uw e-mailadres alvorens in te loggen.",
-      "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
-      "enterPasswordRequired": "Voer alstublieft uw wachtwoord in"
-    },
-    "signup": {
-      "back": "Terug",
-      "createYourAccount": "Maak uw account aan",
-      "joinUkonEstate": "Sluit vandaag aan bij Green Hill",
-      "fullName": "Volledige naam",
-      "fullNamePlaceholder": "Jan Jansen",
-      "email": "hello@example.com",
-      "createPassword": "Wachtwoord maken",
-      "createPasswordPlaceholder": "Min. 8 tekens",
-      "passwordMinLength": "Moet minimaal 8 tekens lang zijn",
-      "iAm": "Ik ben een...",
-      "buyerRenter": "Koper/Huurder",
-      "buyerRenterDescription": "Op zoek naar woningen",
-      "agentSeller": "Makelaar/Verkoper",
-      "agentSellerDescription": "Woningen aanbieden",
-      "agreeToTerms": "Ik ga akkoord met de",
-      "termsOfService": "Servicevoorwaarden",
-      "privacyPolicy": "Privacybeleid",
-      "creatingAccount": "Account aanmaken...",
-      "createAccountButton": "Account aanmaken",
-      "secureEncryption": "Beveiligd met encryptie volgens industrienorm",
-      "accountCreated": "Account aangemaakt! Controleer uw e-mail ter verifikatie.",
-      "emptyName": "Voer alstublieft uw volledige naam in",
-      "invalidPassword": "Wachtwoord moet minimaal 8 tekens lang zijn",
-      "agreeToTermsRequired": "Ga alstublieft akkoord met de Servicevoorwaarden en het Privacybeleid",
-      "userAlreadyRegistered": "Dit e-mailadres is al geregistreerd. Probeer in te loggen.",
-      "passwordShortError": "Wachtwoord moet minimaal 8 tekens lang zijn.",
-      "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
-    },
-    "magicLink": {
-      "checkEmail": "Controleer uw e-mail",
-      "sentLoginLink": "We hebben een inlogkoppeling verzonden naar",
-      "lookForEmail": "Zoek een e-mail met onderwerp:",
-      "signInSubject": "Inloggen bij Green Hill",
-      "quickTips": "💡 Snelle tips:",
-      "checkSpamFolder": "Controleer uw spammap als u het niet ziet",
-      "linkExpires": "De koppeling vervalt over 24 uur",
-      "resendEmail": "Klik op de koppeling om automatisch in te loggen",
-      "gotIt": "Begrepen!",
-      "sending": "Verzenden...",
-      "resendCountdown": "Opnieuw verzenden over {timer}s",
-      "resendButtonText": "E-mail opnieuw verzenden"
-    },
     "callback": {
       "verifying": "Uw account verifiëren...",
       "pleaseWait": "Even geduld alstublieft terwijl we u omleiden"
-    },
-    "messages": {
-      "successfulLogout": "Succesvol afgemeld",
-      "failedLogout": "Afmelden mislukt. Probeer het opnieuw.",
-      "welcomeBack": "Welkom terug!"
     }
   },
-  "dashboard": {
-    "overview": "Overzicht",
-    "listings": "Aanbiedingen",
-    "addNew": "Nieuw Toevoegen",
-    "settings": "Instellingen",
-    "welcomeBack": "Welkom terug, beheerder",
-    "propertiesUpdates": "Dit gebeurt vandaag met uw eigenschappen.",
-    "publishListing": "Aanbieding Publiceren",
-    "totalListings": "Totale Aanbiedingen",
-    "activeLeads": "Actieve Leads",
-    "views30d": "Weergaven (30d)",
-    "recentListings": "Recente Aanbiedingen",
-    "filterByAddress": "Filteren op adres...",
-    "noPropertiesYet": "Nog geen onroerend goed gepubliceerd. Gebruik de knop 'Nieuw toevoegen' om uw eerste aanbieding te maken!",
-    "viewAll": "Alles weergeven",
-    "properties": "eigenschappen",
-    "publishNewProperty": "Nieuw Onroerend Goed Publiceren",
-    "fillDetails": "Vul de onderstaande gegevens in om een nieuwe aanbieding aan uw catalogus toe te voegen.",
-    "allListings": "Alle Aanbiedingen",
-    "manageListings": "Beheer en controleer al uw onroerendgoedaanbiedingen op één plaats.",
-    "searchListings": "Aanbiedingen doorzoeken...",
-    "noPropertiesFound": "Geen onroerend goed gevonden. Probeer een nieuwe aanbieding toe te voegen!",
-    "messages": "Berichten"
-  },
   "footer": {
-    "tagline": "Gerichte vastgoed- en investeringskansen op Lombok — gepresenteerd met helderheid en zorg.",
+    "tagline": "Vastgoed- en investeringskansen op Lombok, gepresenteerd met helderheid en zorg.",
+    "brandLine": "Green Hill voor Lombok grond & investeringen",
+    "badge": "Geselecteerd op locatie",
     "location": "Lombok, Indonesia",
     "locationShort": "Lombok · Indonesia",
     "explore": "Verkennen",
     "approach": "Aanpak",
+    "guide": "Gids",
+    "floatContact": "Contact",
+    "contactHeading": "Contact & plek",
+    "exploreOpportunities": "Verken kansen",
+    "cardChip": "Op locatie",
+    "cardTalk": "Praat met Reece",
+    "cardExplore": "Verkennen",
+    "whatsapp": "WhatsApp",
+    "mapTitle": "Green Hill-locatie op Google Maps",
+    "mapLabel": "Green Hill · Lombok",
+    "mapOpen": "Kaart openen",
+    "dockAria": "Snelle contactopties",
+    "dockClose": "Sluiten",
+    "dockBrandNote": "Geselecteerde grond & investeringen",
+    "dockEmailLabel": "E-mail",
+    "dockTalkLabel": "Praat met Reece",
+    "dockTalkMeta": "Start een gesprek",
+    "slogan": "Green Hill · Geselecteerde grond & investeringen",
+    "trustOnGroundTitle": "Op locatie",
+    "trustOnGroundBody": "Kansen persoonlijk bezocht en geselecteerd",
+    "trustCuratedTitle": "Alleen gecureerd",
+    "trustCuratedBody": "Een doordachte selectie, geen marktplaatscatalogus",
+    "trustTalkTitle": "Begin met een gesprek",
+    "trustTalkBody": "Vertel Reece wat u zoekt, zonder druk",
     "rights": "Alle rechten voorbehouden.",
-    "positioning": "Grensoverschrijdend vastgoedadvies voor investeerders en particuliere cliënten die strategische vastgoedvertegenwoordiging wereldwijd zoeken.",
-    "address": "Lombok, Indonesia",
-    "email": "",
-    "phone": "",
-    "advisory": "Advies",
-    "propertySales": "Vastgoedverkoop",
-    "investmentAdvisory": "Beleggingsadvies",
-    "rentalAssetManagement": "Verhuur- & Vastgoedbeheer",
-    "propertyValuation": "Vastgoedtaxatie",
-    "globalNetwork": "Wereldwijd Netwerk",
-    "ourNetwork": "Ons Netwerk",
-    "europeRepresentation": "Vertegenwoordiging Europa",
-    "southeastAsiaRepresentation": "Vertegenwoordiging Zuidoost-Azië",
-    "strategicPartnerships": "Strategische Partnerschappen",
-    "joinOurNetwork": "Sluit U Aan bij Ons Netwerk",
-    "intelligence": "Inzichten",
-    "marketIntelligence": "Marktinzichten",
-    "marketReports": "Marktrapporten",
-    "buyingGuides": "Koopgidsen",
-    "sellingGuides": "Verkoopgidsen",
-    "copyright": "© 2026 Green Hill. Alle rechten voorbehouden.",
-    "privacyPolicy": "Privacybeleid",
-    "termsOfUse": "Gebruiksvoorwaarden",
-    "disclaimer": "Disclaimer"
-  },
-  "admin": {
-    "title": "Beheerderspaneel",
-    "partnerManagement": "Partnerbeheer",
-    "allSellers": "Verkopers",
-    "partnerStatus": "Partnerstatus",
-    "noSellers": "Geen verkopersprofielen gevonden",
-    "backToDashboard": "Agent Dashboard",
-    "applications": "Aanvragen",
-    "noApplications": "Geen partneraanvragen gevonden",
-    "applicationApproveConfirm": "Partneraanvraag goedkeuren?",
-    "applicationApproveDesc": "Dit verleent Geverifieerd Partner status aan \"{name}\". Hun aanbiedingen tonen het officiële Green Hill partnerbadge.",
-    "applicationRejectConfirm": "Partneraanvraag afwijzen?",
-    "applicationRejectDesc": "Dit wijst de partneraanvraag van \"{name}\" af.",
-    "applicationDate": "Aangevraagd",
-    "applicationMotivation": "Strategische Motivatie",
-    "applicationWebsite": "Website",
-    "applicationAgents": "Agenten",
-    "applicationAreas": "Actieve Gebieden",
-    "applicationContactEmail": "Contact E-mail",
-    "applicationContactPhone": "Contacttelefoon"
-  },
-  "partners": {
-    "heroHeadline": "Strategische Partnerschappen",
-    "heroSubheadline": "De infrastructuur achter institutioneel vastgoed.",
-    "heroSupportingLine": "Een netwerk gebouwd op gedeelde standaarden, strategische afstemming en langdurige betrokkenheid.",
-    "introHeadline": "Waarom Partnerschappen Belangrijk Zijn",
-    "introText1": "Green Hill opereert via een zorgvuldig samengesteld netwerk van lokale professionals die onze toewijding aan excellentie, discretie en klantresultaten delen.",
-    "introText2": "Partnerschap is geen label. Het is een structureel commitment aan een gedeelde operationele standaard over internationale vastgoedmarkten.",
-    "buildingHeadline": "Wat Green Hill Bouwt",
-    "buildingText": "Een wereldwijde makelaarsinfrastructuur waar elke partner lokale kennis bijdraagt terwijl ze opereren onder een uniform kwaliteitskader. Ons netwerkmodel zorgt ervoor dat klanten consistente, adviserende service ontvangen ongeacht geografie.",
-    "expectHeadline": "Wat Wij Verwachten van Partners",
-    "expectItem1": "Bewezen staat van dienst in residentieel of commercieel vastgoed",
-    "expectItem2": "Toewijding aan ethische, transparante klantvertegenwoordiging",
-    "expectItem3": "Actieve aanwezigheid in een gedefinieerde geografische markt",
-    "expectItem4": "Bereidheid om te opereren onder Green Hill kwaliteitsnormen",
-    "gainHeadline": "Wat Partners Krijgen",
-    "gainItem1": "Toegang tot het internationale klantnetwerk van Green Hill",
-    "gainItem2": "Geverifieerd Partner badge en prioriteit bij aanbiedingen",
-    "gainItem3": "Centrale coördinatie voor grensoverschrijdende transacties",
-    "gainItem4": "Merkassociatie met een vertrouwde internationale makelaar",
-    "formHeadline": "Aanvragen voor Partnerschap",
-    "formSubtext": "Vul het onderstaande formulier in om uw aanvraag in te dienen. Ons team beoordeelt elke aanvraag persoonlijk.",
-    "formAgencyWebsite": "Website van het Kantoor",
-    "formAgencyWebsitePlaceholder": "https://uw-kantoor.nl",
-    "formNumberOfAgents": "Aantal Agenten",
-    "formNumberOfAgentsPlaceholder": "bijv. 12",
-    "formAreasActive": "Actieve Gebieden",
-    "formAreasActivePlaceholder": "bijv. Amsterdam, Rotterdam, Den Haag",
-    "formStrategicMotivation": "Waarom wilt u partner worden van Green Hill?",
-    "formStrategicMotivationPlaceholder": "Beschrijf uw strategische motivatie om ons netwerk te joinen...",
-    "formContactEmail": "Contact E-mail",
-    "formContactEmailPlaceholder": "uw@email.nl",
-    "formContactPhone": "Contacttelefoon",
-    "formContactPhonePlaceholder": "+31 6 1234 5678",
-    "formSubmit": "Aanvraag Indienen",
-    "formSubmitting": "Indienen...",
-    "formSuccess": "Aanvraag succesvol ingediend",
-    "formError": "Aanvraag indienen mislukt",
-    "formDuplicate": "U heeft al een aanvraag ingediend",
-    "loginRequired": "Log in om aan te vragen",
-    "loginRequiredText": "Partneraanvragen zijn beschikbaar voor geregistreerde agenten. Log in of maak een agentaccount aan om door te gaan.",
-    "loginCta": "Inloggen als Agent",
-    "buyerNotice": "Alleen agentaccounts",
-    "buyerNoticeText": "Partneraanvragen zijn uitsluitend beschikbaar voor geregistreerde agenten. Kopersaccounts kunnen geen partnerschap aanvragen.",
-    "statusPending": "Aanvraag in Behandeling",
-    "statusPendingText": "Uw aanvraag is ingediend en wordt momenteel beoordeeld door ons team.",
-    "statusApproved": "Aanvraag Goedgekeurd",
-    "statusApprovedText": "Uw partneraanvraag is goedgekeurd. U bent nu een Geverifieerd Partner in het Green Hill netwerk.",
-    "statusRejected": "Aanvraag Niet Goedgekeurd",
-    "statusRejectedText": "Na zorgvuldige beoordeling is uw aanvraag op dit moment niet goedgekeurd."
-  },
-  "messaging": {
-    "requestViewing": "Bezichtiging Aanvragen",
-    "askQuestion": "Stel een Vraag",
-    "getMoreInfo": "Meer Informatie",
-    "sendMessage": "Bericht Versturen",
-    "messageSent": "Bericht verzonden!",
-    "agentWillRespond": "De makelaar zal spoedig reageren.",
-    "sendAnother": "Nog een Bericht Versturen",
-    "typeMessage": "Typ uw bericht...",
-    "typeReply": "Typ uw reactie...",
-    "selectDate": "Selecteer gewenste datum"
+    "landOpportunities": "Grondkansen",
+    "villaOpportunities": "Villakansen",
+    "developmentPlots": "Ontwikkelingskavels",
+    "buyingInLombok": "Kopen op Lombok"
   },
   "common": {
-    "loading": "Laden...",
-    "error": "Fout",
-    "success": "Succes",
-    "cancel": "Annuleren",
-    "delete": "Verwijderen",
-    "edit": "Bewerken",
-    "close": "Sluiten",
-    "search": "Zoeken",
-    "filter": "Filter",
-    "sort": "Sorteren",
-    "noResults": "Geen resultaten gevonden",
-    "tryAgain": "Probeer Opnieuw",
     "language": "Taal",
     "currency": "Valuta",
-    "selectLanguage": "Selecteer Taal",
-    "selectCurrency": "Selecteer Valuta",
-    "linkCopied": "Link naar klembord gekopieerd!",
-    "profileUpdated": "Profiel succesvol bijgewerkt",
-    "failedToUpdate": "Profiel bijwerken mislukt",
-    "propertyRemoved": "Woning verwijderd uit opgeslagen",
-    "failedToRemove": "Woning verwijderen mislukt",
-    "alertRemoved": "Zoekalert verwijderd",
-    "failedToRemoveAlert": "Alert verwijderen mislukt",
-    "failedToLoadAccount": "Accountgegevens laden mislukt",
-    "errorFetchingProperty": "Fout bij ophalen pand",
-    "errorFetchingProperties": "Fout bij ophalen aanbevolen panden",
-    "errorLoadingAccount": "Fout bij laden accountgegevens",
     "notFound": {
       "title": "404",
       "message": "Oops! Pagina niet gevonden",
       "returnHome": "Terug naar Start"
+    }
+  },
+  "notes": {
+    "page": {
+      "seoTitle": "Green Hill Notes | Perspectieven vanaf Lombok",
+      "seoDescription": "Observaties en perspectieven van Green Hill over Lombok, grond, vastgoed en het begrijpen van een kans.",
+      "eyebrow": "Green Hill Notes",
+      "headline": "Perspectieven|vanaf de grond.",
+      "lead": "Observaties over Lombok, grond, vastgoed, ontwikkeling en het begrijpen van een kans.",
+      "heroAlt": "Zuid-Lombok landschap, gezien vanaf de grond",
+      "featuredEyebrow": "Uitgelichte note",
+      "featuredEmptyTitle": "Notes vanaf de grond komen eraan.",
+      "featuredEmptyBody": "Green Hill bereidt zorgvuldig overwogen notes voor over Lombok, grond en wat volgt. Verken intussen de plek, de aanpak en de al geselecteerde kansen.",
+      "latestEyebrow": "Laatste notes",
+      "latestTitle": "Een gecureerd journal.",
+      "latestLead": "Geselecteerde observaties, geschreven met dezelfde zorg waarmee Green Hill kansen selecteert.",
+      "emptyBody": "Deze ruimte zal Green Hill-perspectieven bevatten over Lombok, grond en de vragen die kopen hier vormgeven. Geen vulling. Alleen wat het lezen waard is.",
+      "readNote": "Lees de note",
+      "topicsEyebrow": "Perspectieven",
+      "topicsTitle": "Verken verder.",
+      "topicsLead": "Notes hoort bij de rest van Green Hill: plek, persoon, aanpak en geselecteerde kansen.",
+      "topics": {
+        "lombok": {
+          "label": "Waarom Lombok",
+          "body": "Landschap, toegang en het karakter van Zuid-Lombok."
+        },
+        "buying": {
+          "label": "Kopen op Lombok",
+          "body": "Vragen om te overwegen voordat u verder gaat."
+        },
+        "private": {
+          "label": "Green Hill Private",
+          "body": "Een discrete route buiten de publieke collectie."
+        },
+        "opportunities": {
+          "label": "Kansen",
+          "body": "Een doordachte selectie vanaf de grond."
+        },
+        "about": {
+          "label": "Over Reece",
+          "body": "Het persoonlijke verhaal achter Green Hill."
+        }
+      },
+      "perspectiveEyebrow": "Green Hill perspectief",
+      "perspectiveTitle": "Goede kansen beginnen met het begrijpen van de context.",
+      "perspectiveBody": "Green Hill observeert Lombok vanaf de grond: selectief, lange termijn en discreet. Notes bestaan om die context te delen, niet om uitkomsten te beloven.",
+      "finalEyebrow": "Praat met Reece",
+      "finalTitle": "Heeft u een vraag over Lombok?",
+      "finalLead": "Vertel wat u overweegt. Reece kan helpen zien wat mogelijk relevant is.",
+      "talkCta": "Praat met Reece",
+      "exploreCta": "Ontdek Kansen",
+      "backToNotes": "Terug naar Notes",
+      "notFoundTitle": "Note niet gevonden",
+      "notFoundLead": "Deze note staat niet in de huidige collectie.",
+      "authorLabel": "Green Hill",
+      "relatedEyebrow": "Gerelateerde notes",
+      "relatedTitle": "Lees verder.",
+      "articleEndEyebrow": "Vervolgstappen",
+      "articleEndTitle": "Verken wat beschikbaar is, of start een gesprek.",
+      "fieldNotes": "Veldnotities",
+      "locality": "Zuid-Lombok",
+      "country": "Indonesië",
+      "heroCaption": "Op de grond, Zuid-Lombok",
+      "journalLabel": "Het journal",
+      "journalMeta": "Lombok / Grond / Perspectief",
+      "journalImageAlt": "Kustgrond boven de zee in Zuid-Lombok",
+      "themesEyebrow": "In voorbereiding",
+      "themesTitle": "Waar de notes over zullen gaan.",
+      "themes": {
+        "land": {
+          "label": "Grond",
+          "body": "De context begrijpen vóór de kans."
+        },
+        "lombok": {
+          "label": "Lombok",
+          "body": "Een ander tempo, een ander perspectief."
+        },
+        "buying": {
+          "label": "Kopen",
+          "body": "Vragen die het waard zijn te stellen vóór aankoop in Lombok."
+        },
+        "perspective": {
+          "label": "Perspectief",
+          "body": "Hoe Green Hill een plek over tijd leest."
+        }
+      },
+      "perspectiveAttribution": "Green Hill Lombok",
+      "themesTitleBefore": "Waar de ",
+      "themesTitleAccent": "notes",
+      "themesTitleAfter": " over zullen gaan.",
+      "themesCta": "Waarom Lombok",
+      "themesBadge": "Green Hill"
+    }
+  },
+  "enquiry": {
+    "page": {
+      "seoTitle": "Spreek Reece · Investeerdersaanvraag · Green Hill Lombok",
+      "seoDescription": "Vertel Reece uw budget, doel en termijn. Green Hill stelt daarna de kansen in Zuid-Lombok voor die het overwegen waard zijn.",
+      "eyebrow": "Investeerdersaanvraag",
+      "title": "Vertel Reece waar u naar zoekt.",
+      "lead": "Een paar gegevens over uw budget, doel en termijn helpen Reece de twee of drie kansen voor te stellen die echt passen.",
+      "privateEyebrow": "Green Hill Private",
+      "privateTitle": "Vraag het investeringsmemorandum aan.",
+      "privateLead": "Volledige informatie wordt privé gedeeld. Vertel Reece iets over uzelf en uw plannen, zodat hij kan opvolgen met wat relevant is.",
+      "direct": "Liever meteen praten?",
+      "directLink": "Spreek Reece via WhatsApp"
+    },
+    "form": {
+      "about": "Over",
+      "name": "Naam",
+      "namePlaceholder": "Uw volledige naam",
+      "company": "Bedrijf",
+      "companyPlaceholder": "Als u via een bedrijf investeert",
+      "email": "E-mail",
+      "emailPlaceholder": "naam@email.com",
+      "whatsapp": "WhatsApp",
+      "whatsappPlaceholder": "Inclusief landcode",
+      "country": "Land",
+      "countryPlaceholder": "Waar u woont",
+      "budget": "Budget",
+      "capital": "Beschikbaar kapitaal",
+      "investorType": "Type investeerder",
+      "objective": "Belangrijkste doel",
+      "timeframe": "Termijn",
+      "interests": "Waar u in geïnteresseerd bent",
+      "privateInterests": "Interessegebieden",
+      "choose": "Kies…",
+      "message": "Bericht",
+      "messagePlaceholder": "Bijvoorbeeld: ik heb ongeveer £150.000 om in Lombok te investeren. Waar zou u het in steken?",
+      "privateMessagePlaceholder": "Vertel Reece over uw plannen en de schaal die u voor ogen heeft",
+      "submit": "Stuur naar Reece",
+      "submitPrivate": "Vraag het investeringsmemorandum aan",
+      "privacy": "Uw gegevens gaan alleen naar Reece en worden nooit gedeeld of gepubliceerd.",
+      "sentWhatsapp": "Dank u. WhatsApp wordt geopend zodat u het gesprek met Reece kunt voortzetten.",
+      "sentEmail": "Dank u. Uw e-mailprogramma wordt geopend met uw gegevens voor Reece.",
+      "errors": {
+        "name": "Vul uw naam in.",
+        "contact": "Voeg een e-mailadres of WhatsApp-nummer toe.",
+        "email": "Voer een geldig e-mailadres in."
+      }
+    },
+    "options": {
+      "budget": {
+        "under50k": "Onder £50k",
+        "50to100k": "£50–100k",
+        "100to250k": "£100–250k",
+        "250to500k": "£250–500k",
+        "500kto1m": "£500k–£1m",
+        "over1m": "£1m+"
+      },
+      "interests": {
+        "land": "Grond",
+        "villa": "Villa",
+        "offPlan": "Off-plan",
+        "rentalInvestment": "Verhuurinvestering",
+        "landBanking": "Grondbank",
+        "development": "Ontwikkelingskans",
+        "lifestyle": "Levensstijl / woning",
+        "notSure": "Nog niet zeker"
+      },
+      "objective": {
+        "capitalGrowth": "Vermogensgroei",
+        "rentalIncome": "Huurinkomsten",
+        "development": "Ontwikkeling",
+        "lifestyle": "Levensstijl",
+        "combination": "Een combinatie"
+      },
+      "timeframe": {
+        "within3m": "Binnen 3 maanden",
+        "3to6m": "3–6 maanden",
+        "6to12m": "6–12 maanden",
+        "over12m": "Meer dan 12 maanden",
+        "exploring": "Oriënterend"
+      },
+      "capital": {
+        "100to250k": "USD 100k–250k",
+        "250to500k": "USD 250k–500k",
+        "500kto1m": "USD 500k–1m",
+        "1to5m": "USD 1m–5m",
+        "5to10m": "USD 5m–10m",
+        "over10m": "USD 10m+"
+      },
+      "investorType": {
+        "private": "Particuliere investeerder",
+        "developer": "Ontwikkelaar",
+        "familyOffice": "Family office",
+        "group": "Investeringsgroep",
+        "hospitality": "Hospitalityoperator",
+        "other": "Anders"
+      },
+      "privateInterests": {
+        "landBanking": "Grondbank",
+        "development": "Ontwikkeling",
+        "hospitality": "Hospitality",
+        "residential": "Woningontwikkeling",
+        "jv": "JV-kansen",
+        "other": "Anders"
+      }
     }
   }
 }

@@ -1,15 +1,7 @@
 {
   "navigation": {
-    "home": "Inicio",
-    "services": "Servicios",
-    "properties": "Propiedades",
     "about": "Acerca de",
-    "agents": "Red Global",
-    "blog": "Inteligencia",
-    "signIn": "Iniciar Sesión",
-    "contact": "Contacto",
-    "contactUsNow": "Contáctanos Ahora",
-    "logout": "Cerrar Sesión",
+    "private": "Green Hill Private",
     "opportunities": "Oportunidades",
     "whyLombok": "Por Qué Lombok",
     "speakWithUs": "Habla con Reece",
@@ -21,98 +13,129 @@
     "headline": "Oportunidades de|propiedad e inversión|seleccionadas|en el sur de Lombok.",
     "headlineMobile": "Oportunidades de|propiedad e inversión|seleccionadas en|el sur de Lombok.",
     "subheadline": "Seleccionado en el terreno. Considerado a largo plazo.",
-    "exploreProperties": "Explorar Oportunidades",
-    "stats": {
-      "projectsComplete": "Proyectos Completados",
-      "propertiesTransacted": "Propiedades Transaccionadas",
-      "happyClients": "Clientes Satisfechos",
-      "projectValue": "Valor del Proyecto",
-      "googleReviews": "Green Hill · Lombok",
-      "rating": "Curated property & land"
-    },
-    "eyebrow": "Green Hill / Lombok",
-    "badge": "Oportunidades en el sur de Lombok",
     "locationLabel": "Sur de Lombok, Indonesia",
-    "headlineBefore": "Descubre",
-    "headlineHighlight": "oportunidades inmobiliarias seleccionadas",
-    "headlineAfter": "en el sur de Lombok.",
     "speakWithUs": "Hablar con Reece",
-    "foundedBy": "Fundado por Reece Green",
     "founderName": "Reece Green",
     "founderRole": "Fundador · Inversor · Sur de Lombok",
     "founderNote": "Visito y selecciono personalmente las oportunidades que representamos.",
     "meetReece": "Conoce a Reece",
-    "founderQuote": "Los lugares extraordinarios crean oportunidades extraordinarias.",
-    "founderAttr": "Reece Green / Founder",
-    "microTrust": "Seleccionado en el sur de Lombok · Elegido personalmente",
-    "watchFilm": "Ver la película",
-    "watchFilmCaption": "Una perspectiva diferente",
     "scrollExplore": "Descubrir más",
-    "land": "Terreno",
-    "villas": "Villas",
-    "exploreOpportunities": "Explorar Oportunidades",
-    "trust": {
-      "local": "Conocimiento local sobre el terreno",
-      "selected": "Oportunidades cuidadosamente seleccionadas",
-      "personal": "Acompañamiento personal de Reece"
-    },
-    "enquiry": {
-      "eyebrow": "Consulta de inversor",
-      "meta": "Orientativo · sin compromiso",
-      "title": "Inicia una conversación sobre oportunidades en Lombok.",
-      "question": "¿Qué estás buscando?",
-      "optLand": "Parcela de tierra",
-      "optVilla": "Villa",
-      "optDev": "Parcela de desarrollo",
-      "optGuide": "Asesoramiento de inversión",
-      "optLifestyle": "Propiedad lifestyle",
-      "optExploring": "Aún explorando",
-      "ctaContinue": "Continuar",
-      "ctaSubmit": "Habla con Reece",
-      "back": "Atrás",
-      "contactTitle": "¿Cómo puede contactarte Reece?",
-      "name": "Tu nombre",
-      "namePlaceholder": "Nombre completo",
-      "contact": "Email o WhatsApp",
-      "contactPlaceholder": "tu@email.com o +34…",
-      "doneTitle": "Todo listo.",
-      "doneBody": "WhatsApp se abrirá para que continúes la conversación directamente con Reece."
-    }
+    "exploreOpportunities": "Explorar Oportunidades"
   },
   "properties": {
-    "featured": "Oportunidades Destacadas",
-    "featuredSubtitle": "Oportunidades seleccionadas|con potencial a largo plazo.",
-    "viewAllProperties": "Ver Todas las Propiedades",
-    "findYourPerfect": "Encuentre Su Propiedad Perfecta",
-    "browseDescription": "Explore nuestra colección exclusiva de propiedades en venta, alquiler y oportunidades de inversión.",
-    "search": "Buscar propiedades...",
-    "allProperties": "Todas las Propiedades",
-    "forRent": "Para Alquilar",
-    "forSale": "A la Venta",
-    "forSell": "A la Venta",
-    "forInvestment": "Para Invertir",
-    "available": "Disponible",
-    "backToProperties": "Volver a Propiedades",
-    "noPropertiesFound": "No se encontraron propiedades que coincidan con sus criterios.",
     "notFound": "Propiedad no encontrada",
-    "featuredLead": "Ejemplos de terreno y villas en Lombok — presentados como una vista previa curada.",
-    "exampleLand": "Terreno",
+    "archive": {
+      "eyebrow": "Oportunidades seleccionadas",
+      "headline": "Oportunidades seleccionadas en Lombok.",
+      "lead": "Una colección reducida de oportunidades seleccionadas sobre el terreno en Lombok, presentada con el contexto para decidir qué merece explorarse.",
+      "collectionLabel": "La colección",
+      "collectionHeadline": "Una pequeña selección de oportunidades, considerada sobre el terreno.",
+      "collectionLead": "No pretendemos mostrar todo. Solo las oportunidades que creemos que merecen una mirada más atenta.",
+      "all": "Todas las oportunidades",
+      "land": "Terreno",
+      "villas": "Villas",
+      "development": "Desarrollo",
+      "private": "Privado",
+      "location": "Ubicación",
+      "searchPlaceholder": "Buscar por zona, distrito o palabra...",
+      "moreFilters": "Más filtros",
+      "clearAll": "Quitar todo",
+      "size": "Superficie",
+      "sizeMin": "Mín m²",
+      "sizeMax": "Máx m²",
+      "bedrooms": "Dormitorios",
+      "any": "Cualquiera",
+      "allRegions": "Todas las ubicaciones",
+      "view": "Ver oportunidad",
+      "empty": "Ninguna oportunidad coincide con estos criterios.",
+      "clear": "Quitar filtros",
+      "closeEyebrow": "¿No sabe qué encaja?",
+      "closeHeadline": "Cuéntele a Reece lo que busca.",
+      "closeLead": "Algunas oportunidades se hablan mejor en privado. Si tiene una ubicación, un presupuesto, un plazo o un objetivo de inversión, empiece la conversación.",
+      "closePrivate": "Green Hill Private",
+      "privateLabel": "Oportunidad privada",
+      "privateNote": "Disponible mediante conversación",
+      "talkToReece": "Hablar con Reece",
+      "statusAvailable": "Disponible",
+      "statusSold": "Vendida",
+      "statusReserved": "Reservada",
+      "bedroomsWord": "dormitorios",
+      "opportunities": "oportunidades",
+      "emptyCollection": "La colección se está seleccionando. Cuente qué busca y Reece le responderá con lo que encaje.",
+      "emptyCollectionCta": "Comparta su perfil de inversor"
+    },
+    "memo": {
+      "selected": "Oportunidad seleccionada",
+      "privateOpportunity": "Oportunidad privada",
+      "theOpportunity": "La oportunidad",
+      "whyGreenHill": "Por qué nos gusta en Green Hill",
+      "location": "Ubicación",
+      "interested": "¿Le interesa esta oportunidad?",
+      "interestedLead": "Algunas oportunidades se entienden mejor en conversación. Cuéntele a Reece qué busca y vea si esta oportunidad encaja.",
+      "exploreOther": "Explorar otras oportunidades",
+      "exploreAll": "Explorar todas las oportunidades",
+      "landSize": "Superficie",
+      "type": "Tipo",
+      "status": "Estado",
+      "price": "Precio",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "reference": "Referencia",
+      "building": "Superficie construida",
+      "year": "Año",
+      "ownership": "Titularidad",
+      "factualLand": "{size} de terreno en {place}.",
+      "factualTyped": "{size} en {place}.",
+      "factualPlace": "Una oportunidad en {place}.",
+      "notFoundLead": "Este registro no está en la colección actual.",
+      "loading": "Cargando",
+      "previous": "Fotografía anterior",
+      "next": "Fotografía siguiente",
+      "viewPhoto": "Ver fotografía",
+      "viewAllPhotos": "Ver fotografías ({count})",
+      "fullView": "Ver completo",
+      "film": "Film",
+      "nearby": "Cerca",
+      "overview": "Resumen",
+      "speakWith": "Hablar con",
+      "reeceRole": "Fundador, Green Hill Lombok",
+      "opportunityTitle": "Sobre esta oportunidad",
+      "otherOpportunities": "Otras oportunidades",
+      "otherLead": "Registros seleccionados de la colección actual.",
+      "seeMore": "Ver más",
+      "whatsappMessage": "Hola Reece, me interesa {title} {reference}.",
+      "sendEnquiry": "Enviar una consulta",
+      "requestMemorandum": "Solicitar memorando de inversión",
+      "privateInformation": "La información completa de la inversión está disponible de forma privada a través de Green Hill.",
+      "whyLookingAtThis": "Por qué Green Hill está considerando esto",
+      "developmentPotential": "Potencial de desarrollo",
+      "conceptsNote": "Solo conceptos. Cualquier uso está sujeto a zonificación, permisos, viabilidad y asesoramiento profesional independiente.",
+      "priceSource": "Precio {price}. Los importes convertidos son aproximados.",
+      "documents": "Documentos",
+      "brochure": "Folleto (PDF)",
+      "masterplan": "Plan maestro (PDF)",
+      "opensNewTab": "(se abre en una pestaña nueva)",
+      "roadAccess": "Acceso por carretera",
+      "utilities": "Suministros",
+      "developer": "Promotor / vendedor"
+    },
     "exampleVilla": "Villa"
   },
   "selected": {
     "eyebrow": "Oportunidades Seleccionadas",
     "headline": "Una selección considerada|de lugares con potencial.",
-    "lead": "Ejemplos de terreno y villas en Lombok — presentados como una selección curada pequeña, no un catálogo de mercado.",
+    "lead": "Ejemplos de terreno y villas en Lombok, cada uno presentado como parte de una selección curada pequeña, no un catálogo de mercado.",
     "viewOpportunity": "Ver Oportunidad",
     "viewAll": "Ver Todas las Oportunidades",
     "priceOnRequest": "Precio a Consultar",
-    "landSize": "Superficie"
+    "empty": "Se están seleccionando nuevas oportunidades. Mientras tanto, cuéntele a Reece qué busca."
   },
   "private": {
     "eyebrow": "Green Hill Private",
     "headline": "Algunas oportunidades|se gestionan mejor en privado.",
-    "lead": "Cuando el requerimiento es más específico — terreno mayor, hospitality, desarrollo o una colaboración — Green Hill puede trabajar con usted directamente a través de una conversación discreta y basada en la relación con Reece.",
+    "lead": "Cuando el requerimiento es más específico, como terreno mayor, hospitality, desarrollo o una colaboración, Green Hill puede trabajar con usted directamente a través de una conversación discreta y basada en la relación con Reece.",
     "cta": "Solicitar una Conversación Privada",
+    "journey": "Explorar Green Hill Private",
     "note": "Estas son vías de consulta, no un catálogo público de proyectos disponibles.",
     "pathways": {
       "land": {
@@ -131,6 +154,185 @@
         "title": "Joint Ventures",
         "body": "Para oportunidades basadas en la relación cuando un enfoque compartido es adecuado."
       }
+    },
+    "page": {
+      "seoTitle": "Green Hill Private | Green Hill Lombok",
+      "seoDescription": "Una vía discreta para inversores, desarrolladores y operadores de hospitality que exploran oportunidades de terreno y desarrollo más allá de la colección pública de Green Hill en el sur de Lombok.",
+      "eyebrow": "Green Hill Private",
+      "headline": "¿Busca algo|concreto?",
+      "lead": "Para inversores, desarrolladores y operadores de hospitality que buscan más allá de nuestra colección pública.|Green Hill Private abre un camino más directo hacia oportunidades seleccionadas sobre el terreno en Lombok.",
+      "heroAlt": "Campos cultivados y colinas con palmeras en el sur de Lombok a la luz del atardecer",
+      "heroSpine": "Sobre el terreno",
+      "heroCaption": "Sur de Lombok, Seleccionado en persona",
+      "talk": "Hablar con Reece",
+      "explore": "Explorar Oportunidades",
+      "audience": {
+        "eyebrow": "Para quién",
+        "title": "Una vía privada|para quienes buscan|más allá de la colección pública.",
+        "lead": "Desde la primera conversación hasta la introducción adecuada. Explorado en privado, con claridad en cada paso.",
+        "step": "Paso",
+        "of": "de",
+        "continue": "Continuar con Reece",
+        "prev": "Audiencia anterior",
+        "next": "Audiencia siguiente",
+        "items": {
+          "investors": {
+            "title": "Inversores Privados",
+            "body": "Oportunidades de terreno y propiedad seleccionadas, consideradas en conversación directa."
+          },
+          "developers": {
+            "title": "Desarrolladores",
+            "body": "Sitios mayores y oportunidades orientadas al desarrollo, con contexto."
+          },
+          "hospitality": {
+            "title": "Hospitality",
+            "body": "Oportunidades relevantes para hospitality y proyectos orientados al destino."
+          },
+          "groups": {
+            "title": "Grupos de Inversión",
+            "body": "Oportunidades mayores o estructuradas, exploradas en privado con family offices y grupos."
+          }
+        }
+      },
+      "why": {
+        "eyebrow": "Por qué privado",
+        "title": "No todo lo que vale la pena explorar|pertenece a un catálogo público.",
+        "lead": "Algunas oportunidades se hablan mejor en privado: holdings mayores, contexto de desarrollo, conceptos de hospitality o presentaciones que conviene compartir directamente.",
+        "imageAlt": "Colinas del sur de Lombok con vista al océano en luz dorada",
+        "plateLabel": "Sur de Lombok, Sobre el terreno",
+        "points": {
+          "a": "Holdings de terreno mayores y búsquedas privadas de terreno",
+          "b": "Consideraciones de desarrollo y hospitality",
+          "c": "Presentaciones que se benefician del contexto y el momento",
+          "d": "Información más adecuada para compartir en conversación"
+        }
+      },
+      "opps": {
+        "eyebrow": "Oportunidades privadas",
+        "statement": "Algunas oportunidades se exploran mejor en privado.",
+        "empty": "En lugar de presentar un catálogo público, cuéntele a Reece lo que busca y explore lo que pueda ser relevante.",
+        "withListings": "Un pequeño número de oportunidades se explora mediante conversación directa, no mediante listado público.",
+        "withTeasers": "A continuación presentamos algunas oportunidades de mayor escala. La información completa se comparte en privado cuando Reece entiende lo que busca.",
+        "teasersTitle": "Presentadas actualmente en privado"
+      },
+      "approach": {
+        "eyebrow": "El enfoque",
+        "title": "La conversación viene primero.",
+        "steps": {
+          "understand": {
+            "title": "Entender",
+            "body": "Cuéntele a Reece lo que busca."
+          },
+          "consider": {
+            "title": "Considerar",
+            "body": "Green Hill considera oportunidades y contexto relevantes."
+          },
+          "explore": {
+            "title": "Explorar",
+            "body": "Se puede compartir información relevante cuando corresponda."
+          },
+          "discuss": {
+            "title": "Conversar",
+            "body": "Explorar si la oportunidad merece avanzar."
+          }
+        }
+      },
+      "reece": {
+        "eyebrow": "Sobre el terreno",
+        "title": "Empiece con una conversación.",
+        "lead": "Cuéntele a Reece dónde busca, qué está considerando y qué tipo de oportunidad espera encontrar.",
+        "photoAlt": "Reece Green, fundador de Green Hill Lombok",
+        "close": "Hablemos.",
+        "prompts": {
+          "land": "¿Busca terreno?",
+          "hospitality": "¿Explora un proyecto de hospitality?",
+          "development": "¿Considera una oportunidad de desarrollo mayor?",
+          "brief": "¿Tiene una ubicación o brief concreto en mente?"
+        }
+      },
+      "form": {
+        "eyebrow": "Consulta privada",
+        "title": "Cuéntele a Reece lo que busca.",
+        "lead": "Comparta un poco de lo que tiene en mente. Reece podrá entonces seguir con lo que pueda ser relevante."
+      },
+      "final": {
+        "eyebrow": "Green Hill Private",
+        "title": "Empecemos la conversación.",
+        "lead": "Empiece con una conversación. Cuéntele a Reece lo que busca y explore lo que pueda ser relevante.",
+        "explore": "Explorar Oportunidades Públicas"
+      }
+    }
+  },
+  "whyLombok": {
+    "page": {
+      "seoTitle": "Por qué Lombok | Green Hill Lombok",
+      "seoDescription": "Una perspectiva editorial sobre Lombok y el Sur de Lombok: paisaje, estilo de vida, acceso y contexto a largo plazo desde el enfoque de Green Hill sobre el terreno.",
+      "eyebrow": "Por qué Lombok",
+      "headline": "Lombok es más que|un destino.",
+      "lead": "Empezamos por la tierra, la gente y el proceso. Así es como la oportunidad se vuelve clara.",
+      "explore": "Explorar Oportunidades",
+      "talk": "Hablar con Reece",
+      "buying": "Entender Comprar en Lombok",
+      "heroAlt": "Campos y palmeras del Sur de Lombok en la hora dorada, mirando la bahía hacia las colinas",
+      "cardPrev": "Imagen anterior",
+      "cardNext": "Imagen siguiente",
+      "place": {
+        "eyebrow": "El lugar",
+        "title": "Mire primero el paisaje.",
+        "cardTitle": "Mire el paisaje",
+        "location": "Sur de Lombok",
+        "expand": "Ampliar galería del lugar",
+        "body": "Costas, colinas y valles agrícolas crean entornos para uso personal y para tenencia a largo plazo. El carácter del lugar forma cómo Green Hill mira cada oportunidad.",
+        "imageAlt": "Tierra abierta y colinas bajo cielo claro en Lombok"
+      },
+      "south": {
+        "eyebrow": "Sur de Lombok",
+        "title": "Un paisaje de costa, colinas y un ritmo de vida distinto.",
+        "body": "El carácter del paisaje, desde la costa y las colinas hasta los valles, forma cómo miramos las oportunidades.",
+        "labels": {
+          "land": "Tierra",
+          "coast": "Costa",
+          "lifestyle": "Estilo de vida",
+          "access": "Acceso"
+        },
+        "imageAlt": "Colinas del Sur de Lombok frente a luz de océano calmada"
+      },
+      "access": {
+        "eyebrow": "Acceso",
+        "title": "Cómo se llega a un lugar importa.",
+        "cardTitle": "Cómo se llega a un lugar",
+        "expand": "Ampliar galería de acceso",
+        "body": "La ubicación y cómo se llega a un lugar importan al evaluar el potencial a largo plazo. El contexto de acceso es parte de entender una oportunidad, no una nota al pie.",
+        "aside": "Ruta, entorno, contexto",
+        "imageAlt": "Senderos de colina y tierra abierta en el Sur de Lombok"
+      },
+      "pace": {
+        "eyebrow": "Un ritmo distinto",
+        "title": "La vida aquí tiene un ritmo distinto.",
+        "body": "La tierra, el paisaje y la comunidad están detrás de cómo la gente quiere vivir y sostener propiedad aquí. El carácter de destino del Sur de Lombok es más tranquilo, al aire libre y relacional.",
+        "imageAlt": "Tierra costera y cielo abierto a lo largo del Sur de Lombok"
+      },
+      "longer": {
+        "eyebrow": "La mirada más larga",
+        "title": "Considere el lugar antes de considerar la oportunidad.",
+        "body": "Sopesamos contexto y calidad por encima del volumen. Menos oportunidades, consideradas con cuidado. Pensar a largo plazo significa mirar la calidad de la tierra, la ubicación, el entorno y las relaciones que hacen viable un lugar.",
+        "aside": "Lugar antes que oportunidad",
+        "imageAlt": "Costa y colinas que se encuentran con aguas abiertas en el Sur de Lombok"
+      },
+      "ground": {
+        "eyebrow": "Desde el terreno",
+        "title": "Seleccionado sobre el terreno.|Considerado a largo plazo.",
+        "body": "Green Hill no simplemente recopila listados. Las oportunidades se visitan en persona, se consideran en contexto y se presentan con la claridad para ayudar a decidir qué vale la pena explorar.",
+        "note": "Visito y selecciono personalmente las oportunidades que representamos.",
+        "attr": "Reece Green, Fundador, Sur de Lombok",
+        "imageAlt": "Reece Green, fundador de Green Hill Lombok"
+      },
+      "final": {
+        "eyebrow": "Explorar",
+        "title": "Ahora, explore lo que realmente está disponible.",
+        "lead": "Descubra las oportunidades que Green Hill ha seleccionado en Lombok, o empiece por las preguntas que dan forma a comprar aquí."
+      },
+      "disclaimer": "Esto es educativo, no asesoramiento legal, fiscal ni de inversión, y no se garantiza ninguna rentabilidad. Busque asesoramiento legal, notarial y fiscal independiente antes de comprar."
     }
   },
   "trust": {
@@ -139,7 +341,7 @@
     "lead": "Lombok es más que un destino. Para nosotros, entender la tierra, la gente y el proceso es parte de entender la oportunidad.",
     "placeLabel": "Lugar",
     "buyingLabel": "Comprar en Lombok",
-    "buyingLead": "Empiece con las preguntas adecuadas. Estas vías introducen lo esencial a considerar — no asesoramiento legal.",
+    "buyingLead": "Empiece con las preguntas adecuadas. Estas vías introducen lo esencial a considerar, no asesoramiento legal.",
     "explore": "Explorar",
     "cta": "Explorar Comprar en Lombok",
     "pageHeadline": "Entender el proceso",
@@ -150,7 +352,7 @@
     "place": {
       "south": {
         "title": "Sur de Lombok",
-        "body": "El carácter del paisaje — costa, colinas y valles — condiciona cómo vemos las oportunidades."
+        "body": "El carácter del paisaje, de costa y colinas a valles, condiciona cómo vemos las oportunidades."
       },
       "access": {
         "title": "Acceso",
@@ -162,7 +364,7 @@
       },
       "perspective": {
         "title": "Perspectiva a largo plazo",
-        "body": "Valoramos el contexto y la calidad por encima del volumen — menos oportunidades, consideradas con cuidado."
+        "body": "Valoramos el contexto y la calidad por encima del volumen. Menos oportunidades, consideradas con cuidado."
       }
     },
     "buying": {
@@ -174,145 +376,42 @@
       "dueDiligence": {
         "title": "Due diligence",
         "body": "Qué conviene entender antes de avanzar con una oportunidad.",
-        "detail": "La due diligence cubre las comprobaciones prácticas detrás de una compra considerada — título, partes, límites e historia del terreno. Se trata de claridad, no de velocidad."
+        "detail": "La due diligence cubre las comprobaciones prácticas detrás de una compra considerada: título, partes, límites e historia del terreno. Se trata de claridad, no de velocidad."
       },
       "zoning": {
         "title": "Zonificación y planificación",
         "body": "Por qué importan el uso del suelo, la planificación y el desarrollo permitido.",
-        "detail": "Qué se puede construir — y cómo — depende del contexto de planificación. Entender la zonificación y el uso permitido desde el principio ayuda a evitar supuestos sobre el potencial de desarrollo."
+        "detail": "Qué se puede construir, y cómo, depende del contexto de planificación. Entender la zonificación y el uso permitido desde el principio ayuda a evitar supuestos sobre el potencial de desarrollo."
       },
       "process": {
         "title": "El proceso de compra",
         "body": "Una visión más clara de los pasos desde la consulta inicial hasta la finalización.",
-        "detail": "Desde la primera conversación hasta notarios, relaciones locales y, cuando corresponda, arquitectos y constructores — el proceso es más claro cuando cada paso se entiende en secuencia. Green Hill guía a los clientes en el descubrimiento, la evaluación y los siguientes pasos."
+        "detail": "Desde la primera conversación hasta notarios, relaciones locales y, cuando corresponda, arquitectos y constructores. El proceso es más claro cuando cada paso se entiende en secuencia. Green Hill guía a los clientes en el descubrimiento, la evaluación y los siguientes pasos."
       }
     }
   },
   "final": {
     "eyebrow": "Hablar con Reece",
-    "headline": "Hablemos de|lo que busca.",
-    "lead": "Ya sea que explore terreno, una villa, una oportunidad de desarrollo mayor o un requerimiento privado, empiece con una conversación.",
+    "headline": "Cuéntenos lo que busca.|Empezaremos desde ahí.",
+    "lead": "Comparta la zona que le interesa, el tipo de propiedad que tiene en mente, o simplemente lo que está considerando. Reece puede ayudarle a ver oportunidades que podrían ser relevantes.",
     "primaryCta": "Hablar con Reece",
-    "secondaryCta": "Explorar Oportunidades",
+    "secondaryCta": "Explorar oportunidades",
     "contactPending": "Un canal de contacto directo se confirmará en breve. Por ahora, explore oportunidades o vuelva cuando hablar con Reece esté disponible.",
     "steps": {
       "start": {
-        "title": "Inicie una conversación",
-        "body": "Cuéntele a Reece lo que busca."
+        "title": "Cuéntenos lo que busca",
+        "body": "Zona, tipo de propiedad, necesidades, o simplemente una idea inicial."
       },
       "discuss": {
-        "title": "Discuta las oportunidades adecuadas",
-        "body": "Comparta sus requisitos y converse sobre posibilidades relevantes."
+        "title": "Hablemos de las posibilidades",
+        "body": "Comenten oportunidades que puedan encajar con lo que necesita."
       },
       "explore": {
-        "title": "Explore el siguiente paso",
+        "title": "Vea lo que se siente bien",
         "body": "Avance solo cuando la oportunidad y el proceso se sientan correctos."
       }
-    }
-  },
-  "filters": {
-    "transactionType": {
-      "all": "Todos",
-      "sale": "En Venta",
-      "rent": "En Alquiler"
     },
-    "country": "Zona",
-    "location": "Ubicación",
-    "locationPlaceholder": "Zona, distrito, dirección...",
-    "priceRange": "Rango de Precio",
-    "bedrooms": "Dormitorios",
-    "beds": "Dormitorios",
-    "propertyType": "Tipo de Propiedad",
-    "allTypes": "Todos los Tipos",
-    "propertyTypes": {
-      "villa": "Villa",
-      "house": "Casa",
-      "apartment": "Apartamento",
-      "penthouse": "Ático",
-      "commercial": "Comercial",
-      "land": "Terreno"
-    },
-    "refine": "Refinar",
-    "any": "Cualquiera",
-    "clearAll": "Borrar Todo",
-    "propertiesFound": "propiedades encontradas",
-    "bathrooms": "Baños",
-    "baths": "Baños",
-    "interiorSize": "Superficie Interior (m²)",
-    "minSize": "Mín m²",
-    "maxSize": "Máx m²",
-    "lifestyle": {
-      "waterfront": "Frente al Agua",
-      "beachfront": "Frente a la Playa",
-      "city_center": "Centro de la Ciudad",
-      "gated": "Cerrada",
-      "pool": "Piscina",
-      "garden": "Jardín"
-    },
-    "minPrice": "Mín",
-    "maxPrice": "Máx",
-    "allRegions": "Todo Lombok"
-  },
-  "propertyDetail": {
-    "description": "Descripción",
-    "homeInfoAmenities": "Información del Hogar y Servicios",
-    "propertyDetails": "Detalles de la Propiedad",
-    "nearbyPointsOfInterest": "Puntos de Interés Cercanos",
-    "locationCoordinatesNotAvailable": "Las coordenadas de ubicación no están disponibles",
-    "location": "Ubicación",
-    "openInGoogleMaps": "Abrir en Google Maps",
-    "share": "Compartir",
-    "save": "Guardar",
-    "saved": "Guardado",
-    "copyLink": "Copiar Enlace",
-    "whatsapp": "WhatsApp",
-    "facebook": "Facebook",
-    "x": "X",
-    "linkedIn": "LinkedIn",
-    "pricingStartingFrom": "Precio",
-    "perMonth": "/mes",
-    "overview": "Resumen",
-    "propertyCode": "Código de Propiedad",
-    "bedrooms": "Dormitorios",
-    "bathrooms": "Baños",
-    "buildingArea": "Área de Construcción",
-    "landSize": "Tamaño del terreno",
-    "yearBuilt": "Año de construcción",
-    "ownership": "Propiedad",
-    "furnishing": "Amueblado",
-    "parking": "Estacionamiento",
-    "yearOfConstruction": "Año de Construcción",
-    "surfaceArea": "Área de Superficie",
-    "status": "Estado",
-    "contactAgent": "Contactar Agente",
-    "whatsappAgent": "WhatsApp Agente",
-    "similarProperties": "Propiedades Similares",
-    "discoverOtherProperties": "Descubra otras propiedades excepcionales en el área",
-    "seeMore": "Ver más",
-    "verifiedListing": "Listado Verificado",
-    "secureAndVerified": "Propiedad segura y verificada",
-    "ukonEstateAgent": "Agente de Green Hill",
-    "officialCompanyRepresentative": "Representante oficial de la empresa",
-    "verifiedPartner": "Socio Verificado",
-    "verifiedPartnerDesc": "Socio verificado oficial de Green Hill",
-    "showAllPhotos": "Mostrar todas las fotos",
-    "sqm": "m²"
-  },
-  "services": {
-    "whatWeDo": "Lo Que Hacemos",
-    "exploreOurRange": "EXPLORE NUESTRO RANGO DE SERVICIOS INMOBILIARIOS EXPERTOS",
-    "propertySales": "Ventas de Propiedades",
-    "propertySalesDescription": "Orientación experta a través de todo el proceso de venta, desde la inclusión hasta el cierre. Maximizamos el valor de su propiedad con marketing estratégico.",
-    "buyerRepresentation": "Representación del Comprador",
-    "buyerRepresentationDescription": "Apoyo dedicado para encontrar su hogar perfecto. Negociamos los mejores acuerdos y aseguramos una experiencia de compra sin problemas.",
-    "rentalManagement": "Gestión de Alquileres",
-    "rentalManagementDescription": "Servicios de alquiler completos para propietarios e inquilinos. Desde la selección hasta el mantenimiento, lo manejamos todo.",
-    "investmentConsulting": "Consultoría de Inversiones",
-    "investmentConsultingDescription": "Asesoramiento estratégico para inversiones inmobiliarias. Identificamos oportunidades que generan fuertes rendimientos.",
-    "propertyValuation": "Valoración de Propiedades",
-    "propertyValuationDescription": "Valuaciones de mercado precisas respaldadas por datos y experiencia local. Conozca el valor real de su propiedad.",
-    "tailoredSolutions": "Soluciones Personalizadas",
-    "tailoredSolutionsDescription": "Soluciones inmobiliarias personalizadas para necesidades únicas. Ya sea reubicación o reducción de tamaño, nos adaptamos a usted."
+    "profileCta": "O cuéntele a Reece sus planes"
   },
   "founder": {
     "eyebrow": "De inversor a Green Hill",
@@ -327,379 +426,425 @@
     "roleShort": "Fundador"
   },
   "about": {
-    "aboutUkon": "Acerca de Green Hill",
-    "buildingDreams": "Construyendo Sueños,",
-    "creatingHomes": "Creando Hogares",
-    "description": "Green Hill está en desarrollo. Este texto es un marcador de posición y no representa reclamaciones comerciales reales.",
-    "yearsExperience": "Años de Experiencia",
-    "propertiesSold": "Propiedades Vendidas",
-    "clientSatisfaction": "Satisfacción del Cliente",
-    "trustedService": "Servicio de Confianza",
-    "ourVision": "Nuestra Visión",
-    "visionStatement": "Ser el socio inmobiliario más confiable, transformando la forma en que las personas encuentran y experimentan sus propiedades de ensueño.",
-    "ourMission": "Nuestra Misión",
-    "missionStatement": "Proporcionar un servicio excepcional, orientación honesta y soluciones innovadoras que excedan las expectativas de los clientes.",
-    "longDescription": "Green Hill placeholder copy. No historical claims from prior projects.",
-    "pageHeadline": "Años de Confianza",
-    "pageSubheadline": "Nuestra Historia",
-    "pageTitle": "Un Legado de Excelencia en Bienes Raíces",
-    "foundedDescription": "Green Hill is under development. Founding story content will be written later.",
-    "todayDescription": "Hoy continuamos desarrollando nuestro legado, combinando valores tradicionales con tecnología innovadora para ofrecer experiencias inmobiliarias excepcionales. Nuestro equipo de profesionales dedicados aporta experiencia local y perspectiva global a cada transacción.",
-    "ourValues": "Nuestros Valores",
-    "whatDrivesUs": "Qué Nos Impulsa Cada Día",
-    "clientCentric": "Centrado en el Cliente",
-    "clientCentricDescription": "Sus necesidades y sueños están en el corazón de todo lo que hacemos.",
-    "excellence": "Excelencia",
-    "excellenceDescription": "Nos esforzamos por la excelencia en cada transacción e interacción.",
-    "integrity": "Integridad",
-    "integrityDescription": "Las prácticas honestas, transparentes y éticas guían nuestro negocio.",
-    "readyToWorkWithUs": "¿Listo para Trabajar Con Nosotros?",
-    "letStartJourney": "Comencemos su viaje inmobiliario juntos. ¡Contáctenos hoy!",
-    "visionLongStatement": "Ser la empresa inmobiliaria más confiable e innovadora, transformando la forma en que las personas descubren, compran, venden y experimentan propiedades. Imaginamos un mundo donde encontrar su hogar de ensueño es un viaje emocionante y sin interrupciones.",
-    "missionLongStatement": "Proporcionar servicios inmobiliarios excepcionales a través de orientación honesta, soluciones innovadoras y atención personalizada. Nos comprometemos a superar las expectativas de los clientes mientras construimos relaciones duraderas basadas en la confianza y los resultados."
-  },
-  "agents": {
-    "ourTeam": "Nuestro Equipo",
-    "meetOurExperts": "Conoce a Nuestros Expertos",
-    "ourNetwork": "Nuestra Red Global",
-    "headline": "Bienes Raíces Sin Fronteras.",
-    "subheadline": "Una red coordinada de profesionales locales de confianza que operan bajo un estándar internacional unificado.",
-    "supportingLine": "Experiencia local. Representación global.",
-    "metricCountries": "Países",
-    "metricContinents": "Continentes",
-    "metricTransactions": "Transacciones",
-    "mapHeadline": "Presencia Global",
-    "mapSubtext": "Representación activa en mercados internacionales clave.",
-    "regionEurope": "Europa",
-    "regionEuropeSubtext": "Representación estratégica en los Países Bajos, Portugal y mercados europeos clave.",
-    "regionSoutheastAsia": "Sudeste Asiático",
-    "regionSoutheastAsiaSubtext": "Redes locales profundas en Indonesia y Malasia.",
-    "viewProfile": "Ver Perfil",
-    "networkHeadline": "Un Estándar Unificado en Todos los Mercados",
-    "networkDescription": "Nuestro modelo operativo combina coordinación central con profunda experiencia local. Cada socio en nuestra red opera bajo estándares compartidos de rendimiento, garantizando calidad consistente independientemente de la geografía. Esta estructura permite supervisión estratégica mientras preserva la inteligencia local que impulsa transacciones exitosas.",
-    "networkGlobalCoordination": "Coordinación Global",
-    "networkGlobalCoordinationDesc": "Estrategia central y supervisión de transacciones.",
-    "networkLocalExpertise": "Experiencia Local",
-    "networkLocalExpertiseDesc": "Inteligencia profunda del mercado y conocimiento regulatorio.",
-    "networkClientRepresentation": "Representación del Cliente",
-    "networkClientRepresentationDesc": "Estándares alineados de discreción y negociación.",
-    "partnerHeadline": "Asociaciones Globales Estratégicas",
-    "partnerSubtext": "Colaboramos con profesionales inmobiliarios selectos de todo el mundo que operan bajo estándares compartidos de rendimiento, integridad y discreción.",
-    "explorePartnership": "Explorar Asociación",
-    "filterAll": "Todos",
-    "filterEurope": "Europa",
-    "filterSoutheastAsia": "Sudeste Asiático",
-    "mapReinforcement": "Coordinación central. Ejecución local."
-  },
-  "testimonials": {
-    "testimonials": "Testimonios",
-    "whatOurClientsSay": "Lo Que Dicen Nuestros Clientes",
-    "realStories": "Placeholder testimonials for layout only."
-  },
-  "blog": {
-    "ourBlog": "Inteligencia",
-    "headline": "Inteligencia Inmobiliaria",
-    "subheadline": "Perspectivas estratégicas en mercados inmobiliarios internacionales.",
-    "searchPlaceholder": "Buscar artículos...",
-    "categoryAll": "Todos",
-    "categoryBuying": "Compra",
-    "categorySelling": "Venta",
-    "categoryInvesting": "Inversión",
-    "categoryMarketReport": "Informe de Mercado",
-    "readArticle": "Leer Artículo",
-    "noArticlesFound": "No se encontraron artículos que coincidan con sus criterios.",
-    "stayUpdated": "Actualizaciones Estratégicas del Mercado",
-    "subscriberDescription": "Reciba perspectivas periódicas sobre mercados inmobiliarios internacionales y tendencias de inversión transfronteriza.",
-    "emailPlaceholder": "Ingrese su correo electrónico",
-    "subscribe": "Suscribirse",
-    "backToBlog": "Volver a Inteligencia",
-    "closingLabel": "Green Hill Research",
-    "closingText": "Para asesoramiento estratégico sobre inversión inmobiliaria internacional, contacte nuestra red global."
-  },
-  "account": {
-    "myAccount": "Mi Cuenta",
-    "saved": "Guardado",
-    "alerts": "Alertas",
-    "settings": "Configuración",
-    "savedProperties": "Propiedades Guardadas",
-    "noSavedProperties": "No hay propiedades guardadas",
-    "browseProperties": "Explorar Propiedades",
-    "searchAlerts": "Alertas de Búsqueda",
-    "createAlert": "Crear Alerta",
-    "noSearchAlerts": "Sin alertas de búsqueda",
-    "createAlertDescription": "Cree una alerta para recibir notificaciones sobre nuevas propiedades que coincidan con sus criterios",
-    "emailNotificationsEnabled": "Notificaciones por correo electrónico habilitadas",
-    "noNotifications": "Sin notificaciones",
-    "accountSettings": "Configuración de Cuenta",
-    "fullName": "Nombre Completo",
-    "yourName": "Su Nombre",
-    "email": "hello@example.com",
-    "changeEmailContact": "Para cambiar su correo electrónico, comuníquese con soporte",
-    "phoneNumber": "Número de Teléfono",
-    "phoneExample": "+1 (555) 123-4567",
-    "bio": "Biografía",
-    "tellUsAbout": "Cuéntanos sobre ti...",
-    "saveChanges": "Guardar Cambios",
-    "saving": "Guardando...",
-    "signOut": "Cerrar Sesión",
-    "agentDashboard": "Panel del Agente",
-    "myListings": "Mis Listados",
-    "messages": "Mensajes"
+    "page": {
+      "seoTitle": "Sobre Reece | Green Hill Lombok",
+      "seoDescription": "Conozca a Reece Green, fundador de Green Hill Lombok. Una historia personal de llegar desde el Reino Unido, comprar terreno en Are Guling y construir un enfoque selectivo sobre el terreno en el Sur de Lombok.",
+      "talk": "Hablar con Reece",
+      "explore": "Explorar Oportunidades",
+      "hero": {
+        "eyebrow": "Sobre Reece",
+        "headline": ".Llegué a|~Lombok buscando|*oportunidades*|para mí.",
+        "lead": "Green Hill comenzó con una búsqueda personal, mudarse desde el Reino Unido con su pareja e hija, y vivir de primera mano el proceso de encontrar terreno en el Sur de Lombok.",
+        "imageAlt": "Reece Green, fundador de Green Hill Lombok",
+        "captionName": "Reece Green",
+        "captionRole": "Fundador, Sur de Lombok",
+        "cards": {
+          "ground": {
+            "title": "Sobre el terreno",
+            "body": "Visitado en persona, considerado en contexto."
+          },
+          "selective": {
+            "title": "Selectivo",
+            "body": "No el mayor listado. El adecuado."
+          },
+          "relationship": {
+            "title": "Basado en relaciones",
+            "body": "Puertas locales que no siempre son públicas."
+          }
+        }
+      },
+      "story": {
+        "eyebrow": "La historia",
+        "title": "De una búsqueda personal|a Green Hill.",
+        "p1": "Originalmente llegué a Lombok buscando oportunidades para mí, mudándome desde el Reino Unido con mi pareja y mi hija.",
+        "p2": "Tras comprar terreno en Are Guling y vivir el proceso en primera persona, desde encontrar terreno y estructuras de propiedad hasta notarios, due diligence, zonificación, arquitectos y constructores, empecé a construir relaciones con propietarios, promotores y profesionales locales en el sur de Lombok.",
+        "p3": "Esas relaciones empezaron a abrir puertas a oportunidades que no siempre se comercializan de forma pública. Green Hill creció de forma natural a partir de ahí.",
+        "pull": "No me interesa tener el mayor número de listados.|Me interesa encontrar los adecuados.",
+        "cardLabel": "Una búsqueda personal",
+        "cardNote": "Sur de Lombok",
+        "imageAlt": "Reece contemplando tierra elevada del Sur de Lombok en la hora dorada"
+      },
+      "place": {
+        "eyebrow": "Una conexión personal",
+        "title": "Lo que comenzó como una decisión personal se convirtió en una conexión más profunda con el lugar.",
+        "body": "Comprar terreno en Are Guling significó vivir las preguntas que enfrentan los compradores, ubicación, proceso y qué hace viable un lugar a largo plazo. Esa experiencia forma cómo Green Hill mira Lombok hoy.",
+        "link": "Por qué Lombok",
+        "location": "Are Guling",
+        "region": "Sur de Lombok",
+        "imageAlt": "Valle elevado del Sur de Lombok abriéndose hacia la bahía en la hora dorada"
+      },
+      "relations": {
+        "eyebrow": "Relaciones",
+        "title": "La presencia crea contexto. Las relaciones abren puertas.",
+        "body": "Recorrer el proceso sobre el terreno llevó a relaciones con propietarios, promotores y profesionales locales en el Sur de Lombok, y a oportunidades que no siempre se comercializan de forma pública.",
+        "cardAction": "Abrir esta puerta",
+        "doorNote": "No es un directorio público. Cada puerta se abre a través de una conversación con Reece.",
+        "doorCta": "Hablar con Reece",
+        "prev": "Relación anterior",
+        "next": "Relación siguiente",
+        "labels": {
+          "landowners": "Propietarios",
+          "developers": "Promotores",
+          "notaries": "Notarios",
+          "professionals": "Profesionales locales"
+        },
+        "cards": {
+          "landowners": "Relaciones con propietarios locales en el Sur de Lombok, construidas desde la presencia en el terreno.",
+          "developers": "Conexiones con promotores formadas al recorrer el proceso localmente.",
+          "notaries": "Relaciones de trabajo formadas a través del proceso de propiedad.",
+          "professionals": "Profesionales locales en el Sur de Lombok, y puertas que no siempre son públicas."
+        },
+        "prefills": {
+          "landowners": "Hola Reece, me gustaría preguntar por oportunidades conectadas a través de propietarios locales en el Sur de Lombok.",
+          "developers": "Hola Reece, me gustaría preguntar por oportunidades conectadas a través de promotores en el Sur de Lombok.",
+          "notaries": "Hola Reece, me gustaría preguntar por el proceso de propiedad y oportunidades relacionadas en el Sur de Lombok.",
+          "professionals": "Hola Reece, me gustaría preguntar por oportunidades que se abren a través de profesionales locales en el Sur de Lombok."
+        }
+      },
+      "approach": {
+        "eyebrow": "Cómo trabaja Green Hill",
+        "title": "Una forma considerada de trabajar.",
+        "titleAccent": "de trabajar.",
+        "lead": "Las oportunidades se visitan en persona, se seleccionan con cuidado y se consideran a largo plazo, a través de relaciones construidas sobre el terreno.",
+        "featureAlt": "Llegando a terreno elevado en el Sur de Lombok",
+        "view": "Ver",
+        "prev": "Principio anterior",
+        "next": "Principio siguiente",
+        "items": {
+          "ground": {
+            "title": "Sobre el terreno",
+            "body": "Las oportunidades se visitan en persona y se consideran en contexto, no simplemente se recopilan como listados."
+          },
+          "selective": {
+            "title": "Selectivo",
+            "body": "Green Hill no está interesado en tener el mayor número de listados. Está interesado en encontrar los adecuados."
+          },
+          "relationship": {
+            "title": "Basado en relaciones",
+            "body": "Las relaciones construidas localmente abrieron puertas a oportunidades que no siempre se comercializan de forma pública."
+          },
+          "longTerm": {
+            "title": "Largo plazo",
+            "body": "Seleccionado sobre el terreno. Considerado a largo plazo, con claridad para ayudar a decidir qué vale la pena explorar."
+          }
+        }
+      },
+      "selects": {
+        "eyebrow": "Qué selecciona Green Hill",
+        "title": "Una selección considerada, no un catálogo de marketplace.",
+        "body": "Hoy, Reece visita y selecciona personalmente las oportunidades que representa Green Hill, desde parcelas de construcción y villas hasta terreno mayor y oportunidades de desarrollo.",
+        "action": "Saber más",
+        "items": {
+          "land": {
+            "title": "Terreno",
+            "body": "Parcelas y oportunidades de terreno"
+          },
+          "villas": {
+            "title": "Villas",
+            "body": "Oportunidades residenciales seleccionadas"
+          },
+          "development": {
+            "title": "Desarrollo",
+            "body": "Oportunidades mayores que pueden requerir una conversación más profunda"
+          },
+          "private": {
+            "title": "Private",
+            "body": "Oportunidades tratadas directamente con Reece"
+          }
+        }
+      },
+      "ground": {
+        "eyebrow": "Sobre el terreno",
+        "title": "Seleccionado sobre el terreno.|Considerado a largo plazo.",
+        "body": "Green Hill no simplemente recopila listados. Las oportunidades se visitan en persona, se consideran en contexto y se presentan con la claridad para ayudar a decidir qué vale la pena explorar.",
+        "offer": "Qué significa esto",
+        "cta": "Explorar más",
+        "badgeValue": "Sur",
+        "badgeLabel": "Lombok",
+        "points": {
+          "visited": {
+            "title": "Sobre el terreno",
+            "body": "Visitado en persona y considerado en contexto"
+          },
+          "selective": {
+            "title": "Selectivo",
+            "body": "No el mayor listado. El adecuado"
+          },
+          "relationships": {
+            "title": "Basado en relaciones",
+            "body": "Puertas locales que no siempre se comercializan de forma pública"
+          },
+          "personal": {
+            "title": "Seleccionado personalmente",
+            "body": "Visito y selecciono personalmente las oportunidades que representamos"
+          }
+        },
+        "imageAlt": "Reece en terreno elevado con vistas al Sur de Lombok",
+        "insetAlt": "Valle elevado del Sur de Lombok abriéndose hacia la bahía",
+        "captionName": "Reece Green",
+        "captionRole": "Fundador"
+      },
+      "converse": {
+        "eyebrow": "Empezar una conversación",
+        "title": "Cuéntele a Reece lo que busca.",
+        "body": "Comparta la zona que le interesa, el tipo de propiedad que tiene en mente, o simplemente lo que está considerando. Reece puede ayudarle a ver oportunidades que podrían ser relevantes, sin presión."
+      },
+      "final": {
+        "eyebrow": "Green Hill Lombok",
+        "title": "La oportunidad adecuada suele empezar con una conversación.",
+        "lead": "Explore lo disponible, o empiece con una conversación directa con Reece."
+      }
+    }
   },
   "auth": {
-    "email": {
-      "welcome": "Bienvenido a Green Hill",
-      "signInDescription": "Inicie sesión para guardar propiedades y obtener recomendaciones personalizadas",
-      "signUpDescription": "Cree una cuenta para comenzar su viaje inmobiliario",
-      "emailAddress": "Dirección de Correo Electrónico",
-      "emailPlaceholder": "usted@ejemplo.com",
-      "continue": "Continuar",
-      "checking": "Comprobando...",
-      "invalidEmail": "Por favor, ingrese una dirección de correo electrónico válida",
-      "dontHaveAccount": "¿No tiene cuenta?",
-      "alreadyHaveAccount": "¿Ya tiene cuenta?",
-      "signUp": "Registrarse",
-      "signIn": "Iniciar Sesión"
-    },
-    "password": {
-      "back": "Atrás",
-      "enterYourPassword": "Ingrese su contraseña",
-      "passwordLabel": "Contraseña",
-      "passwordPlaceholder": "Ingrese su contraseña",
-      "forgotPassword": "¿Olvidó su contraseña?",
-      "passwordResetComing": "El restablecimiento de contraseña próximamente",
-      "signingIn": "Iniciando sesión...",
-      "signInButton": "Iniciar Sesión",
-      "useMagicLink": "Usar enlace mágico en su lugar",
-      "incorrectCredentials": "Correo electrónico o contraseña incorrectos. Por favor, inténtelo de nuevo.",
-      "verifyEmail": "Por favor, verifique su dirección de correo electrónico antes de iniciar sesión.",
-      "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",
-      "enterPasswordRequired": "Por favor, ingrese su contraseña"
-    },
-    "signup": {
-      "back": "Atrás",
-      "createYourAccount": "Cree su cuenta",
-      "joinUkonEstate": "Únase a Green Hill hoy",
-      "fullName": "Nombre completo",
-      "fullNamePlaceholder": "Juan Pérez",
-      "email": "hello@example.com",
-      "createPassword": "Crear contraseña",
-      "createPasswordPlaceholder": "Mín. 8 caracteres",
-      "passwordMinLength": "Debe tener al menos 8 caracteres",
-      "iAm": "Yo soy un...",
-      "buyerRenter": "Comprador/Inquilino",
-      "buyerRenterDescription": "Buscando propiedades",
-      "agentSeller": "Agente/Vendedor",
-      "agentSellerDescription": "Listando propiedades",
-      "agreeToTerms": "Estoy de acuerdo con los",
-      "termsOfService": "Términos de Servicio",
-      "privacyPolicy": "Política de Privacidad",
-      "creatingAccount": "Creando Cuenta...",
-      "createAccountButton": "Crear Cuenta",
-      "secureEncryption": "Protegido por encriptación de estándar industrial",
-      "accountCreated": "¡Cuenta creada! Revise su correo electrónico para verificar.",
-      "emptyName": "Por favor, ingrese su nombre completo",
-      "invalidPassword": "La contraseña debe tener al menos 8 caracteres",
-      "agreeToTermsRequired": "Por favor, acepte los Términos de Servicio y la Política de Privacidad",
-      "userAlreadyRegistered": "Este correo electrónico ya está registrado. Intente iniciar sesión.",
-      "passwordShortError": "La contraseña debe tener al menos 8 caracteres.",
-      "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtelo de nuevo."
-    },
-    "magicLink": {
-      "checkEmail": "Revise su correo electrónico",
-      "sentLoginLink": "Enviamos un enlace de inicio de sesión a",
-      "lookForEmail": "Busque un correo electrónico con el asunto:",
-      "signInSubject": "Iniciar sesión en Green Hill",
-      "quickTips": "💡 Consejos rápidos:",
-      "checkSpamFolder": "Revise su carpeta de spam si no lo ve",
-      "linkExpires": "El enlace expira en 24 horas",
-      "resendEmail": "Haga clic en el enlace para iniciar sesión automáticamente",
-      "gotIt": "¡Entendido!",
-      "sending": "Enviando...",
-      "resendCountdown": "Reenviar en {timer}s",
-      "resendButtonText": "Reenviar correo electrónico"
-    },
     "callback": {
       "verifying": "Verificando su cuenta...",
       "pleaseWait": "Por favor, espere mientras lo redirigimos"
-    },
-    "messages": {
-      "successfulLogout": "Sesión cerrada correctamente",
-      "failedLogout": "Error al cerrar sesión. Por favor, inténtelo de nuevo.",
-      "welcomeBack": "¡Bienvenido de vuelta!"
     }
   },
-  "dashboard": {
-    "overview": "Descripción General",
-    "listings": "Listados",
-    "addNew": "Añadir Nuevo",
-    "settings": "Configuración",
-    "welcomeBack": "Bienvenido de vuelta, Administrador",
-    "propertiesUpdates": "Esto es lo que sucede con tus propiedades hoy.",
-    "publishListing": "Publicar Anuncio",
-    "totalListings": "Anuncios Totales",
-    "activeLeads": "Leads Activos",
-    "views30d": "Vistas (30d)",
-    "recentListings": "Anuncios Recientes",
-    "filterByAddress": "Filtrar por dirección...",
-    "noPropertiesYet": "Aún no hay propiedades publicadas. ¡Utiliza el botón 'Añadir Nuevo' para crear tu primer anuncio!",
-    "viewAll": "Ver todos",
-    "properties": "propiedades",
-    "publishNewProperty": "Publicar Nueva Propiedad",
-    "fillDetails": "Rellena los detalles a continuación para añadir un nuevo anuncio a tu catálogo.",
-    "allListings": "Todos los Anuncios",
-    "manageListings": "Gestiona y supervisa todos tus anuncios de propiedades en un solo lugar.",
-    "searchListings": "Buscar anuncios...",
-    "noPropertiesFound": "No se encontraron propiedades. ¡Intenta añadir un nuevo anuncio!",
-    "messages": "Mensajes"
-  },
   "footer": {
-    "tagline": "Oportunidades inmobiliarias y de inversión enfocadas en Lombok — presentadas con claridad y cuidado.",
+    "tagline": "Oportunidades inmobiliarias y de inversión en Lombok, presentadas con claridad y cuidado.",
+    "brandLine": "Green Hill en tierra e inversiones de Lombok",
+    "badge": "Seleccionado en el terreno",
     "location": "Lombok, Indonesia",
     "locationShort": "Lombok · Indonesia",
     "explore": "Explorar",
     "approach": "Enfoque",
+    "guide": "Guía",
+    "floatContact": "Contacto",
+    "contactHeading": "Contacto y lugar",
+    "exploreOpportunities": "Explorar oportunidades",
+    "cardChip": "En el terreno",
+    "cardTalk": "Hablar con Reece",
+    "cardExplore": "Explorar",
+    "whatsapp": "WhatsApp",
+    "mapTitle": "Ubicación de Green Hill en Google Maps",
+    "mapLabel": "Green Hill · Lombok",
+    "mapOpen": "Abrir mapa",
+    "dockAria": "Opciones de contacto rápido",
+    "dockClose": "Cerrar",
+    "dockBrandNote": "Tierra e inversiones curadas",
+    "dockEmailLabel": "Email",
+    "dockTalkLabel": "Hablar con Reece",
+    "dockTalkMeta": "Empezar una conversación",
+    "slogan": "Green Hill · Tierra e inversiones curadas",
+    "trustOnGroundTitle": "En el terreno",
+    "trustOnGroundBody": "Oportunidades visitadas y seleccionadas en persona",
+    "trustCuratedTitle": "Solo lo curado",
+    "trustCuratedBody": "Una selección considerada, no un catálogo de marketplace",
+    "trustTalkTitle": "Empiece con una conversación",
+    "trustTalkBody": "Cuéntele a Reece lo que busca, sin presión",
     "rights": "Todos los derechos reservados.",
-    "positioning": "Asesoría inmobiliaria transfronteriza para inversores y clientes privados que buscan representación estratégica de propiedades a nivel mundial.",
-    "address": "Lombok, Indonesia",
-    "email": "",
-    "phone": "",
-    "advisory": "Asesoría",
-    "propertySales": "Venta de Propiedades",
-    "investmentAdvisory": "Asesoría de Inversión",
-    "rentalAssetManagement": "Gestión de Alquileres y Activos",
-    "propertyValuation": "Valoración de Propiedades",
-    "globalNetwork": "Red Global",
-    "ourNetwork": "Nuestra Red",
-    "europeRepresentation": "Representación en Europa",
-    "southeastAsiaRepresentation": "Representación en el Sudeste Asiático",
-    "strategicPartnerships": "Alianzas Estratégicas",
-    "joinOurNetwork": "Únase a Nuestra Red",
-    "intelligence": "Inteligencia",
-    "marketIntelligence": "Inteligencia de Mercado",
-    "marketReports": "Informes de Mercado",
-    "buyingGuides": "Guías de Compra",
-    "sellingGuides": "Guías de Venta",
-    "copyright": "© 2026 Green Hill. Todos los derechos reservados.",
-    "privacyPolicy": "Política de Privacidad",
-    "termsOfUse": "Términos de Uso",
-    "disclaimer": "Aviso Legal"
-  },
-  "admin": {
-    "title": "Panel de Administración",
-    "partnerManagement": "Gestión de Socios",
-    "allSellers": "Vendedores",
-    "partnerStatus": "Estado de Socio",
-    "noSellers": "No se encontraron perfiles de vendedores",
-    "backToDashboard": "Dashboard de Agente",
-    "applications": "Solicitudes",
-    "noApplications": "No se encontraron solicitudes de asociación",
-    "applicationApproveConfirm": "¿Aprobar solicitud de asociación?",
-    "applicationApproveDesc": "Esto otorgará el estado de Socio Verificado a \"{name}\". Sus listados mostrarán la insignia oficial de socio de Green Hill.",
-    "applicationRejectConfirm": "¿Rechazar solicitud de asociación?",
-    "applicationRejectDesc": "Esto rechazará la solicitud de asociación de \"{name}\".",
-    "applicationDate": "Solicitado",
-    "applicationMotivation": "Motivación Estratégica",
-    "applicationWebsite": "Sitio Web",
-    "applicationAgents": "Agentes",
-    "applicationAreas": "Áreas Activas",
-    "applicationContactEmail": "Email de Contacto",
-    "applicationContactPhone": "Teléfono de Contacto"
-  },
-  "partners": {
-    "heroHeadline": "Asociaciones Estratégicas",
-    "heroSubheadline": "La infraestructura detrás del sector inmobiliario de nivel institucional.",
-    "heroSupportingLine": "Una red construida sobre estándares compartidos, alineación estratégica y compromiso a largo plazo.",
-    "introHeadline": "Por Qué Importan las Asociaciones",
-    "introText1": "Green Hill opera a través de una red cuidadosamente seleccionada de profesionales locales que comparten nuestro compromiso con la excelencia, la discreción y los resultados para el cliente.",
-    "introText2": "La asociación no es una etiqueta. Es un compromiso estructural con un estándar operativo compartido en los mercados inmobiliarios internacionales.",
-    "buildingHeadline": "Lo Que Green Hill Está Construyendo",
-    "buildingText": "Una infraestructura global de corretaje donde cada socio aporta inteligencia local mientras opera bajo un marco de calidad unificado. Nuestro modelo de red garantiza que los clientes reciban un servicio consultivo consistente independientemente de la geografía.",
-    "expectHeadline": "Lo Que Esperamos de los Socios",
-    "expectItem1": "Trayectoria comprobada en bienes raíces residenciales o comerciales",
-    "expectItem2": "Compromiso con la representación ética y transparente del cliente",
-    "expectItem3": "Presencia activa en un mercado geográfico definido",
-    "expectItem4": "Disposición para operar bajo los estándares de calidad de Green Hill",
-    "gainHeadline": "Lo Que Ganan los Socios",
-    "gainItem1": "Acceso al canal de clientes internacionales de Green Hill",
-    "gainItem2": "Insignia de Socio Verificado y visibilidad prioritaria de listados",
-    "gainItem3": "Coordinación central para transacciones transfronterizas",
-    "gainItem4": "Asociación de marca con un corredor internacional de confianza",
-    "formHeadline": "Solicitar Asociación",
-    "formSubtext": "Complete el formulario a continuación para enviar su solicitud. Nuestro equipo revisa cada solicitud personalmente.",
-    "formAgencyWebsite": "Sitio Web de la Agencia",
-    "formAgencyWebsitePlaceholder": "https://su-agencia.com",
-    "formNumberOfAgents": "Número de Agentes",
-    "formNumberOfAgentsPlaceholder": "ej. 12",
-    "formAreasActive": "Áreas de Actividad",
-    "formAreasActivePlaceholder": "ej. Madrid, Barcelona, Valencia",
-    "formStrategicMotivation": "¿Por qué quiere asociarse con Green Hill?",
-    "formStrategicMotivationPlaceholder": "Describa su motivación estratégica para unirse a nuestra red...",
-    "formContactEmail": "Email de Contacto",
-    "formContactEmailPlaceholder": "su@email.com",
-    "formContactPhone": "Teléfono de Contacto",
-    "formContactPhonePlaceholder": "+34 612 345 678",
-    "formSubmit": "Enviar Solicitud",
-    "formSubmitting": "Enviando...",
-    "formSuccess": "Solicitud enviada exitosamente",
-    "formError": "Error al enviar la solicitud",
-    "formDuplicate": "Ya ha enviado una solicitud",
-    "loginRequired": "Inicie sesión para solicitar",
-    "loginRequiredText": "Las solicitudes de asociación están disponibles para agentes registrados. Inicie sesión o cree una cuenta de agente para continuar.",
-    "loginCta": "Iniciar Sesión como Agente",
-    "buyerNotice": "Solo cuentas de agente",
-    "buyerNoticeText": "Las solicitudes de asociación están disponibles exclusivamente para agentes registrados. Las cuentas de compradores no pueden solicitar asociación.",
-    "statusPending": "Solicitud en Revisión",
-    "statusPendingText": "Su solicitud ha sido enviada y está siendo revisada por nuestro equipo.",
-    "statusApproved": "Solicitud Aprobada",
-    "statusApprovedText": "Su solicitud de asociación ha sido aprobada. Ahora es un Socio Verificado en la red de Green Hill.",
-    "statusRejected": "Solicitud No Aprobada",
-    "statusRejectedText": "Después de una revisión cuidadosa, su solicitud no fue aprobada en este momento."
-  },
-  "messaging": {
-    "requestViewing": "Solicitar Visita",
-    "askQuestion": "Hacer una Pregunta",
-    "getMoreInfo": "Obtener Más Info",
-    "sendMessage": "Enviar Mensaje",
-    "messageSent": "¡Mensaje enviado!",
-    "agentWillRespond": "El agente responderá pronto.",
-    "sendAnother": "Enviar Otro Mensaje",
-    "typeMessage": "Escriba su mensaje...",
-    "typeReply": "Escriba su respuesta...",
-    "selectDate": "Seleccione fecha preferida"
+    "landOpportunities": "Oportunidades de Tierra",
+    "villaOpportunities": "Oportunidades de Villa",
+    "developmentPlots": "Parcelas de Desarrollo",
+    "buyingInLombok": "Comprar en Lombok"
   },
   "common": {
-    "loading": "Cargando...",
-    "error": "Error",
-    "success": "Éxito",
-    "cancel": "Cancelar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "close": "Cerrar",
-    "search": "Buscar",
-    "filter": "Filtro",
-    "sort": "Ordenar",
-    "noResults": "No se encontraron resultados",
-    "tryAgain": "Intentar de Nuevo",
     "language": "Idioma",
     "currency": "Moneda",
-    "selectLanguage": "Seleccionar Idioma",
-    "selectCurrency": "Seleccionar Moneda",
-    "linkCopied": "¡Enlace copiado al portapapeles!",
-    "profileUpdated": "Perfil actualizado exitosamente",
-    "failedToUpdate": "Error al actualizar el perfil",
-    "propertyRemoved": "Propiedad eliminada de guardado",
-    "failedToRemove": "Error al eliminar la propiedad",
-    "alertRemoved": "Alerta de búsqueda eliminada",
-    "failedToRemoveAlert": "Error al eliminar la alerta",
-    "failedToLoadAccount": "Error al cargar datos de cuenta",
-    "errorFetchingProperty": "Error al obtener la propiedad",
-    "errorFetchingProperties": "Error al obtener propiedades destacadas",
-    "errorLoadingAccount": "Error al cargar datos de cuenta",
     "notFound": {
       "title": "404",
       "message": "¡Oops! Página no encontrada",
       "returnHome": "Volver al Inicio"
+    }
+  },
+  "notes": {
+    "page": {
+      "seoTitle": "Green Hill Notes | Perspectivas desde Lombok",
+      "seoDescription": "Observaciones y perspectivas de Green Hill sobre Lombok, tierra, propiedad y el proceso de entender una oportunidad.",
+      "eyebrow": "Green Hill Notes",
+      "headline": "Perspectivas desde|el terreno.",
+      "lead": "Observaciones sobre Lombok, tierra, propiedad, desarrollo y el proceso de entender una oportunidad.",
+      "heroAlt": "Paisaje del sur de Lombok observado desde el terreno",
+      "featuredEyebrow": "Nota destacada",
+      "featuredEmptyTitle": "Las notas desde el terreno están llegando.",
+      "featuredEmptyBody": "Green Hill prepara notas cuidadosamente consideradas sobre Lombok, la tierra y lo que sigue. Mientras tanto, explore el lugar, el enfoque y las oportunidades ya seleccionadas.",
+      "latestEyebrow": "Últimas notas",
+      "latestTitle": "Un diario curado.",
+      "latestLead": "Observaciones seleccionadas, escritas con el mismo cuidado con el que Green Hill elige oportunidades.",
+      "emptyBody": "Este espacio reunirá perspectivas de Green Hill sobre Lombok, la tierra y las preguntas que dan forma a comprar aquí. Sin relleno. Solo lo que vale la pena leer.",
+      "readNote": "Leer la nota",
+      "topicsEyebrow": "Perspectivas",
+      "topicsTitle": "Siga explorando.",
+      "topicsLead": "Notes acompaña al resto de Green Hill: lugar, persona, enfoque y oportunidades seleccionadas.",
+      "topics": {
+        "lombok": {
+          "label": "Por qué Lombok",
+          "body": "Paisaje, acceso y el carácter del sur de Lombok."
+        },
+        "buying": {
+          "label": "Comprar en Lombok",
+          "body": "Preguntas a considerar antes de avanzar."
+        },
+        "private": {
+          "label": "Green Hill Private",
+          "body": "Una vía discreta más allá de la colección pública."
+        },
+        "opportunities": {
+          "label": "Oportunidades",
+          "body": "Una selección considerada desde el terreno."
+        },
+        "about": {
+          "label": "Sobre Reece",
+          "body": "La historia personal detrás de Green Hill."
+        }
+      },
+      "perspectiveEyebrow": "Perspectiva Green Hill",
+      "perspectiveTitle": "Las buenas oportunidades empiezan por entender el contexto.",
+      "perspectiveBody": "Green Hill observa Lombok desde el terreno: selectivo, a largo plazo y discreto. Notes existe para compartir ese contexto, no para prometer resultados.",
+      "finalEyebrow": "Hablar con Reece",
+      "finalTitle": "¿Tiene una pregunta sobre Lombok?",
+      "finalLead": "Cuente qué está considerando. Reece puede ayudar a ver qué puede ser relevante.",
+      "talkCta": "Hablar con Reece",
+      "exploreCta": "Explorar oportunidades",
+      "backToNotes": "Volver a Notes",
+      "notFoundTitle": "Nota no encontrada",
+      "notFoundLead": "Esta nota no está en la colección actual.",
+      "authorLabel": "Green Hill",
+      "relatedEyebrow": "Notas relacionadas",
+      "relatedTitle": "Seguir leyendo.",
+      "articleEndEyebrow": "Próximos pasos",
+      "articleEndTitle": "Explore lo disponible, o inicie una conversación.",
+      "fieldNotes": "Notas de campo",
+      "locality": "Sur de Lombok",
+      "country": "Indonesia",
+      "heroCaption": "En el terreno, sur de Lombok",
+      "journalLabel": "El diario",
+      "journalMeta": "Lombok / Tierra / Perspectiva",
+      "journalImageAlt": "Terreno costero sobre el mar en el sur de Lombok",
+      "themesEyebrow": "En preparación",
+      "themesTitle": "Lo que cubrirán las notas.",
+      "themes": {
+        "land": {
+          "label": "Tierra",
+          "body": "Entender el contexto antes de la oportunidad."
+        },
+        "lombok": {
+          "label": "Lombok",
+          "body": "Otro ritmo, otra perspectiva."
+        },
+        "buying": {
+          "label": "Comprar",
+          "body": "Preguntas que vale la pena hacer antes de comprar en Lombok."
+        },
+        "perspective": {
+          "label": "Perspectiva",
+          "body": "Cómo Green Hill lee un lugar con el tiempo."
+        }
+      },
+      "perspectiveAttribution": "Green Hill Lombok",
+      "themesTitleBefore": "Lo que cubrirán las ",
+      "themesTitleAccent": "notas",
+      "themesTitleAfter": ".",
+      "themesCta": "Por qué Lombok",
+      "themesBadge": "Green Hill"
+    }
+  },
+  "enquiry": {
+    "page": {
+      "seoTitle": "Hable con Reece · Consulta de inversor · Green Hill Lombok",
+      "seoDescription": "Cuéntele a Reece su presupuesto, objetivo y plazo. Green Hill le sugerirá las oportunidades en el sur de Lombok que merece la pena considerar.",
+      "eyebrow": "Consulta de inversor",
+      "title": "Cuéntele a Reece qué busca.",
+      "lead": "Unos pocos datos sobre su presupuesto, objetivo y plazo ayudan a Reece a sugerir las dos o tres oportunidades que realmente encajan.",
+      "privateEyebrow": "Green Hill Private",
+      "privateTitle": "Solicite el memorando de inversión.",
+      "privateLead": "La información completa se comparte en privado. Cuéntele a Reece un poco sobre usted y sus planes para que pueda responder con lo relevante.",
+      "direct": "¿Prefiere hablar directamente?",
+      "directLink": "Hable con Reece por WhatsApp"
+    },
+    "form": {
+      "about": "Sobre",
+      "name": "Nombre",
+      "namePlaceholder": "Su nombre completo",
+      "company": "Empresa",
+      "companyPlaceholder": "Si invierte a través de una empresa",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "nombre@email.com",
+      "whatsapp": "WhatsApp",
+      "whatsappPlaceholder": "Incluya el prefijo del país",
+      "country": "País",
+      "countryPlaceholder": "Dónde reside",
+      "budget": "Presupuesto",
+      "capital": "Capital disponible",
+      "investorType": "Tipo de inversor",
+      "objective": "Objetivo principal",
+      "timeframe": "Plazo",
+      "interests": "Qué le interesa",
+      "privateInterests": "Áreas de interés",
+      "choose": "Elija…",
+      "message": "Mensaje",
+      "messagePlaceholder": "Por ejemplo: tengo unos £150.000 para invertir en Lombok. ¿Dónde lo pondría usted?",
+      "privateMessagePlaceholder": "Cuéntele a Reece sus planes y la escala que tiene en mente",
+      "submit": "Enviar a Reece",
+      "submitPrivate": "Solicitar memorando de inversión",
+      "privacy": "Sus datos solo llegan a Reece y nunca se comparten ni se publican.",
+      "sentWhatsapp": "Gracias. Se está abriendo WhatsApp para que pueda continuar la conversación con Reece.",
+      "sentEmail": "Gracias. Se está abriendo su correo con sus datos para Reece.",
+      "errors": {
+        "name": "Indique su nombre.",
+        "contact": "Añada un correo electrónico o un número de WhatsApp.",
+        "email": "Introduzca un correo electrónico válido."
+      }
+    },
+    "options": {
+      "budget": {
+        "under50k": "Menos de £50k",
+        "50to100k": "£50–100k",
+        "100to250k": "£100–250k",
+        "250to500k": "£250–500k",
+        "500kto1m": "£500k–£1m",
+        "over1m": "£1m+"
+      },
+      "interests": {
+        "land": "Terreno",
+        "villa": "Villa",
+        "offPlan": "Sobre plano",
+        "rentalInvestment": "Inversión para alquiler",
+        "landBanking": "Reserva de suelo",
+        "development": "Oportunidad de desarrollo",
+        "lifestyle": "Estilo de vida / vivienda",
+        "notSure": "Aún no lo sé"
+      },
+      "objective": {
+        "capitalGrowth": "Crecimiento del capital",
+        "rentalIncome": "Ingresos por alquiler",
+        "development": "Desarrollo",
+        "lifestyle": "Estilo de vida",
+        "combination": "Una combinación"
+      },
+      "timeframe": {
+        "within3m": "En 3 meses",
+        "3to6m": "3–6 meses",
+        "6to12m": "6–12 meses",
+        "over12m": "Más de 12 meses",
+        "exploring": "Solo explorando"
+      },
+      "capital": {
+        "100to250k": "USD 100k–250k",
+        "250to500k": "USD 250k–500k",
+        "500kto1m": "USD 500k–1m",
+        "1to5m": "USD 1m–5m",
+        "5to10m": "USD 5m–10m",
+        "over10m": "USD 10m+"
+      },
+      "investorType": {
+        "private": "Inversor privado",
+        "developer": "Promotor",
+        "familyOffice": "Family office",
+        "group": "Grupo de inversión",
+        "hospitality": "Operador hotelero",
+        "other": "Otro"
+      },
+      "privateInterests": {
+        "landBanking": "Reserva de suelo",
+        "development": "Desarrollo",
+        "hospitality": "Hostelería",
+        "residential": "Desarrollo residencial",
+        "jv": "Oportunidades de JV",
+        "other": "Otro"
+      }
     }
   }
 }

@@ -154,7 +154,7 @@ export function FormatSuggestionsButton({ editor }: FormatSuggestionsButtonProps
             <button
                 type="button"
                 onClick={handleClick}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#0e2e50] transition-colors mt-2"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#17382e] transition-colors mt-2"
             >
                 <Sparkles size={14} className="text-emerald-500" />
                 <span className="font-medium">Format</span>
@@ -163,7 +163,7 @@ export function FormatSuggestionsButton({ editor }: FormatSuggestionsButtonProps
             <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
                 <AlertDialogContent className="rounded-2xl">
                     <AlertDialogHeader>
-                        <AlertDialogTitle className="text-[#0e2e50]">Apply Structure</AlertDialogTitle>
+                        <AlertDialogTitle className="text-[#17382e]">Apply Structure</AlertDialogTitle>
                         <AlertDialogDescription>
                             This will reorganize your description into structured sections
                             (introduction, features, location, summary). You can undo with Ctrl+Z.
@@ -173,7 +173,7 @@ export function FormatSuggestionsButton({ editor }: FormatSuggestionsButtonProps
                         <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleApply}
-                            className="bg-[#0e2e50] hover:bg-[#0e2e50]/90"
+                            className="bg-[#17382e] hover:bg-[#17382e]/90"
                         >
                             Apply Structure
                         </AlertDialogAction>

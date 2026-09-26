@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseInViewOptions {
   threshold?: number;
@@ -12,12 +12,15 @@ export function useInView({
   triggerOnce = true,
 }: UseInViewOptions = {}) {
   const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [node, setNode] = useState<Element | null>(null);
   const hasTriggered = useRef(false);
 
+  const ref = useCallback((el: Element | null) => {
+    setNode(el);
+  }, []);
+
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -25,19 +28,19 @@ export function useInView({
           setIsInView(true);
           if (triggerOnce) {
             hasTriggered.current = true;
-            observer.unobserve(element);
+            observer.unobserve(node);
           }
         } else if (!triggerOnce && !hasTriggered.current) {
           setIsInView(false);
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
-    observer.observe(element);
+    observer.observe(node);
 
     return () => observer.disconnect();
-  }, [threshold, rootMargin, triggerOnce]);
+  }, [node, threshold, rootMargin, triggerOnce]);
 
   return { ref, isInView };
 }

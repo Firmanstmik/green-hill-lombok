@@ -28,20 +28,39 @@ const NAV_OFFSET = 104;
 /** Shared with the hero — one easing curve across the whole chrome. */
 const GH_EASE = [0.22, 1, 0.36, 1] as const;
 
-const navLinksConfig = [
-  { key: 'opportunities', hash: 'opportunities', labelKey: 'navigation.opportunities' },
-  { key: 'why-lombok', hash: 'why-lombok', labelKey: 'navigation.whyLombok' },
-  { key: 'about', hash: 'about', labelKey: 'navigation.about' },
+/** A nav entry is either a page link or an in-page section (hash) link. */
+type NavLinkConfig = { key: string; labelKey: string } & (
+  | { path: string; hash?: undefined }
+  | { hash: string; path?: undefined }
+);
+
+const navLinksConfig: readonly NavLinkConfig[] = [
+  { key: 'opportunities', path: '/properties', labelKey: 'navigation.opportunities' },
+  { key: 'why-lombok', path: '/why-lombok', labelKey: 'navigation.whyLombok' },
+  { key: 'private', path: '/private', labelKey: 'navigation.private' },
+  { key: 'about', path: '/about', labelKey: 'navigation.about' },
   { key: 'notes', path: '/intelligence', labelKey: 'navigation.notes' },
-  { key: 'contact', hash: 'contact', labelKey: 'navigation.contact' },
-] as const;
+];
 
 const HASH_TO_DOM: Record<string, string> = {
   opportunities: 'opportunities',
   'why-lombok': 'why-lombok',
+  private: 'private',
   about: 'about',
   contact: 'contact',
 };
+
+function navLinkActive(
+  link: (typeof navLinksConfig)[number],
+  pathname: string,
+  activeHash: string,
+) {
+  if ('path' in link && link.path) {
+    if (link.path === '/properties') return /\/(properties|property)(\/|$)/.test(pathname);
+    return pathname.includes(link.path);
+  }
+  return activeHash === ('hash' in link ? link.hash : '');
+}
 
 function resolveSectionElement(hash: string): HTMLElement | null {
   const domId = HASH_TO_DOM[hash] || hash;
@@ -72,6 +91,8 @@ export function Navbar() {
   const lastScrollY = useRef(0);
   /** Hero chrome entrance plays once per page load — not again on scroll-back. */
   const heroEntrancePlayed = useRef(false);
+  /** Skip hash re-scroll when only the language prefix changed. */
+  const prevPathForHashRef = useRef(location.pathname);
 
   useFocusTrap(menuRef, isMobileMenuOpen);
 
@@ -185,6 +206,19 @@ export function Navbar() {
     if (!isHome) return;
     const hash = window.location.hash.replace(/^#/, '');
     if (!hash) return;
+
+    // Language-only URL swap keeps the same hash — don't yank scroll back to the section.
+    const stripLang = (path: string) => {
+      const parts = path.split('/').filter(Boolean);
+      if (parts[0] === 'en' || parts[0] === 'id' || parts[0] === 'nl' || parts[0] === 'es') {
+        return `/${parts.slice(1).join('/')}`;
+      }
+      return path;
+    };
+    const prev = prevPathForHashRef.current;
+    prevPathForHashRef.current = location.pathname;
+    if (prev && stripLang(prev) === stripLang(location.pathname)) return;
+
     const timer = window.setTimeout(() => scrollToSection(hash), 120);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,19 +268,20 @@ export function Navbar() {
   const renderNavLinks = (className: string) =>
     navLinksConfig.map((link) => {
       if ('path' in link && link.path) {
-        const active = location.pathname.includes(link.path);
+        const active = navLinkActive(link, location.pathname, activeHash);
         return (
           <Link
             key={link.key}
             to={withLang(link.path)}
             className={`${className}${active ? ' is-active' : ''}`}
+            aria-current={active ? 'page' : undefined}
           >
             <span>{t(link.labelKey)}</span>
           </Link>
         );
       }
       const hash = 'hash' in link ? link.hash : '';
-      const active = activeHash === hash;
+      const active = navLinkActive(link, location.pathname, activeHash);
       return (
         <Link
           key={link.key}
@@ -419,6 +454,7 @@ export function Navbar() {
 
       <MobileBottomNav
         hidden={isMobileMenuOpen}
+        isHome={isHome}
         activeHash={activeHash}
         onHome={scrollToTop}
         onNavigate={(hash) => {
@@ -485,9 +521,7 @@ export function Navbar() {
                   {navLinksConfig.map((link, i) => {
                     const hash = 'hash' in link ? link.hash : '';
                     const isPath = 'path' in link && link.path;
-                    const active = isPath
-                      ? location.pathname.includes(link.path as string)
-                      : activeHash === hash;
+                    const active = navLinkActive(link, location.pathname, activeHash);
                     const inner = (
                       <>
                         <span className="gh-menu__num" aria-hidden>

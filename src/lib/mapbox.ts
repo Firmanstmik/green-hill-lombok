@@ -147,7 +147,7 @@ export async function reverseGeocode(
   longitude: number
 ): Promise<GeocodingResult | null> {
   try {
-    if (!isValidUKCoordinates(latitude, longitude)) {
+    if (!isValidCoordinates(latitude, longitude)) {
       return null;
     }
 
@@ -195,7 +195,7 @@ export async function reverseGeocode(
 /**
  * Validate that coordinates are within world bounds
  */
-export function isValidUKCoordinates(latitude: number, longitude: number): boolean {
+export function isValidCoordinates(latitude: number, longitude: number): boolean {
   return (
     latitude >= WORLD_BOUNDS.minLat &&
     latitude <= WORLD_BOUNDS.maxLat &&

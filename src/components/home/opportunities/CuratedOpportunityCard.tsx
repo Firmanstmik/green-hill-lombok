@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Property } from '@/data/mockData';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useCurrency } from '@/contexts/CurrencyContext';
+import { useOpportunityPrice } from '@/lib/opportunityPrice';
 import {
   opportunityImage,
   opportunityLandSize,
@@ -29,14 +29,12 @@ function formatIndex(index: number) {
  */
 export function CuratedOpportunityCard({ property, index, lead = false, inView }: Props) {
   const { language, t } = useLanguage();
-  const { formatPrice } = useCurrency();
   const reduce = useReducedMotion();
 
   const image = opportunityImage(property);
   const landSize = opportunityLandSize(property);
   const href = `/${language}/property/${property.id}`;
-  const priceLabel =
-    property.price > 0 ? formatPrice(property.price) : t('selected.priceOnRequest');
+  const priceLabel = useOpportunityPrice(property) ?? t('selected.priceOnRequest');
   const num = formatIndex(index);
 
   const delay = lead ? 0.28 : 0.38 + (index - 1) * 0.06;
@@ -52,7 +50,7 @@ export function CuratedOpportunityCard({ property, index, lead = false, inView }
         transition: { duration: 0.68, delay, ease: EASE },
       };
 
-  const alt = `${property.title}${property.address ? ` — ${property.address}` : ''}`;
+  const alt = `${property.title}${property.address ? `: ${property.address}` : ''}`;
   const categoryParts = [property.address, property.type].filter(Boolean);
   const category = categoryParts.join(' · ');
 

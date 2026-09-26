@@ -1,162 +1,329 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { type ReactNode, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { blogArticles, getArticleContent } from '@/data/blogData';
-import { renderChart } from '@/components/charts/ChartRegistry';
+import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
+import { GhIconArrow } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useInView } from '@/hooks/useInView';
+import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
+import { applyPageSeo } from '@/lib/seo';
+import { useNotesArticles } from '@/content/hooks';
+import {
+  getNoteBySlug,
+  getNoteContent,
+  getRelatedNotes,
+} from '@/data/notesData';
 
-const BlogPost = () => {
-  const { slug, lang } = useParams();
-  const navigate = useNavigate();
-  const { t } = useLanguage();
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-  const article = blogArticles.find((a) => a.slug === slug);
-  const content = article ? getArticleContent(article, lang ?? 'en') : null;
+function reveal(inView: boolean, reduce: boolean, delay = 0, y = 14) {
+  if (reduce) {
+    return {
+      initial: { opacity: 1, y: 0 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0 },
+    };
+  }
+  return {
+    initial: { opacity: 0, y },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y },
+    transition: { duration: 0.82, delay, ease: EASE },
+  };
+}
+
+function SectionReveal({
+  children,
+  className,
+  labelledBy,
+}: {
+  children: (isInView: boolean, reduce: boolean) => ReactNode;
+  className?: string;
+  labelledBy?: string;
+}) {
+  const { ref, isInView } = useInView({ threshold: 0.14 });
+  const reduce = Boolean(useReducedMotion());
+  return (
+    <section className={className} aria-labelledby={labelledBy}>
+      <div ref={ref}>{children(isInView, reduce)}</div>
+    </section>
+  );
+}
+
+function formatNoteDate(date: string | null, language: string) {
+  if (!date) return null;
+  try {
+    return new Date(date).toLocaleDateString(
+      language === 'id' ? 'id-ID' : language === 'nl' ? 'nl-NL' : language === 'es' ? 'es-ES' : 'en-GB',
+      { year: 'numeric', month: 'long', day: 'numeric' },
+    );
+  } catch {
+    return date;
+  }
+}
+
+const NotesArticle = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const { t, language } = useLanguage();
+  const reduce = Boolean(useReducedMotion());
+  const hero = useInView({ threshold: 0.15 });
+  const whatsappUrl = getPublicWhatsAppUrl();
+  const talkHref = `/${language}/#contact`;
+  const archiveHref = `/${language}/properties`;
+  const notesHref = `/${language}/intelligence`;
+
+  const articles = useNotesArticles();
+  const article = slug ? getNoteBySlug(slug, articles) : null;
+  const content = article ? getNoteContent(article, language) : null;
+  const related = article ? getRelatedNotes(article, 3, articles) : [];
+
+  const openTalk = () => {
+    if (whatsappUrl) {
+      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
+      return;
+    }
+    window.location.href = talkHref;
+  };
 
   useEffect(() => {
-    if (!content) return;
-    document.title = content.seoTitle;
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
+    if (!article || !content) {
+      return applyPageSeo({
+        title: `${t('notes.page.notFoundTitle')} | Green Hill Lombok`,
+        description: t('notes.page.notFoundLead'),
+        canonicalPath: `/${language}/intelligence/${slug ?? ''}`,
+        lang: language,
+        ogType: 'website',
+      });
     }
-    meta.setAttribute('content', content.metaDescription);
-  }, [content]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    const image = new URL(article.ogImage || article.heroImage, window.location.origin).href;
+    return applyPageSeo({
+      title: content.seoTitle,
+      description: content.seoDescription,
+      canonicalPath: `/${language}/intelligence/${article.slug}`,
+      lang: language,
+      image,
+      ogType: 'article',
     });
-  };
+  }, [article, content, language, slug, t]);
 
   if (!article || !content) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="gh-notes min-h-screen">
         <Navbar />
-        <main className="container mx-auto px-4 py-32 text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Article not found</h1>
-          <button
-            onClick={() => navigate(`/${lang}/intelligence`)}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {t('blog.backToBlog')}
-          </button>
+        <main className="gh-notes-missing">
+          <div className="gh-notes-missing__inner">
+            <p className="gh-notes-eyebrow">
+              <BrandCurveMark className="gh-notes-mark" isInView />
+              <span>{t('notes.page.eyebrow')}</span>
+            </p>
+            <h1 className="gh-notes-title">{t('notes.page.notFoundTitle')}</h1>
+            <p className="gh-notes-lead">{t('notes.page.notFoundLead')}</p>
+            <div className="gh-notes-actions">
+              <Link to={notesHref} className="gh-final__cta gh-final__cta--primary">
+                <span className="gh-final__cta-label">{t('notes.page.backToNotes')}</span>
+                <GhIconArrow />
+              </Link>
+              <Link to={archiveHref} className="gh-final__cta gh-final__cta--secondary">
+                <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
+                <GhIconArrow />
+              </Link>
+            </div>
+          </div>
         </main>
         <Footer />
       </div>
     );
   }
 
+  const dateLabel = formatNoteDate(article.date, language);
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="gh-notes min-h-screen">
       <Navbar />
 
       <main>
-        {/* Hero Image */}
-        <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
-          <img
-            src={article.image}
-            alt={content.title}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
-        </section>
-
-        {/* Article Content */}
-        <section className="relative -mt-32 z-10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              {/* Article Header Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="bg-background rounded-sm p-8 md:p-12 mb-12"
+        <article>
+          <header className="gh-notes-article-hero" ref={hero.ref}>
+            <div className="gh-notes-article-hero__inner">
+              <p className="gh-notes-eyebrow">
+                <BrandCurveMark className="gh-notes-mark" isInView={hero.isInView} />
+                <span>{t('notes.page.eyebrow')}</span>
+              </p>
+              <p className="gh-notes-article-hero__topic">{article.topic}</p>
+              <motion.h1
+                className="gh-notes-article-hero__title"
+                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
+                animate={hero.isInView ? { opacity: 1, y: 0 } : undefined}
+                transition={{ duration: reduce ? 0 : 0.85, ease: EASE }}
               >
-                {/* Breadcrumb */}
-                <div className="flex items-center gap-2 mb-7">
-                  <button
-                    onClick={() => navigate(`/${lang}/intelligence`)}
-                    className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:underline transition-all duration-150"
-                  >
-                    <ArrowLeft size={12} className="opacity-60" />
-                    {t('blog.backToBlog')}
-                  </button>
-                  <span className="text-muted-foreground/30 text-xs">·</span>
-                  <span className="text-xs text-muted-foreground/50">
-                    {article.category}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h1 className="text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-bold text-foreground leading-[1.15] tracking-tight mb-6">
-                  {content.title}
-                </h1>
-
-                {/* Meta row */}
-                <div className="flex items-center gap-5 text-sm text-muted-foreground/50">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar size={13} />
-                    <span>{formatDate(article.date)}</span>
-                  </div>
-                  <span className="w-px h-3 bg-border" />
-                  <div className="flex items-center gap-1.5">
-                    <Clock size={13} />
-                    <span>{article.readingTime} min read</span>
-                  </div>
-                  <span className="w-px h-3 bg-border" />
-                  <span>{article.author}</span>
-                </div>
-              </motion.div>
-
-              {/* Article Body */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="max-w-3xl mx-auto pb-24"
+                {content.title}
+              </motion.h1>
+              {(content.dek || content.excerpt) && (
+                <motion.p
+                  className="gh-notes-article-hero__dek"
+                  initial={reduce ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                  animate={hero.isInView ? { opacity: 1, y: 0 } : undefined}
+                  transition={{ duration: reduce ? 0 : 0.8, delay: reduce ? 0 : 0.12, ease: EASE }}
+                >
+                  {content.dek || content.excerpt}
+                </motion.p>
+              )}
+              <motion.p
+                className="gh-notes-article-hero__meta"
+                initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+                animate={hero.isInView ? { opacity: 1 } : undefined}
+                transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 0.2 }}
               >
-                {content.sections.map((section, index) => (
-                  <div key={index} className="mb-12">
-                    <h2 className="text-xl md:text-2xl font-bold text-foreground mb-5 tracking-tight">
-                      {section.heading}
-                    </h2>
-                    <div className="w-8 h-px bg-foreground/15 mb-6" />
-                    {section.content.split('\n\n').map((paragraph, pIndex) => (
-                      <p
-                        key={pIndex}
-                        className="text-muted-foreground leading-[1.8] text-[15px] mb-5 last:mb-0"
-                      >
-                        {paragraph.trim()}
-                      </p>
-                    ))}
-                    {section.chartId && renderChart(section.chartId)}
-                  </div>
-                ))}
+                <span>{article.author || t('notes.page.authorLabel')}</span>
+                {dateLabel ? <span className="gh-notes-article-hero__meta-dot" aria-hidden /> : null}
+                {dateLabel ? <time dateTime={article.date ?? undefined}>{dateLabel}</time> : null}
+              </motion.p>
+            </div>
 
-                {/* Closing divider */}
-                <div className="w-12 h-px bg-foreground/20 mx-auto mt-16 mb-12" />
+            <div className="gh-notes-article-hero__media">
+              <motion.img
+                src={article.heroImage}
+                alt={article.heroAlt}
+                width={1600}
+                height={1000}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
+                initial={reduce ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.03 }}
+                animate={hero.isInView ? { opacity: 1, scale: 1 } : undefined}
+                transition={{ duration: reduce ? 0.35 : 1.1, ease: EASE }}
+              />
+            </div>
+          </header>
 
-                {/* Institutional closing CTA */}
-                <div className="text-center">
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground/40 font-medium mb-3">
-                    {t('blog.closingLabel')}
-                  </p>
-                  <p className="text-muted-foreground/60 text-sm max-w-md mx-auto leading-relaxed">
-                    {t('blog.closingText')}
-                  </p>
-                </div>
-              </motion.div>
+          <div className="gh-notes-article-body">
+            <div className="gh-notes-article-body__rail" aria-hidden>
+              <span className="gh-notes-article-body__rail-label">{t('notes.page.eyebrow')}</span>
+              <span className="gh-notes-article-body__rail-topic">{article.topic}</span>
+            </div>
+            <div className="gh-notes-article-body__column">
+              {content.sections.map((section, index) => (
+                <section key={`${article.id}-section-${index}`} className="gh-notes-article-section">
+                  {section.heading ? (
+                    <h2 className="gh-notes-article-section__heading">{section.heading}</h2>
+                  ) : null}
+                  {section.pullQuote ? (
+                    <blockquote className="gh-notes-article-quote">{section.pullQuote}</blockquote>
+                  ) : null}
+                  {section.content.split(/\n\n+/).map((paragraph, pIndex) => (
+                    <p key={`${index}-${pIndex}`}>{paragraph}</p>
+                  ))}
+                  {section.image ? (
+                    <figure className="gh-notes-article-figure">
+                      <img
+                        src={section.image}
+                        alt={section.imageAlt || ''}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      {section.caption ? <figcaption>{section.caption}</figcaption> : null}
+                    </figure>
+                  ) : null}
+                </section>
+              ))}
+
+              <p className="gh-notes-article-back">
+                <Link to={notesHref}>{t('notes.page.backToNotes')}</Link>
+              </p>
             </div>
           </div>
-        </section>
+        </article>
+
+        {related.length > 0 ? (
+          <SectionReveal className="gh-notes-related" labelledBy="gh-notes-related-heading">
+            {(inView) => (
+              <div className="gh-notes-related__inner">
+                <motion.p className="gh-notes-eyebrow" {...reveal(inView, reduce, 0.05, 8)}>
+                  <BrandCurveMark className="gh-notes-mark" isInView={inView} />
+                  <span>{t('notes.page.relatedEyebrow')}</span>
+                </motion.p>
+                <motion.h2
+                  id="gh-notes-related-heading"
+                  className="gh-notes-title"
+                  {...reveal(inView, reduce, 0.1, 12)}
+                >
+                  {t('notes.page.relatedTitle')}
+                </motion.h2>
+                <ol className="gh-notes-list">
+                  {related.map((item, index) => {
+                    const relatedContent = getNoteContent(item, language);
+                    return (
+                      <li key={item.id} className="gh-notes-list__item">
+                        <Link
+                          to={`/${language}/intelligence/${item.slug}`}
+                          className="gh-notes-list__row"
+                        >
+                          <span className="gh-notes-list__num" aria-hidden>
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <span className="gh-notes-list__body">
+                            <span className="gh-notes-list__meta">
+                              <span className="gh-notes-list__topic">{item.topic}</span>
+                            </span>
+                            <span className="gh-notes-list__title">{relatedContent.title}</span>
+                            <span className="gh-notes-list__excerpt">{relatedContent.excerpt}</span>
+                            <span className="gh-notes-list__cta">
+                              <span>{t('notes.page.readNote')}</span>
+                              <GhIconArrow />
+                            </span>
+                          </span>
+                          {item.heroImage ? (
+                            <span className="gh-notes-list__preview" aria-hidden>
+                              <img
+                                src={item.heroImage}
+                                alt=""
+                                width={640}
+                                height={420}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </span>
+                          ) : null}
+                          <span className="gh-notes-list__sweep" aria-hidden />
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            )}
+          </SectionReveal>
+        ) : null}
+
+        <SectionReveal className="gh-notes-final gh-notes-final--article" labelledBy="gh-notes-article-end">
+          {(inView) => (
+            <div className="gh-notes-final__inner">
+              <motion.p className="gh-notes-eyebrow" {...reveal(inView, reduce, 0.05, 8)}>
+                <BrandCurveMark className="gh-notes-mark" isInView={inView} />
+                <span>{t('notes.page.articleEndEyebrow')}</span>
+              </motion.p>
+              <motion.h2
+                id="gh-notes-article-end"
+                className="gh-notes-title"
+                {...reveal(inView, reduce, 0.1, 12)}
+              >
+                {t('notes.page.articleEndTitle')}
+              </motion.h2>
+              <motion.div className="gh-notes-actions gh-notes-actions--center" {...reveal(inView, reduce, 0.2, 8)}>
+                <button type="button" className="gh-final__cta gh-final__cta--primary" onClick={openTalk}>
+                  <span className="gh-final__cta-label">{t('notes.page.talkCta')}</span>
+                  <GhIconArrow />
+                </button>
+                <Link to={archiveHref} className="gh-final__cta gh-final__cta--secondary">
+                  <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
+                  <GhIconArrow />
+                </Link>
+              </motion.div>
+            </div>
+          )}
+        </SectionReveal>
       </main>
 
       <Footer />
@@ -164,4 +331,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
+export default NotesArticle;

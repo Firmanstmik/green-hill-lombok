@@ -6,8 +6,10 @@ import { SelectedOpportunities } from '@/components/home/SelectedOpportunities';
 import { GreenHillPrivate } from '@/components/home/GreenHillPrivate';
 import { TrustEducation } from '@/components/home/TrustEducation';
 import { FinalCTA } from '@/components/home/FinalCTA';
+import { useCmsPageSeo } from '@/content/hooks';
 
 const Index = () => {
+  useCmsPageSeo({ titleKey: 'cms.home.seo.title', descriptionKey: 'cms.home.seo.description', imageSlot: 'home.seo.image', path: '' });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
