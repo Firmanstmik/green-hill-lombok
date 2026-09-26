@@ -41,7 +41,11 @@ async function setup() {
 
     CREATE SCHEMA auth;
     GRANT USAGE ON SCHEMA auth TO anon, authenticated;
-    CREATE TABLE auth.users (id UUID PRIMARY KEY, email TEXT);
+    CREATE TABLE auth.users (
+      id UUID PRIMARY KEY, email TEXT, encrypted_password TEXT,
+      created_at TIMESTAMPTZ DEFAULT now(), last_sign_in_at TIMESTAMPTZ,
+      email_confirmed_at TIMESTAMPTZ, invited_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ
+    );
     CREATE FUNCTION auth.uid() RETURNS UUID LANGUAGE sql STABLE AS
       $$ SELECT NULLIF(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
     GRANT EXECUTE ON FUNCTION auth.uid() TO anon, authenticated;
@@ -60,7 +64,9 @@ async function setup() {
     GRANT ALL ON storage.objects, storage.buckets TO anon, authenticated;
 
     CREATE PUBLICATION supabase_realtime;
-    INSERT INTO auth.users VALUES ('${ADMIN}', 'admin@example.com'), ('${USER}', 'someone@example.com');
+    INSERT INTO auth.users (id, email, encrypted_password, created_at) VALUES
+      ('${ADMIN}', 'admin@example.com', 'hash-never-returned', '2026-01-01'),
+      ('${USER}', 'someone@example.com', 'hash-never-returned', '2026-02-01');
   `);
 
   for (const file of fs.readdirSync(MIGRATIONS).filter((f) => f.endsWith('.sql')).sort()) {
@@ -775,5 +781,94 @@ describe('internal content columns never reach visitors', () => {
       expect(notes.ok, notes.error).toBe(true);
       expect(notes.rows.map((row) => row.slug)).toEqual(['published-note']);
     });
+  });
+});
+
+describe('Users & Admins (admin-only user management)', () => {
+  const call = (tx: Transaction, sql: string, params: unknown[] = []) => attempt(tx, sql, params);
+
+  it('visitors cannot call the user-management functions at all', async () => {
+    await as('anon', null, async (tx) => {
+      for (const sql of [
+        'SELECT * FROM public.admin_list_users()',
+        `SELECT * FROM public.admin_find_user('admin@example.com')`,
+        `SELECT public.admin_save_profile('${USER}', 'x', 'en')`,
+        `SELECT public.admin_set_access('${USER}', true)`,
+      ]) {
+        const result = await call(tx, sql);
+        expect(result.ok, sql).toBe(false);
+        expect(result.error).toMatch(/permission denied/);
+      }
+    });
+  });
+
+  it('a signed-in non-admin is refused by every function and cannot promote itself', async () => {
+    await as('authenticated', USER, async (tx) => {
+      for (const sql of [
+        'SELECT * FROM public.admin_list_users()',
+        `SELECT * FROM public.admin_find_user('admin@example.com')`,
+        `SELECT public.admin_save_profile('${USER}', 'x', 'en')`,
+        `SELECT public.admin_set_access('${USER}', true)`,
+      ]) {
+        const result = await call(tx, sql);
+        expect(result.ok, sql).toBe(false);
+        expect(result.error).toMatch(/gh:not_admin/);
+      }
+      expect((await call(tx, 'SELECT public.is_admin() AS a')).rows[0]?.a).toBe(false);
+    });
+  });
+
+  it('lists accounts for the admin without passwords or tokens', async () => {
+    await as('authenticated', ADMIN, async (tx) => {
+      const result = await call(tx, 'SELECT * FROM public.admin_list_users()');
+      expect(result.ok, result.error).toBe(true);
+      expect(result.rows.map((row) => [row.email, row.is_admin, row.is_self])).toEqual([
+        ['admin@example.com', true, true],
+        ['someone@example.com', false, false],
+      ]);
+      expect(Object.keys(result.rows[0]).sort()).toEqual(
+        ['created_at', 'email', 'email_confirmed_at', 'full_name', 'id', 'invited_at', 'is_admin', 'is_self', 'last_sign_in_at', 'preferred_language'].sort(),
+      );
+      expect(JSON.stringify(result.rows)).not.toContain('hash-never-returned');
+      const found = await call(tx, `SELECT * FROM public.admin_find_user(' ADMIN@example.com ')`);
+      expect(found.rows).toEqual([{ id: ADMIN, is_admin: true }]);
+      expect((await call(tx, `SELECT * FROM public.admin_find_user('nobody@example.com')`)).rows).toEqual([]);
+    });
+  });
+
+  it('edits profiles (creating a missing one) without touching access', async () => {
+    await as('authenticated', ADMIN, async (tx) => {
+      expect((await call(tx, `SELECT public.admin_save_profile('${USER}', '  Someone Else  ', 'nl')`)).ok).toBe(true);
+      const rows = (await call(tx, 'SELECT * FROM public.admin_list_users()')).rows;
+      const someone = rows.find((row) => row.id === USER);
+      expect([someone?.full_name, someone?.preferred_language, someone?.is_admin]).toEqual(['Someone Else', 'nl', false]);
+      expect((await call(tx, `SELECT public.admin_save_profile('${USER}', 'x', 'fr')`)).error).toMatch(/gh:bad_language/);
+      expect((await call(tx, `SELECT public.admin_save_profile(gen_random_uuid(), 'x', 'en')`)).error).toMatch(/gh:no_user/);
+      expect((await call(tx, `SELECT public.admin_save_profile('${USER}', repeat('x', 121), 'en')`)).error).toMatch(/gh:name_too_long/);
+      // Direct writes stay closed even for the admin: only the functions can change profiles.
+      expect((await call(tx, `UPDATE public.user_profiles SET full_name = 'x' WHERE id = '${ADMIN}'`)).ok).toBe(false);
+    });
+  });
+
+  it('gives and removes admin access, never your own and never the last admin', async () => {
+    await as('authenticated', ADMIN, async (tx) => {
+      expect((await call(tx, `SELECT public.admin_set_access('${ADMIN}', false)`)).error).toMatch(/gh:self_access/);
+      expect((await call(tx, `SELECT public.admin_set_access('${USER}', true)`)).ok).toBe(true);
+      await tx.query(`SELECT set_config('request.jwt.claim.sub', $1, true)`, [USER]);
+      expect((await call(tx, 'SELECT public.is_admin() AS a')).rows[0]?.a).toBe(true);
+      // The second admin removes the first; then the last one cannot be removed.
+      expect((await call(tx, `SELECT public.admin_set_access('${ADMIN}', false)`)).ok).toBe(true);
+      await tx.query(`SELECT set_config('request.jwt.claim.sub', $1, true)`, [ADMIN]);
+      expect((await call(tx, 'SELECT public.is_admin() AS a')).rows[0]?.a).toBe(false);
+    });
+  });
+
+  it('the database itself refuses to lose its last admin, whoever asks', async () => {
+    expect(await attempt_as_owner(`UPDATE public.user_profiles SET role = NULL WHERE id = '${ADMIN}'`)).toMatch(/gh:last_admin/);
+    expect(await attempt_as_owner(`DELETE FROM public.user_profiles WHERE id = '${ADMIN}'`)).toMatch(/gh:last_admin/);
+    expect(await attempt_as_owner(`DELETE FROM auth.users WHERE id = '${ADMIN}'`)).toMatch(/gh:last_admin/);
+    expect(
+      await attempt_as_owner(`INSERT INTO public.user_profiles (id, role) VALUES ('${USER}', 'admin'); DELETE FROM public.user_profiles WHERE id = '${ADMIN}'`),
+    ).toBe('');
   });
 });

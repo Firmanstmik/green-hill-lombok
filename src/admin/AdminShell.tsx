@@ -1,70 +1,47 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   ArrowUpRight,
+  ChevronDown,
+  FileText,
+  KeyRound,
+  LandPlot,
   LayoutGrid,
   LogOut,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Settings2,
+  UserRound,
+  UsersRound,
   X,
+  type LucideIcon,
 } from 'lucide-react';
 import logoIvory from '@/assets/greenhill/hero/green-hill-logo-hero-168.webp';
 import logoSolid from '@/assets/greenhill/hero/green-hill-logo-solid-112.webp';
 import { useAdminSession } from './AdminSession';
 import { useEnquiries, useOpportunities } from './data/queries';
-import type { OpportunityStatus } from './domain/opportunity';
+import {
+  NAV_GROUPS,
+  SECTION_TITLES,
+  activeGroup,
+  adminSection,
+  currentItem,
+  readNavPrefs,
+  writeNavPrefs,
+  type GroupId,
+  type NavPrefs,
+} from './navigation';
 import { useAdminPath } from './paths';
+import { ActionMenu } from './ui/overlays';
+import { displayName, initials, useSelf } from './users/usersApi';
 
-const OPPORTUNITY_VIEWS: { status: OpportunityStatus | 'all'; label: string }[] = [
-  { status: 'all', label: 'All' },
-  { status: 'draft', label: 'Drafts' },
-  { status: 'available', label: 'Available' },
-  { status: 'reserved', label: 'Reserved' },
-  { status: 'sold', label: 'Sold' },
-  { status: 'archived', label: 'Archived' },
-];
-
-const CONTENT_LINKS = [
-  { path: '/content/home', label: 'Homepage' },
-  { path: '/content/about', label: 'About / Reece' },
-  { path: '/content/whyLombok', label: 'Why Lombok' },
-  { path: '/content/buying', label: 'Buying in Lombok' },
-  { path: '/content/private', label: 'Green Hill Private' },
-  { path: '/content/opportunities', label: 'Opportunities page' },
-  { path: '/content/notes', label: 'Notes page' },
-  { path: '/content/enquire', label: 'Enquiry page' },
-  { path: '/content/footer', label: 'Footer & contact' },
-];
-
-const SETTINGS_LINKS = [
-  { path: '/settings/site', label: 'Site settings' },
-  { path: '/settings/seo', label: 'SEO & social' },
-  { path: '/settings/integrations', label: 'Integrations' },
-];
-
-function NavGroup({
-  label,
-  to,
-  current,
-  children,
-}: {
-  label: string;
-  to?: string;
-  current?: 'page';
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="gha-nav__group">
-      {to ? (
-        <Link className="gha-nav__heading" to={to} aria-current={current}>
-          {label}
-        </Link>
-      ) : (
-        <span className="gha-nav__heading">{label}</span>
-      )}
-      <div className="gha-nav__sub">{children}</div>
-    </div>
-  );
-}
+const GROUP_ICONS: Record<GroupId, LucideIcon> = {
+  content: FileText,
+  opportunities: LandPlot,
+  relationships: UsersRound,
+  settings: Settings2,
+};
 
 function useFocusOnNavigate(targetRef: React.RefObject<HTMLElement>) {
   const { pathname } = useLocation();
@@ -86,11 +63,27 @@ function useFocusOnNavigate(targetRef: React.RefObject<HTMLElement>) {
   }, [pathname, targetRef]);
 }
 
+function useDesktop() {
+  const query = '(min-width: 1024px)';
+  const [desktop, setDesktop] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setDesktop(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return desktop;
+}
+
 export function AdminShell() {
   const { admin, site } = useAdminPath();
+  const navigate = useNavigate();
   const { pathname, search } = useLocation();
   const { email, isLocalPreview, signOut } = useAdminSession();
+  const self = useSelf();
+  const desktop = useDesktop();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [prefs, setPrefs] = useState<NavPrefs>(readNavPrefs);
   const mainRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const opportunities = useOpportunities();
@@ -98,13 +91,43 @@ export function AdminShell() {
 
   useFocusOnNavigate(mainRef);
 
+  const section = adminSection(pathname);
+  const status = new URLSearchParams(search).get('status') ?? 'all';
+  const group = activeGroup(section);
+  const current = currentItem(section, status);
+  const collapsed = desktop && prefs.collapsed;
+
+  const updatePrefs = useCallback((next: (prev: NavPrefs) => NavPrefs) => {
+    setPrefs((prev) => {
+      const value = next(prev);
+      writeNavPrefs(value);
+      return value;
+    });
+  }, []);
+
+  // The group of the page you are on opens by itself (not remembered); only
+  // groups you open or close yourself are remembered. Arriving on a page
+  // reopens its group even if you had closed it earlier.
+  useEffect(() => {
+    if (!group) return;
+    updatePrefs((prev) => {
+      if (prev.groups[group] !== false) return prev;
+      const groups = { ...prev.groups };
+      delete groups[group];
+      return { ...prev, groups };
+    });
+  }, [group, updatePrefs]);
+  const isOpen = (id: GroupId) => prefs.groups[id] ?? id === group;
+
   useEffect(() => {
     setDrawerOpen(false);
   }, [pathname, search]);
 
   useEffect(() => {
     if (!drawerOpen) return;
-    document.querySelector<HTMLElement>('#gha-sidebar .gha-brand')?.focus();
+    document.querySelector<HTMLElement>('#gha-sidebar .gha-drawer-close')?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setDrawerOpen(false);
@@ -112,134 +135,212 @@ export function AdminShell() {
       }
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
   }, [drawerOpen]);
 
   const counts = useMemo(() => {
     const list = opportunities.data ?? [];
-    const byStatus: Record<string, number> = { all: 0 };
+    const byView: Record<string, number> = { all: 0, private: 0 };
     for (const item of list) {
-      byStatus[item.status] = (byStatus[item.status] ?? 0) + 1;
-      if (item.status !== 'archived') byStatus.all += 1;
+      byView[item.status] = (byView[item.status] ?? 0) + 1;
+      if (item.status !== 'archived') byView.all += 1;
+      if (item.visibility === 'private' && item.status !== 'archived') byView.private += 1;
     }
-    return byStatus;
+    return byView;
   }, [opportunities.data]);
 
   const newEnquiries = (enquiries.data ?? []).filter((item) => item.status === 'new').length;
 
-  const section = pathname.replace(/^\/[a-z]{2}\/admin/, '') || '/';
-  const inOpportunities = section.startsWith('/opportunities');
-  const statusParam = new URLSearchParams(search).get('status') ?? 'all';
-  const current = (match: boolean) => (match ? ('page' as const) : undefined);
-
-  const crumbs: Record<string, string> = {
-    '/': 'Overview',
-    '/opportunities': 'Opportunities',
-    '/enquiries': 'Enquiries',
-    '/private': 'Private',
-    '/notes': 'Notes',
-    '/relationships': 'Relationships',
-    '/content': 'Content',
-    '/settings': 'Settings',
+  const countFor = (groupId: GroupId, id: string): ReactNode => {
+    if (id === 'enquiries') {
+      return newEnquiries > 0 ? (
+        <span className="gha-nav__count gha-nav__count--alert" aria-label={`${newEnquiries} new`}>
+          {newEnquiries}
+        </span>
+      ) : null;
+    }
+    if (groupId !== 'opportunities' || !opportunities.data) return null;
+    const view = id === 'private' ? 'private' : id.replace(/^opportunities-/, '');
+    return view ? <span className="gha-nav__count">{counts[view] ?? 0}</span> : null;
   };
-  const crumb = crumbs[`/${section.split('/')[1] ?? ''}`.replace(/\/$/, '') || '/'] ?? 'Admin';
+
+  const who = self ? displayName(self) : email ?? (isLocalPreview ? 'Local preview' : 'Admin');
+  const monogram = self ? initials(self) : email ? initials({ fullName: '', email }) : 'GH';
+  const changePasswordHref = site('/auth/update-password');
+
+  const accountEntries = [
+    { kind: 'label' as const, label: email ?? 'Local preview' },
+    { kind: 'item' as const, label: 'Account', icon: <UserRound size={16} aria-hidden />, onSelect: () => navigate(admin('/settings/account')) },
+    ...(isLocalPreview
+      ? []
+      : [{ kind: 'item' as const, label: 'Change password', icon: <KeyRound size={16} aria-hidden />, onSelect: () => navigate(changePasswordHref) }]),
+    { kind: 'separator' as const },
+    { kind: 'item' as const, label: 'Sign out', icon: <LogOut size={16} aria-hidden />, onSelect: () => void signOut() },
+  ];
+
+  const toggleGroup = (id: GroupId) =>
+    updatePrefs((prev) => ({ ...prev, groups: { ...prev.groups, [id]: !(prev.groups[id] ?? id === group) } }));
+
+  const crumb = SECTION_TITLES[group ?? 'overview'];
 
   return (
     <div className="gh-admin">
       <a className="gha-skip" href="#gha-main">
         Skip to content
       </a>
-      <div className="gha-shell">
-        {drawerOpen ? <div className="gha-scrim" onClick={() => setDrawerOpen(false)} aria-hidden /> : null}
+      <div className="gha-shell" data-collapsed={collapsed}>
+        <div className="gha-scrim" data-open={drawerOpen} onClick={() => setDrawerOpen(false)} aria-hidden />
 
         <aside className="gha-sidebar" data-open={drawerOpen} aria-label="Admin navigation" id="gha-sidebar">
-          <Link className="gha-brand" to={admin()}>
-            <img src={logoIvory} alt="Green Hill Lombok" width={168} height={46} />
-            <span className="gha-brand__role">Admin</span>
-          </Link>
+          <div className="gha-sidebar__head">
+            <Link className="gha-brand" to={admin()} aria-label="Green Hill Admin: overview">
+              <img className="gha-brand__logo" src={logoIvory} alt="" width={168} height={46} />
+              <span className="gha-brand__role">Admin</span>
+            </Link>
+            {desktop ? (
+              <button
+                type="button"
+                className="gha-rail-toggle"
+                onClick={() => updatePrefs((prev) => ({ ...prev, collapsed: !prev.collapsed }))}
+                aria-label={collapsed ? 'Expand the sidebar' : 'Collapse the sidebar'}
+                aria-expanded={!collapsed}
+                data-tip={collapsed ? 'Expand' : undefined}
+              >
+                {collapsed ? <PanelLeftOpen size={18} aria-hidden /> : <PanelLeftClose size={18} aria-hidden />}
+              </button>
+            ) : (
+              <button type="button" className="gha-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Close navigation">
+                <X size={20} aria-hidden />
+              </button>
+            )}
+          </div>
 
           <nav className="gha-nav" aria-label="Sections">
-            <div className="gha-nav__group">
-              <Link className="gha-nav__link" to={admin()} aria-current={current(section === '/')}>
-                <LayoutGrid size={18} aria-hidden />
-                Overview
-              </Link>
-            </div>
+            <Link
+              className="gha-nav__link gha-nav__top"
+              to={admin()}
+              aria-current={section === '/' ? 'page' : undefined}
+              data-tip={collapsed ? 'Overview' : undefined}
+            >
+              <LayoutGrid size={18} aria-hidden />
+              <span className="gha-nav__text">Overview</span>
+            </Link>
 
-            <NavGroup label="Content" to={admin('/content')} current={current(section === '/content')}>
-              {CONTENT_LINKS.map((item) => (
-                <Link
-                  key={item.path}
-                  className="gha-nav__link"
-                  to={admin(item.path)}
-                  aria-current={current(section === item.path)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </NavGroup>
-
-            <NavGroup label="Opportunities">
-              {OPPORTUNITY_VIEWS.map((view) => (
-                <Link
-                  key={view.status}
-                  className="gha-nav__link"
-                  to={view.status === 'all' ? admin('/opportunities') : admin(`/opportunities?status=${view.status}`)}
-                  aria-current={current(section === '/opportunities' && statusParam === view.status)}
-                  data-section={view.status === 'all' && inOpportunities && section !== '/opportunities' ? 'true' : undefined}
-                >
-                  {view.label}
-                  {opportunities.data ? <span className="gha-nav__count">{counts[view.status] ?? 0}</span> : null}
-                </Link>
-              ))}
-            </NavGroup>
-
-            <NavGroup label="Relationships">
-              <Link className="gha-nav__link" to={admin('/enquiries')} aria-current={current(section.startsWith('/enquiries'))}>
-                Enquiries
-                {newEnquiries > 0 ? (
-                  <span className="gha-nav__count gha-nav__count--alert" aria-label={`${newEnquiries} new`}>
-                    {newEnquiries}
-                  </span>
-                ) : null}
-              </Link>
-              <Link className="gha-nav__link" to={admin('/private')} aria-current={current(section.startsWith('/private'))}>
-                Private
-              </Link>
-            </NavGroup>
-
-            <NavGroup label="Editorial">
-              <Link className="gha-nav__link" to={admin('/notes')} aria-current={current(section.startsWith('/notes'))}>
-                Notes
-              </Link>
-            </NavGroup>
-
-            <NavGroup label="Settings">
-              {SETTINGS_LINKS.map((item) => (
-                <Link
-                  key={item.path}
-                  className="gha-nav__link"
-                  to={admin(item.path)}
-                  aria-current={current(section === item.path)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </NavGroup>
+            {NAV_GROUPS.map((navGroup) => {
+              const Icon = GROUP_ICONS[navGroup.id];
+              const open = isOpen(navGroup.id);
+              const here = group === navGroup.id;
+              if (collapsed) {
+                return (
+                  <Link
+                    key={navGroup.id}
+                    className="gha-nav__link gha-nav__top"
+                    to={admin(navGroup.to)}
+                    aria-current={here ? 'page' : undefined}
+                    data-tip={navGroup.label}
+                  >
+                    <Icon size={18} aria-hidden />
+                    <span className="gha-nav__text">{navGroup.label}</span>
+                    {navGroup.id === 'relationships' && newEnquiries > 0 ? (
+                      <span className="gha-nav__dot" aria-label={`${newEnquiries} new enquiries`} />
+                    ) : null}
+                  </Link>
+                );
+              }
+              return (
+                <div className="gha-nav__group" key={navGroup.id} data-here={here || undefined}>
+                  <button
+                    type="button"
+                    className="gha-nav__toggle"
+                    aria-expanded={open}
+                    aria-controls={`gha-nav-${navGroup.id}`}
+                    onClick={() => toggleGroup(navGroup.id)}
+                  >
+                    <Icon size={18} aria-hidden />
+                    <span className="gha-nav__text">{navGroup.label}</span>
+                    {!open && navGroup.id === 'relationships' && newEnquiries > 0 ? (
+                      <span className="gha-nav__dot" aria-label={`${newEnquiries} new enquiries`} />
+                    ) : null}
+                    <ChevronDown size={16} className="gha-nav__chevron" aria-hidden />
+                  </button>
+                  <div className="gha-nav__panel" id={`gha-nav-${navGroup.id}`} data-open={open} {...(open ? {} : { inert: '' })}>
+                    <div className="gha-nav__sub">
+                      {navGroup.items.map((item) => (
+                        <Link
+                          key={item.id}
+                          className="gha-nav__link"
+                          to={admin(item.to)}
+                          aria-current={current === item.id ? 'page' : undefined}
+                        >
+                          <span className="gha-nav__text">{item.label}</span>
+                          {countFor(navGroup.id, item.id)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </nav>
 
           <div className="gha-sidebar__foot">
-            {email ? <p className="gha-sidebar__who">Signed in as {email}</p> : null}
-            {isLocalPreview ? <p className="gha-sidebar__who">Local preview session</p> : null}
-            <a className="gha-nav__link" href={site('/')} target="_blank" rel="noreferrer">
+            <a
+              className="gha-nav__link gha-nav__top"
+              href={site('/')}
+              target="_blank"
+              rel="noreferrer"
+              data-tip={collapsed ? 'Website' : undefined}
+            >
               <ArrowUpRight size={18} aria-hidden />
-              View website
+              <span className="gha-nav__text">Website</span>
               <span className="gha-sr-only">(opens in a new tab)</span>
             </a>
-            <button type="button" className="gha-btn gha-btn--sidebar" onClick={() => void signOut()}>
-              <LogOut size={18} aria-hidden />
-              Sign out
-            </button>
+            {desktop ? (
+              <ActionMenu
+                label="Account menu"
+                entries={accountEntries}
+                trigger={
+                  <button type="button" className="gha-account" data-tip={collapsed ? who : undefined}>
+                    <span className="gha-avatar" aria-hidden>
+                      {monogram}
+                    </span>
+                    <span className="gha-account__text">
+                      <span className="gha-account__name">{who}</span>
+                      <span className="gha-account__role">Admin</span>
+                    </span>
+                  </button>
+                }
+              />
+            ) : (
+              <div className="gha-drawer-account">
+                <div className="gha-account gha-account--static">
+                  <span className="gha-avatar" aria-hidden>
+                    {monogram}
+                  </span>
+                  <span className="gha-account__text">
+                    <span className="gha-account__name">{who}</span>
+                    <span className="gha-account__role">Admin</span>
+                  </span>
+                </div>
+                <Link className="gha-nav__link" to={admin('/settings/account')}>
+                  <UserRound size={17} aria-hidden />
+                  <span className="gha-nav__text">Account</span>
+                </Link>
+                {!isLocalPreview ? (
+                  <Link className="gha-nav__link" to={changePasswordHref}>
+                    <KeyRound size={17} aria-hidden />
+                    <span className="gha-nav__text">Change password</span>
+                  </Link>
+                ) : null}
+                <button type="button" className="gha-nav__link gha-nav__button" onClick={() => void signOut()}>
+                  <LogOut size={17} aria-hidden />
+                  <span className="gha-nav__text">Sign out</span>
+                </button>
+              </div>
+            )}
           </div>
         </aside>
 
@@ -249,25 +350,37 @@ export function AdminShell() {
               ref={menuButtonRef}
               type="button"
               className="gha-btn gha-btn--ghost gha-btn--icon gha-topbar__menu"
-              aria-label={drawerOpen ? 'Close navigation' : 'Open navigation'}
+              aria-label="Open navigation"
               aria-expanded={drawerOpen}
               aria-controls="gha-sidebar"
-              onClick={() => setDrawerOpen((open) => !open)}
+              onClick={() => setDrawerOpen(true)}
             >
-              {drawerOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
+              <Menu size={20} aria-hidden />
             </button>
-            <Link className="gha-topbar__brand" to={admin()} aria-label="Green Hill admin overview">
+            <Link className="gha-topbar__brand" to={admin()} aria-label="Green Hill Admin: overview">
               <img src={logoSolid} alt="" width={96} height={26} />
+              <span className="gha-topbar__role">Admin</span>
             </Link>
             <span className="gha-topbar__crumb">
               Green Hill Admin <span aria-hidden>·</span> {crumb}
             </span>
             <span className="gha-topbar__spacer" />
-            <a className="gha-btn gha-btn--ghost gha-btn--sm" href={site('/')} target="_blank" rel="noreferrer">
-              Website
+            <a className="gha-btn gha-btn--ghost gha-btn--sm gha-topbar__site" href={site('/')} target="_blank" rel="noreferrer">
+              <span className="gha-topbar__site-label">Website</span>
               <ArrowUpRight size={15} aria-hidden />
               <span className="gha-sr-only">(opens in a new tab)</span>
             </a>
+            {!desktop ? (
+              <ActionMenu
+                label="Account menu"
+                entries={accountEntries}
+                trigger={
+                  <button type="button" className="gha-avatar gha-avatar--button">
+                    {monogram}
+                  </button>
+                }
+              />
+            ) : null}
           </header>
 
           {isLocalPreview ? (

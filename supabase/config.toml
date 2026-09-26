@@ -388,6 +388,12 @@ deno_version = 2
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
+# Users & Admins: invites a new admin through the Supabase Admin API.
+# Only signed-in callers reach it; it then checks public.is_admin() itself.
+# The service key comes from Supabase at run time, never from this repository.
+[functions.admin-users]
+verify_jwt = true
+
 [analytics]
 enabled = true
 port = 54327

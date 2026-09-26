@@ -10,6 +10,7 @@ import { ENQUIRY_SOURCE_LABEL } from '../domain/enquiry';
 import { publicLocationLine } from '../domain/opportunity';
 import { useAdminPath } from '../paths';
 import { formatDate, timeAgo } from '../ui/format';
+import { useSelf } from '../users/usersApi';
 import {
   EmptyState,
   EnquiryStatusBadge,
@@ -58,7 +59,10 @@ export function OverviewPage() {
     }));
     return groupAttention([...attentionItems(opps, enqs), ...contentAttention(pages)]);
   }, [opps, enqs, states]);
-  const firstName = useContactSettings().name.split(' ')[0] || 'Reece';
+  // The signed-in admin's own name when set; otherwise the site's contact name.
+  const self = useSelf();
+  const contactName = useContactSettings().name;
+  const firstName = (self?.fullName || contactName).split(' ')[0] || 'Reece';
   const recentOpps = useMemo(() => opps.filter((o) => o.status !== 'archived').slice(0, 5), [opps]);
   const recentEnqs = enqs.slice(0, 5);
   const loading = opportunities.isLoading || enquiries.isLoading;

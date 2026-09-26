@@ -6,6 +6,7 @@ import { loadLocalStore } from '../data/localLoader';
 import { ConfirmDialog } from '../ui/overlays';
 import { PageHead } from '../ui/primitives';
 import { useAdminPath } from '../paths';
+import { AccountProfile } from '../users/AccountProfile';
 
 const env = import.meta.env;
 const INTEGRATIONS = [
@@ -33,7 +34,7 @@ export function SettingsPage() {
   const { admin } = useAdminPath();
 
   useEffect(() => {
-    document.title = 'Integrations & account · Green Hill Admin';
+    document.title = 'Account · Green Hill Admin';
   }, []);
 
   const resetLocal = async () => {
@@ -46,9 +47,11 @@ export function SettingsPage() {
 
   return (
     <div className="gha-enter">
-      <PageHead eyebrow="Settings" title="Integrations & account" lead="What the admin is connected to, and your session." />
+      <PageHead eyebrow="Settings" title="Account" lead="Your profile and password, and what the admin is connected to." />
 
-      <section className="gha-section" aria-labelledby="gha-set-contact" style={{ marginTop: 0 }}>
+      {repository?.mode === 'supabase' ? <AccountProfile /> : null}
+
+      <section className="gha-section" aria-labelledby="gha-set-contact">
         <div className="gha-section__head">
           <h2 className="gha-h2" id="gha-set-contact">
             Contact &amp; search
@@ -136,7 +139,13 @@ export function SettingsPage() {
           </div>
           <div>
             <dt>Access</dt>
-            <dd>One role: admin. Every change is checked by the database, not just by this screen.</dd>
+            <dd>
+              One role: admin. Every change is checked by the database, not just by this screen. People are managed in{' '}
+              <Link className="gha-link" to={admin('/users')}>
+                Users &amp; Admins
+              </Link>
+              .
+            </dd>
           </div>
         </dl>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>

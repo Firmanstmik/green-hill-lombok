@@ -59,6 +59,21 @@ Legend:
 - [ ] Sign in at `https://<domain>/en/admin/login`. Expect the Overview.
       REQUIRES REAL SUPABASE VERIFICATION.
 
+### Users & Admins (more admins, from the admin itself)
+
+- [ ] Apply `20261005_green_hill_admin_users.sql` (`npx supabase db push`).
+      Adds admin-only functions (`admin_list_users`, `admin_find_user`,
+      `admin_save_profile`, `admin_set_access`) and a trigger that keeps at
+      least one admin. No tables or columns change.
+- [ ] Deploy the invitation service: `npx supabase functions deploy admin-users`.
+      Supabase gives it the service key at run time; never put that key in
+      Vercel or any `VITE_` variable.
+- [ ] Admin → Relationships → Users & Admins lists both admins.
+- [ ] “Add admin” sends an invitation only if email delivery works: the
+      built-in mailer reaches only members of the Supabase organisation and a
+      few emails per hour. For anyone else, set up custom SMTP first
+      (Authentication → Emails → SMTP Settings).
+
 ## 4. Auth configuration
 
 - [ ] Auth → Providers → Email: **disable “Allow new users to sign up”**.

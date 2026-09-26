@@ -13,6 +13,7 @@ import { NotesPage } from './pages/NotesPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { RelationshipsPage } from './pages/RelationshipsPage';
 import { ContentOverviewPage } from './content/ContentOverviewPage';
+import { UsersPage } from './users/UsersPage';
 
 // The editor carries Tiptap, dnd-kit, the dropzone, image compression and Mapbox.
 // It loads only when an opportunity is opened.
@@ -59,6 +60,11 @@ function BackToOverview() {
 function SettingsRedirect() {
   const { admin } = useAdminPath();
   return <Navigate to={admin('/settings/site')} replace />;
+}
+
+function AccountRedirect() {
+  const { admin } = useAdminPath();
+  return <Navigate to={admin('/settings/account')} replace />;
 }
 
 function useAdminDocument() {
@@ -119,7 +125,9 @@ export default function AdminApp() {
           <Route path="settings" element={<SettingsRedirect />} />
           <Route path="settings/site" element={<Lazy><SiteSettingsPage /></Lazy>} />
           <Route path="settings/seo" element={<Lazy><SeoSettingsPage /></Lazy>} />
-          <Route path="settings/integrations" element={<SettingsPage />} />
+          <Route path="settings/account" element={<SettingsPage />} />
+          <Route path="settings/integrations" element={<AccountRedirect />} />
+          <Route path="users" element={<UsersPage />} />
           <Route path="*" element={<BackToOverview />} />
         </Route>
       </Routes>
