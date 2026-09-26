@@ -10,6 +10,9 @@
 import { injectPreview, isPreviewBot, previewFor } from './src/lib/socialPreview';
 
 export const config = {
+  // Edge: Vercel bundles the middleware with its imports (the Node.js runtime
+  // transpiles files one by one and cannot resolve ./src/lib/socialPreview).
+  runtime: 'edge',
   // Pages only: no files (anything with a dot), no admin, no auth plumbing.
   matcher: ['/((?!assets/|[a-z]{2}/admin|admin|[a-z]{2}/auth/|.*\\.).*)'],
 };
