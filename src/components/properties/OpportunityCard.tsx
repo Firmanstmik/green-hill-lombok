@@ -109,6 +109,7 @@ export function OpportunityCard({ property, index, teaserHref }: Props) {
               <h3 className="gh-arch-card__title">{property.title}</h3>
               <p className="gh-arch-card__facts">
                 {size ? <span>{size}</span> : null}
+                {property.ownership ? <span>{property.ownership}</span> : null}
                 {lens === 'villa' && property.bedrooms > 0 ? (
                   <span>
                     {property.bedrooms} {t('properties.archive.bedroomsWord')}

@@ -112,13 +112,14 @@
       "developmentPotential": "Development potential",
       "conceptsNote": "Concepts only. Any use is subject to zoning, planning, feasibility and independent professional advice.",
       "priceSource": "Priced at {price}. Converted amounts are approximate.",
+      "priceFrom": "From {price}",
       "documents": "Documents",
       "brochure": "Brochure (PDF)",
       "masterplan": "Masterplan (PDF)",
       "opensNewTab": "(opens in a new tab)",
       "roadAccess": "Road access",
       "utilities": "Utilities",
-      "developer": "Developer / seller"
+      "developer": "Developer / landowner"
     }
   },
   "selected": {

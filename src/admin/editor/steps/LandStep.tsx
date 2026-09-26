@@ -80,7 +80,15 @@ export function LandStep({ o, update }: StepProps) {
       <fieldset className="gha-fieldset">
         <legend className="gha-legend">Land</legend>
         <div className="gha-grid gha-grid--2" style={{ marginTop: 16 }}>
-          <Field label="Land size" optional>
+          <Field
+            label="Land size"
+            optional
+            hint={
+              o.landSize && o.landSize >= 10000
+                ? `= ${(o.landSize / 10000).toLocaleString('en-US', { maximumFractionDigits: 2 })} ha. Large sites are shown in hectares and m² on the website.`
+                : 'In square metres. 10,000 m² = 1 hectare.'
+            }
+          >
             {(control) => <NumberInput control={control} value={o.landSize} unit="m²" decimals onChange={set('landSize')} />}
           </Field>
           <Field label="Building area" optional hint={built ? undefined : 'Leave empty for bare land.'}>
@@ -161,9 +169,9 @@ export function LandStep({ o, update }: StepProps) {
       ) : null}
 
       <fieldset className="gha-fieldset">
-        <legend className="gha-legend">Developer or seller</legend>
+        <legend className="gha-legend">Developer or landowner</legend>
         <Field
-          label="Developer / seller name"
+          label="Developer / landowner name"
           optional
           hint="Private. Never shown on the website unless you switch it on for a Green Hill Private teaser."
         >

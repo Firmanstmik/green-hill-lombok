@@ -174,6 +174,8 @@ export function toRow(o: Opportunity, derived: DerivedValues): Row {
     price_on_request: o.priceOnRequest,
     price_amount: priceAmount,
     price_currency: o.priceCurrency,
+    price_display: o.priceOnRequest ? 'exact' : o.priceDisplay,
+    price_amount_max: !o.priceOnRequest && o.priceDisplay === 'range' && o.priceAmountMax && o.priceAmountMax > 0 ? o.priceAmountMax : null,
     price: priceAmount == null ? 0 : derived.priceEUR != null ? Math.round(derived.priceEUR) : 0,
     price_type: 'sale',
 
@@ -250,6 +252,8 @@ export function fromRow(row: Row): Opportunity {
     priceOnRequest: onRequest,
     priceAmount: priceAmount ?? legacyPrice,
     priceCurrency: priceAmount != null ? asCurrency(row.price_currency) : legacyPrice != null ? 'EUR' : asCurrency(row.price_currency),
+    priceDisplay: row.price_display === 'from' || row.price_display === 'range' ? row.price_display : 'exact',
+    priceAmountMax: positive(row.price_amount_max),
 
     seoTitle: text(row.seo_title),
     seoDescription: text(row.seo_description),

@@ -1917,10 +1917,12 @@ a.gha-signal:hover {
 }
 .gha-doc__row {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 .gha-doc__row .gha-input {
-  flex: 1;
+  flex: 1 1 180px;
+  min-width: 0;
 }
 .gha-soon {
   font-size: 11px;

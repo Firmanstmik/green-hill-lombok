@@ -80,6 +80,8 @@ type OpportunityRecord = Property & {
   priceAmount?: number;
   priceCurrency?: string;
   priceOnRequest?: boolean;
+  priceDisplay?: string;
+  priceAmountMax?: number;
   roadAccess?: string;
   utilities?: string;
   developmentPotential?: string;
@@ -182,6 +184,8 @@ function fromRow(data: Record<string, unknown>): OpportunityRecord {
     priceAmount: positive(data.price_amount),
     priceCurrency: str(data.price_currency) || undefined,
     priceOnRequest: data.price_on_request === true,
+    priceDisplay: str(data.price_display) || undefined,
+    priceAmountMax: positive(data.price_amount_max),
     roadAccess: str(data.road_access) || undefined,
     utilities: str(data.utilities) || undefined,
     developmentPotential: str(data.development_potential) || undefined,

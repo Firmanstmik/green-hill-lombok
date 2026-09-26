@@ -81,7 +81,7 @@ async function loadRows(preview: boolean): Promise<{ rows: ContentRow[]; notes: 
     const statuses = preview ? ['published', 'draft'] : ['published'];
     const [content, notes] = await Promise.all([
       supabase.from('site_content').select('page_key, locale, status, fields, media').in('status', statuses),
-      supabase.from('notes').select('*').in('status', preview ? ['published', 'draft'] : ['published']),
+      supabase.from('notes').select('id, slug, status, topic, published_on, author, featured, cover_image, cover_alt, og_image, translations').in('status', preview ? ['published', 'draft'] : ['published']),
     ]);
     const rows: ContentRow[] = (content.data ?? []).map((r: Record<string, unknown>) => ({
       page: String(r.page_key),

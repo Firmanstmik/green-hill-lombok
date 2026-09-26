@@ -30,7 +30,14 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
   const missing = required.filter((check) => !check.done);
   const isPrivate = o.visibility === 'private';
   const live = isLive(o.status);
-  const price = o.priceOnRequest || !o.priceAmount ? 'Price on request' : formatMoney(o.priceAmount, o.priceCurrency);
+  const price =
+    o.priceOnRequest || !o.priceAmount
+      ? 'Price on request'
+      : o.priceDisplay === 'range' && o.priceAmountMax
+        ? `${formatMoney(o.priceAmount, o.priceCurrency)} – ${formatMoney(o.priceAmountMax, o.priceCurrency)}`
+        : o.priceDisplay === 'from'
+          ? `From ${formatMoney(o.priceAmount, o.priceCurrency)}`
+          : formatMoney(o.priceAmount, o.priceCurrency);
   const url = `/${language}/property/${o.slug || slugify(o.title) || '…'}`;
 
   const publicRows: { label: string; value: string }[] = [

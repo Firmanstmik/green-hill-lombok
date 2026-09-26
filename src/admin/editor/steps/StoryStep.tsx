@@ -30,7 +30,11 @@ export function StoryStep({ o, update }: StepProps) {
           label={o.visibility === 'private' ? 'Why Green Hill is looking at this (investment thesis)' : 'Why Green Hill likes it'}
           optional
           aside={<CharCount value={o.whyGreenHill} ideal={500} />}
-          hint="In your own words, what caught your eye: the view, the access, the neighbours, the potential you would discuss in person. Keep it honest and specific."
+          hint={
+            o.visibility === 'private'
+              ? 'The investment thesis: scarcity, location, surrounding development, entry price, scale, potential use and the long-term logic. Say clearly what is known and what is a concept or future possibility. No projected returns or guarantees.'
+              : 'In your own words, what caught your eye: the view, the access, the neighbours, the potential you would discuss in person. Keep it honest and specific.'
+          }
         >
           {(control) => (
             <textarea

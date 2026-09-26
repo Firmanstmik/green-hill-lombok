@@ -111,13 +111,14 @@
       "developmentPotential": "Ontwikkelingspotentieel",
       "conceptsNote": "Alleen concepten. Elk gebruik is afhankelijk van bestemming, vergunningen, haalbaarheid en onafhankelijk professioneel advies.",
       "priceSource": "Prijs {price}. Omgerekende bedragen zijn bij benadering.",
+      "priceFrom": "Vanaf {price}",
       "documents": "Documenten",
       "brochure": "Brochure (PDF)",
       "masterplan": "Masterplan (PDF)",
       "opensNewTab": "(opent in een nieuw tabblad)",
       "roadAccess": "Toegangsweg",
       "utilities": "Nutsvoorzieningen",
-      "developer": "Ontwikkelaar / verkoper"
+      "developer": "Ontwikkelaar / grondeigenaar"
     },
     "exampleVilla": "Villa"
   },

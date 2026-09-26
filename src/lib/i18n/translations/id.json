@@ -111,13 +111,14 @@
       "developmentPotential": "Potensi pengembangan",
       "conceptsNote": "Hanya konsep. Setiap penggunaan bergantung pada zonasi, perizinan, studi kelayakan, dan nasihat profesional independen.",
       "priceSource": "Harga {price}. Konversi mata uang bersifat perkiraan.",
+      "priceFrom": "Mulai {price}",
       "documents": "Dokumen",
       "brochure": "Brosur (PDF)",
       "masterplan": "Rencana induk (PDF)",
       "opensNewTab": "(terbuka di tab baru)",
       "roadAccess": "Akses jalan",
       "utilities": "Utilitas",
-      "developer": "Pengembang / penjual"
+      "developer": "Pengembang / pemilik lahan"
     },
     "exampleVilla": "Villa"
   },

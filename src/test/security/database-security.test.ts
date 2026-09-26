@@ -17,6 +17,7 @@ import path from 'node:path';
 import { PGlite, type Transaction } from '@electric-sql/pglite';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { teaserFromRow } from '@/lib/privateTeasers';
+import { PUBLIC_OPPORTUNITY_COLUMNS } from '@/lib/publicOpportunities';
 
 const MIGRATIONS = path.resolve(process.cwd(), 'supabase/migrations');
 const ADMIN = '00000000-0000-0000-0000-00000000000a';
@@ -672,6 +673,107 @@ describe('triggers still work without public EXECUTE on their functions', () => 
     await as('authenticated', USER, async (tx) => {
       const selfPromote = await attempt(tx, `INSERT INTO public.user_profiles (id, role) VALUES ('${USER}', 'admin')`);
       expect(selfPromote.ok).toBe(false);
+    });
+  });
+});
+
+describe('price display (brief §17: exact, from, range, POA)', () => {
+  it('accepts a valid range and refuses an inverted or missing one', async () => {
+    const ok = await attempt_as_owner(
+      `UPDATE public.properties SET price_display = 'range', price_amount = 1000, price_amount_max = 2000, price_on_request = false WHERE title = 'Public available'`,
+    );
+    expect(ok).toBe('');
+    for (const bad of [
+      `UPDATE public.properties SET price_display = 'range', price_amount = 2000, price_amount_max = 1000, price_on_request = false WHERE title = 'Public available'`,
+      `UPDATE public.properties SET price_display = 'range', price_amount = 1000, price_amount_max = NULL, price_on_request = false WHERE title = 'Public available'`,
+      `UPDATE public.properties SET price_display = 'guaranteed' WHERE title = 'Public available'`,
+    ]) {
+      expect(await attempt_as_owner(bad), bad).toMatch(/properties_price_display_check/);
+    }
+  });
+
+  it('never reveals the price form or range of a teaser whose price is hidden', async () => {
+    await db.exec(
+      `UPDATE public.properties SET price_display = 'range', price_amount_max = 30000000000 WHERE title = 'Private teaser'`,
+    );
+    await as('anon', null, async (tx) => {
+      const result = await attempt(tx, `SELECT public.private_teaser('GH-LOM-009') AS t`);
+      const teaser = result.rows[0].t as Record<string, unknown>;
+      expect(teaser.price_display).toBe('exact');
+      expect(teaser.price_amount_max).toBeNull();
+      expect(teaser.price_amount).toBeNull();
+    });
+    await db.exec(`UPDATE public.properties SET disclosure = disclosure || '{"price": true}' WHERE title = 'Private teaser'`);
+    await as('anon', null, async (tx) => {
+      const result = await attempt(tx, `SELECT public.private_teaser('GH-LOM-009') AS t`);
+      const teaser = result.rows[0].t as Record<string, unknown>;
+      expect(teaser.price_display).toBe('range');
+      expect(Number(teaser.price_amount_max)).toBe(30000000000);
+    });
+    await db.exec(
+      `UPDATE public.properties SET price_display = 'exact', price_amount_max = NULL, disclosure = disclosure || '{"price": false}' WHERE title = 'Private teaser'`,
+    );
+  });
+});
+
+describe('internal opportunity columns never reach visitors', () => {
+  const INTERNAL = ['verification_notes', 'memorandum_url', 'user_id', 'updated_by'];
+
+  it('refuses the internal columns to a visitor, even on a public live opportunity', async () => {
+    await db.exec(
+      `UPDATE public.properties SET verification_notes = 'SECRET note', memorandum_url = 'private-media:documents/m.pdf' WHERE title = 'Public available'`,
+    );
+    await as('anon', null, async (tx) => {
+      for (const column of INTERNAL) {
+        const result = await attempt(tx, `SELECT ${column} FROM public.properties WHERE title = 'Public available'`);
+        expect(result.ok, column).toBe(false);
+        expect(result.error).toMatch(/permission denied/);
+      }
+      const all = await attempt(tx, `SELECT * FROM public.properties`);
+      expect(all.ok).toBe(false);
+    });
+  });
+
+  it('lets a visitor read exactly the columns the website selects', async () => {
+    await as('anon', null, async (tx) => {
+      const result = await attempt(tx, `SELECT ${PUBLIC_OPPORTUNITY_COLUMNS.join(', ')} FROM public.properties ORDER BY title`);
+      expect(result.ok, result.error).toBe(true);
+      expect(titles(result.rows)).toEqual(['Public available', 'Public reserved', 'Public sold']);
+      expect(JSON.stringify(result.rows)).not.toContain('SECRET');
+    });
+  });
+
+  it('keeps the website list equal to every column except the internal ones', async () => {
+    const result = await db.query<{ column_name: string }>(
+      `SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'properties'`,
+    );
+    const expected = result.rows.map((row) => row.column_name).filter((c) => !INTERNAL.includes(c)).sort();
+    expect([...PUBLIC_OPPORTUNITY_COLUMNS].sort()).toEqual(expected);
+  });
+
+  it('still gives the admin every column', async () => {
+    await as('authenticated', ADMIN, async (tx) => {
+      const result = await attempt(tx, `SELECT verification_notes FROM public.properties WHERE title = 'Public available'`);
+      expect(result.rows[0].verification_notes).toBe('SECRET note');
+    });
+  });
+});
+
+describe('internal content columns never reach visitors', () => {
+  it('refuses updated_by on content and notes, but serves what the website selects', async () => {
+    await as('anon', null, async (tx) => {
+      for (const table of ['site_content', 'notes']) {
+        expect((await attempt(tx, `SELECT updated_by FROM public.${table}`)).error, table).toMatch(/permission denied/);
+      }
+      const content = await attempt(tx, `SELECT page_key, locale, status, fields, media FROM public.site_content`);
+      expect(content.ok, content.error).toBe(true);
+      expect(content.rows.every((row) => row.status === 'published')).toBe(true);
+      const notes = await attempt(
+        tx,
+        `SELECT id, slug, status, topic, published_on, author, featured, cover_image, cover_alt, og_image, translations FROM public.notes`,
+      );
+      expect(notes.ok, notes.error).toBe(true);
+      expect(notes.rows.map((row) => row.slug)).toEqual(['published-note']);
     });
   });
 });

@@ -111,13 +111,14 @@
       "developmentPotential": "Potencial de desarrollo",
       "conceptsNote": "Solo conceptos. Cualquier uso está sujeto a zonificación, permisos, viabilidad y asesoramiento profesional independiente.",
       "priceSource": "Precio {price}. Los importes convertidos son aproximados.",
+      "priceFrom": "Desde {price}",
       "documents": "Documentos",
       "brochure": "Folleto (PDF)",
       "masterplan": "Plan maestro (PDF)",
       "opensNewTab": "(se abre en una pestaña nueva)",
       "roadAccess": "Acceso por carretera",
       "utilities": "Suministros",
-      "developer": "Promotor / vendedor"
+      "developer": "Promotor / propietario del terreno"
     },
     "exampleVilla": "Villa"
   },

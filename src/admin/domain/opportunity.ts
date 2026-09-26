@@ -50,6 +50,10 @@ export const REGION_SUGGESTIONS = [
 export const PRICE_CURRENCIES = ['IDR', 'USD', 'GBP'] as const;
 export type OpportunityCurrency = (typeof PRICE_CURRENCIES)[number] | 'EUR';
 
+/** How a disclosed price reads (brief §17: exact, "from USD X" or a range). */
+export const PRICE_DISPLAYS = ['exact', 'from', 'range'] as const;
+export type PriceDisplay = (typeof PRICE_DISPLAYS)[number];
+
 export const MAX_IMAGES = 8;
 
 /**
@@ -120,6 +124,9 @@ export interface Opportunity {
   priceOnRequest: boolean;
   priceAmount: number | null;
   priceCurrency: OpportunityCurrency;
+  priceDisplay: PriceDisplay;
+  /** Top of a range, same currency as priceAmount. */
+  priceAmountMax: number | null;
 
   seoTitle: string;
   seoDescription: string;
@@ -178,6 +185,8 @@ export function emptyOpportunity(reference = ''): Opportunity {
     priceOnRequest: true,
     priceAmount: null,
     priceCurrency: 'IDR',
+    priceDisplay: 'exact',
+    priceAmountMax: null,
     seoTitle: '',
     seoDescription: '',
     ogImage: '',
@@ -345,6 +354,10 @@ export function draftErrors(o: Opportunity): Partial<Record<string, string>> {
     }
   }
   if (!o.priceOnRequest && o.priceAmount != null && o.priceAmount < 0) errors.priceAmount = 'Price cannot be negative.';
+  if (!o.priceOnRequest && o.priceDisplay === 'range') {
+    if (!o.priceAmountMax || o.priceAmountMax <= 0) errors.priceAmountMax = 'Enter the top of the range.';
+    else if (o.priceAmount != null && o.priceAmountMax < o.priceAmount) errors.priceAmountMax = 'The top of the range must be at least the starting price.';
+  }
   if (o.images.length > MAX_IMAGES) errors.images = `Maximum ${MAX_IMAGES} photographs.`;
   return errors;
 }

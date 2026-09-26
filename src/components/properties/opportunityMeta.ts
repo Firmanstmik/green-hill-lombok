@@ -66,6 +66,11 @@ export function landSizeM2(property: Property): number | null {
 export function landSizeLabel(property: Property): string | null {
   const m2 = landSizeM2(property);
   if (m2 == null) return null;
+  // Large sites read in hectares first so their scale is clear (brief §19).
+  if (m2 >= 10000) {
+    const ha = (m2 / 10000).toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return `${ha} ha · ${Math.round(m2).toLocaleString('en-US')} m²`;
+  }
   if (property.surfaceArea) return property.surfaceArea;
   return `${m2.toLocaleString('en-US')} m²`;
 }

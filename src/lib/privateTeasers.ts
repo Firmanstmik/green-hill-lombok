@@ -92,6 +92,8 @@ export function teaserFromRow(p: Record<string, unknown>): TeaserRow {
     price_on_request: showPrice ? p.price_on_request : true,
     price_amount: showPrice ? p.price_amount : null,
     price_currency: showPrice ? p.price_currency : null,
+    price_display: showPrice ? p.price_display ?? 'exact' : 'exact',
+    price_amount_max: showPrice ? p.price_amount_max ?? null : null,
     price: showPrice ? p.price : 0,
     brochure_url: on('brochure') ? p.brochure_url : null,
     masterplan_url: on('masterplan') ? p.masterplan_url : null,

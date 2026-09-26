@@ -7,9 +7,16 @@ import {
   STATUS_LABEL,
   isLive,
   type OpportunityCurrency,
+  type PriceDisplay,
   type OpportunityType,
 } from '../../domain/opportunity';
 import { CharCount, Field } from '../../ui/primitives';
+
+const PRICE_DISPLAY_OPTIONS: { value: PriceDisplay; label: string }[] = [
+  { value: 'exact', label: 'Exact price' },
+  { value: 'from', label: 'From this price' },
+  { value: 'range', label: 'A range' },
+];
 import { StepFrame, type StepProps } from './shared';
 
 function groupDigits(value: number | null): string {
@@ -43,7 +50,7 @@ const DISCLOSURE_OPTIONS: { key: 'price' | 'location' | 'map' | 'tenure' | 'deve
   { key: 'location', label: 'Exact location (otherwise only the region, e.g. "South Lombok")' },
   { key: 'map', label: 'Map (needs the exact location)' },
   { key: 'tenure', label: 'Tenure / title' },
-  { key: 'developer', label: 'Developer / seller name' },
+  { key: 'developer', label: 'Developer / landowner name' },
 ];
 
 export function BasicsStep({ o, update, errors }: StepProps) {
@@ -198,8 +205,10 @@ export function BasicsStep({ o, update, errors }: StepProps) {
               Present as a teaser on Green Hill Private
             </label>
             <p className="gha-hint" id="gha-teaser-hint">
-              A public page with only the details you switch on below. Visitors can request the investment
-              memorandum; everything else stays private.
+              A public page for serious enquiries. Always shown: title, summary, description, why Green Hill is
+              looking at this, zoning, utilities, development status and potential, and the photographs. Shown
+              only if you switch it on below: price, exact location, map, tenure, developer or landowner, and
+              documents. The investment memorandum and your private notes are never shown.
             </p>
             {o.privateTeaser ? (
               <fieldset className="gha-fieldset" style={{ marginTop: 12 }}>
@@ -303,6 +312,48 @@ export function BasicsStep({ o, update, errors }: StepProps) {
               <div style={{ marginTop: 8 }}>
                 <ApproximatePrices amount={o.priceAmount} currency={o.priceCurrency} />
               </div>
+            ) : null}
+            <div className="gha-field" style={{ marginTop: 16 }}>
+              <span className="gha-label" id="gha-price-display">
+                How the price reads on the website
+              </span>
+              <div className="gha-choice" role="radiogroup" aria-labelledby="gha-price-display">
+                {PRICE_DISPLAY_OPTIONS.map((option) => (
+                  <label key={option.value}>
+                    <input
+                      type="radio"
+                      name="gha-price-display"
+                      checked={o.priceDisplay === option.value}
+                      onChange={() => update({ priceDisplay: option.value })}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+              <p className="gha-hint">
+                {o.priceDisplay === 'from'
+                  ? 'Shown as “From …”, useful when the final figure depends on the plot or phase.'
+                  : o.priceDisplay === 'range'
+                    ? 'Shown as a range, e.g. for a site that can be bought in parts.'
+                    : 'Shown exactly as entered.'}
+              </p>
+            </div>
+            {o.priceDisplay === 'range' ? (
+              <Field label="Up to" required error={errors.priceAmountMax} hint={`Same currency (${o.priceCurrency}).`}>
+                {(control) => (
+                  <input
+                    {...control}
+                    className="gha-input gha-mono"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    value={groupDigits(o.priceAmountMax)}
+                    onChange={(event) => {
+                      const digits = event.target.value.replace(/[^\d]/g, '');
+                      update({ priceAmountMax: digits ? Number(digits) : null });
+                    }}
+                  />
+                )}
+              </Field>
             ) : null}
           </div>
         ) : (

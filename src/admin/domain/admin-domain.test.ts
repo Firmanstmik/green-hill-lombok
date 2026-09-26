@@ -16,7 +16,7 @@ import { applyOpportunityFilters, DEFAULT_FILTERS, filtersFromParams, filtersToP
 import { attentionItems } from './attention';
 import { enquiryFromRow, whatsappLink } from './enquiry';
 import { backupKey, clearBackup, readBackup } from '../editor/useOpportunityEditor';
-import { sourcePriceOf, ratesAreUsable, convertAmount } from '@/lib/opportunityPrice';
+import { sourcePriceOf, ratesAreUsable, convertAmount, priceShapeOf } from '@/lib/opportunityPrice';
 import { readOpportunityPreview, writeOpportunityPreview } from '@/lib/opportunityPreview';
 
 function complete(overrides: Partial<Opportunity> = {}): Opportunity {
@@ -245,5 +245,43 @@ describe('public price source', () => {
     const rates = { EUR: 1, USD: 1.1, IDR: 17_000, GBP: 0.85 };
     expect(ratesAreUsable(rates)).toBe(true);
     expect(convertAmount(17_000_000, 'IDR', 'USD', rates)).toBeCloseTo(1100);
+  });
+});
+
+describe('price display: exact, from, range (brief §17)', () => {
+  it('round-trips "from" and a range without touching the source price', () => {
+    const range = complete({ priceAmount: 5_000_000_000, priceCurrency: 'IDR', priceDisplay: 'range', priceAmountMax: 9_000_000_000 });
+    const row = toRow(range, { priceEUR: 290_000 });
+    expect(row.price_amount).toBe(5_000_000_000);
+    expect(row.price_display).toBe('range');
+    expect(row.price_amount_max).toBe(9_000_000_000);
+    const back = fromRow({ ...row, id: 'a1', updated_at: range.updatedAt });
+    expect(back.priceDisplay).toBe('range');
+    expect(back.priceAmountMax).toBe(9_000_000_000);
+    expect(back.priceAmount).toBe(5_000_000_000);
+
+    const from = toRow(complete({ priceDisplay: 'from', priceAmountMax: 123 }), { priceEUR: 1 });
+    expect(from.price_display).toBe('from');
+    expect(from.price_amount_max).toBeNull();
+
+    const poa = toRow(complete({ priceOnRequest: true, priceDisplay: 'range', priceAmountMax: 9 }), { priceEUR: null });
+    expect(poa.price_display).toBe('exact');
+    expect(poa.price_amount_max).toBeNull();
+  });
+
+  it('asks for a valid top of the range', () => {
+    expect(draftErrors(complete({ priceDisplay: 'range', priceAmountMax: null })).priceAmountMax).toBeTruthy();
+    expect(
+      draftErrors(complete({ priceAmount: 5_000, priceDisplay: 'range', priceAmountMax: 4_000 })).priceAmountMax,
+    ).toMatch(/at least/);
+    expect(draftErrors(complete({ priceAmount: 5_000, priceDisplay: 'range', priceAmountMax: 9_000 })).priceAmountMax).toBeUndefined();
+  });
+
+  it('reads the display shape from public rows and records', () => {
+    expect(priceShapeOf({ price_display: 'range', price_amount_max: 9 })).toEqual({ display: 'range', max: 9 });
+    expect(priceShapeOf({ priceDisplay: 'from' })).toEqual({ display: 'from', max: null });
+    // A range without a top falls back to the exact price rather than showing half a range.
+    expect(priceShapeOf({ price_display: 'range' })).toEqual({ display: 'exact', max: null });
+    expect(priceShapeOf({})).toEqual({ display: 'exact', max: null });
   });
 });

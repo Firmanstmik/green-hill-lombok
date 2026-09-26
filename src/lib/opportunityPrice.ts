@@ -87,16 +87,35 @@ export type PriceDetail = {
   approximate: boolean;
 };
 
+/** How the price reads (brief §17): exact, "from" or a range. The source amounts never change. */
+export function priceShapeOf(record: object): { display: 'exact' | 'from' | 'range'; max: number | null } {
+  const r = record as Record<string, unknown>;
+  const display = r.priceDisplay ?? r.price_display;
+  const max = Number(r.priceAmountMax ?? r.price_amount_max);
+  const top = Number.isFinite(max) && max > 0 ? max : null;
+  if (display === 'range' && top != null) return { display: 'range', max: top };
+  if (display === 'from') return { display: 'from', max: null };
+  return { display: 'exact', max: null };
+}
+
 export function useOpportunityPriceDetail(record: object): PriceDetail | null {
   const { currency, exchangeRates } = useCurrency();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const source = sourcePriceOf(record);
   if (!source) return null;
-  const exact = formatMoney(source.amount, source.currency, language);
+  const shape = priceShapeOf(record);
+  const render = (amount: number, max: number | null, code: PriceCurrency) => {
+    const main = formatMoney(amount, code, language);
+    if (shape.display === 'range' && max != null) return `${main} – ${formatMoney(max, code, language)}`;
+    if (shape.display === 'from') return t('properties.memo.priceFrom').replace('{price}', main);
+    return main;
+  };
+  const exact = render(source.amount, shape.max, source.currency);
   if (source.currency === currency || !ratesAreUsable(exchangeRates)) {
     return { display: exact, source: exact, approximate: false };
   }
-  const converted = formatMoney(convertAmount(source.amount, source.currency, currency, exchangeRates), currency, language);
+  const convert = (value: number) => convertAmount(value, source.currency, currency, exchangeRates);
+  const converted = render(convert(source.amount), shape.max == null ? null : convert(shape.max), currency);
   return { display: `≈ ${converted}`, source: exact, approximate: true };
 }
 
