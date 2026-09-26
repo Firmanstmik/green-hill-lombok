@@ -1,0 +1,9 @@
+# Never upload local secrets or local-only folders to Vercel.
+# Production values come from the Vercel project's environment variables.
+.env
+.env.*
+!.env.example
+supabase/.temp
+_recovery
+node_modules
+dist
