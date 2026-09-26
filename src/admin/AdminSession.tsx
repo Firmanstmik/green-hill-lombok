@@ -3,6 +3,7 @@ import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import type { AdminRepository } from './data/repository';
 import { createSupabaseRepository } from './data/supabaseRepository';
 import { loadLocalStore } from './data/localLoader';
+import { authErrorMessage } from './auth/authMessages';
 
 /**
  * One role: admin. Authorisation is decided by the database (`public.is_admin()`),
@@ -99,13 +100,7 @@ export function AdminSessionProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async (userEmail: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email: userEmail.trim(), password });
-    if (error) {
-      throw new Error(
-        error.message === 'Invalid login credentials'
-          ? 'That email and password do not match an account.'
-          : error.message,
-      );
-    }
+    if (error) throw new Error(authErrorMessage(error));
   }, []);
 
   const signOut = useCallback(async () => {
@@ -130,7 +125,7 @@ export function AdminSessionProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.resetPasswordForEmail(userEmail.trim(), {
       redirectTo: `${window.location.origin}/${lang}/auth/update-password`,
     });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(authErrorMessage(error));
   }, []);
 
   const value = useMemo<AdminSessionValue>(

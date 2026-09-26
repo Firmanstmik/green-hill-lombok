@@ -1,187 +1,235 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
-import logoIvory from '@/assets/greenhill/hero/green-hill-logo-hero-168.webp';
-import logoSolid from '@/assets/greenhill/hero/green-hill-logo-solid-168.webp';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { LOCAL_PREVIEW_AVAILABLE, useAdminSession } from './AdminSession';
 import { useAdminPath } from './paths';
 import { Field } from './ui/primitives';
+import { AuthHeading, AuthNotice, AuthShell, PasswordInput } from './auth/AuthShell';
+import { AUTH_MESSAGES, isValidEmail } from './auth/authMessages';
+
+type View = 'sign-in' | 'reset' | 'reset-sent';
 
 export function AdminLogin() {
   const { status, email: signedInAs, signIn, signOut, enterLocalPreview, sendPasswordReset } = useAdminSession();
   const { admin, site } = useAdminPath();
+  const [searchParams] = useSearchParams();
+  // `?reset=1` comes from an expired or invalid reset link: open the reset request directly.
+  const [view, setView] = useState<View>(searchParams.get('reset') === '1' ? 'reset' : 'sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [notice, setNotice] = useState('');
+  const [emailInvalid, setEmailInvalid] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    document.title = 'Sign in · Green Hill Admin';
-  }, []);
+    document.title = view === 'sign-in' ? 'Sign in · Green Hill Admin' : 'Reset password · Green Hill Admin';
+  }, [view]);
 
   if (status === 'ready') return <Navigate to={admin()} replace />;
 
+  const go = (next: View) => {
+    setError('');
+    setEmailInvalid(false);
+    setView(next);
+  };
+
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (busy) return;
     setError('');
-    setNotice('');
+    setEmailInvalid(false);
     if (!email.trim() || !password) {
-      setError('Enter your email address and password.');
+      setError(AUTH_MESSAGES.missingFields);
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setEmailInvalid(true);
       return;
     }
     setBusy(true);
     try {
       await signIn(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not sign in.');
+      setError(err instanceof Error ? err.message : AUTH_MESSAGES.unexpected);
     } finally {
       setBusy(false);
     }
   };
 
-  const reset = async () => {
+  const requestReset = async (event: FormEvent) => {
+    event.preventDefault();
+    if (busy) return;
     setError('');
-    setNotice('');
-    if (!email.trim()) {
-      setError('Enter your email address first, then choose “Forgot password”.');
+    setEmailInvalid(false);
+    if (!isValidEmail(email)) {
+      setEmailInvalid(true);
       return;
     }
+    setBusy(true);
     try {
       await sendPasswordReset(email);
-      setNotice('If that address has an account, a reset link is on its way.');
+      setView('reset-sent');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not send a reset link.');
+      setError(err instanceof Error ? err.message : AUTH_MESSAGES.unexpected);
+    } finally {
+      setBusy(false);
     }
   };
 
+  const emailField = (
+    <Field label="Email address" error={emailInvalid ? AUTH_MESSAGES.invalidEmail : undefined}>
+      {(control) => (
+        <input
+          {...control}
+          className="gha-input gha-auth__input"
+          type="email"
+          name="email"
+          inputMode="email"
+          autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setEmailInvalid(false);
+          }}
+        />
+      )}
+    </Field>
+  );
+
+  const backToSite = (
+    <a className="gha-auth__back" href={site('/')}>
+      <ArrowLeft size={15} aria-hidden />
+      Back to Green Hill
+    </a>
+  );
+
   return (
-    <div className="gh-admin">
-      <div className="gha-login">
-        <aside className="gha-login__side" aria-hidden>
-          <img className="gha-login__logo" src={logoIvory} alt="" width={220} height={60} />
-          <p className="gha-login__quote">A quiet place to look after every opportunity and every conversation.</p>
-          <p className="gha-login__small">Green Hill Lombok · Curated Land &amp; Investments</p>
-        </aside>
+    <AuthShell homeHref={site('/')}>
+      {status === 'loading' ? (
+        <>
+          <AuthHeading title="Sign in" />
+          <p className="gha-auth__checking" role="status">
+            <Loader2 size={16} className="gha-spin" aria-hidden />
+            Checking your session…
+          </p>
+        </>
+      ) : null}
 
-        <main className="gha-login__form">
-          <div className="gha-login__card">
-            <img className="gha-login__mobile-logo" src={logoSolid} alt="Green Hill Lombok" width={180} height={49} />
-            <p className="gha-eyebrow">Admin</p>
-            <h1 className="gha-title">Sign in</h1>
+      {status === 'unavailable' ? (
+        <>
+          <AuthHeading title="Sign in" />
+          <AuthNotice tone="info">
+            <strong>The Green Hill database is not connected yet</strong>
+            <span>The admin will be available once a Green Hill Supabase project is configured for this site.</span>
+          </AuthNotice>
+        </>
+      ) : null}
 
-            {status === 'loading' ? (
-              <p className="gha-lead" role="status">
-                Checking your session…
-              </p>
-            ) : null}
+      {status === 'forbidden' ? (
+        <>
+          <AuthHeading title="No admin access" />
+          <AuthNotice tone="info">
+            <strong>This account does not have admin access</strong>
+            <span>
+              {signedInAs ? `${signedInAs} is signed in, ` : ''}but only Green Hill admin accounts can open this area.
+            </span>
+          </AuthNotice>
+          <button type="button" className="gha-btn gha-btn--secondary gha-auth__submit" onClick={() => void signOut()}>
+            Sign out
+          </button>
+        </>
+      ) : null}
 
-            {status === 'unavailable' ? (
-              <div className="gha-alert gha-alert--info" style={{ marginTop: 24 }} role="status">
-                <div>
-                  <span className="gha-alert__title">The Green Hill database is not connected yet</span>
-                  <span>
-                    The admin will be available once a Green Hill Supabase project is configured for this site.
-                  </span>
-                </div>
-              </div>
-            ) : null}
-
-            {status === 'forbidden' ? (
-              <div className="gha-alert" style={{ marginTop: 24 }} role="alert">
-                <div>
-                  <span className="gha-alert__title">This account does not have admin access</span>
-                  <span>
-                    {signedInAs ? `${signedInAs} is signed in, ` : ''}but only the Green Hill admin account can open
-                    this area.
-                  </span>
-                  <div style={{ marginTop: 12 }}>
-                    <button type="button" className="gha-btn gha-btn--secondary gha-btn--sm" onClick={() => void signOut()}>
-                      Sign out
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {status === 'signed-out' && !LOCAL_PREVIEW_AVAILABLE ? (
-              <form onSubmit={submit} noValidate style={{ marginTop: 28 }}>
-                <Field label="Email address">
-                  {(control) => (
-                    <input
-                      {...control}
-                      className="gha-input"
-                      type="email"
-                      autoComplete="username"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
-                  )}
-                </Field>
-                <Field label="Password">
-                  {(control) => (
-                    <input
-                      {...control}
-                      className="gha-input"
-                      type="password"
-                      autoComplete="current-password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                    />
-                  )}
-                </Field>
-
-                {error ? (
-                  <p className="gha-error" role="alert" style={{ marginTop: 16 }}>
-                    {error}
-                  </p>
-                ) : null}
-                {notice ? (
-                  <p className="gha-hint" role="status" style={{ marginTop: 16 }}>
-                    {notice}
-                  </p>
-                ) : null}
-
-                <button type="submit" className="gha-btn gha-btn--primary gha-btn--block" style={{ marginTop: 24 }} disabled={busy}>
-                  {busy ? <Loader2 size={16} className="gha-spin" aria-hidden /> : null}
-                  {busy ? 'Signing in…' : 'Sign in'}
+      {status === 'signed-out' && !LOCAL_PREVIEW_AVAILABLE && view === 'sign-in' ? (
+        <>
+          <AuthHeading title="Sign in" lead="The Green Hill administration: opportunities, enquiries and the website." />
+          <form className="gha-auth__form" onSubmit={submit} noValidate aria-busy={busy}>
+            {emailField}
+            <Field
+              label="Password"
+              aside={
+                <button type="button" className="gha-auth__textlink" onClick={() => go('reset')}>
+                  Forgot password?
                 </button>
-                <button type="button" className="gha-btn gha-btn--ghost gha-btn--block" style={{ marginTop: 8 }} onClick={() => void reset()}>
-                  Forgot password
-                </button>
-              </form>
-            ) : null}
+              }
+            >
+              {(control) => (
+                <PasswordInput
+                  {...control}
+                  name="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              )}
+            </Field>
 
-            {status === 'signed-out' && LOCAL_PREVIEW_AVAILABLE ? (
-              <div style={{ marginTop: 24 }}>
-                <div className="gha-alert gha-alert--gold">
-                  <div>
-                    <span className="gha-alert__title">Development build without a database</span>
-                    <span>
-                      You can open a local preview of the admin. Records are kept in this browser only and are never
-                      published. This option does not exist in production.
-                    </span>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="gha-btn gha-btn--primary gha-btn--block"
-                  style={{ marginTop: 20 }}
-                  onClick={() => void enterLocalPreview()}
-                >
-                  Open local preview
-                </button>
-              </div>
-            ) : null}
+            {error ? <AuthNotice>{error}</AuthNotice> : null}
 
-            <p className="gha-hint" style={{ marginTop: 32 }}>
-              <a className="gha-link" href={site('/')}>
-                Back to the website
-              </a>
-            </p>
+            <button type="submit" className="gha-btn gha-btn--primary gha-auth__submit" disabled={busy}>
+              {busy ? <Loader2 size={17} className="gha-spin" aria-hidden /> : null}
+              {busy ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+        </>
+      ) : null}
+
+      {status === 'signed-out' && !LOCAL_PREVIEW_AVAILABLE && view === 'reset' ? (
+        <>
+          <AuthHeading
+            title="Reset your password"
+            lead="Enter the email address of your Green Hill account and we’ll send you a link to choose a new password."
+          />
+          <form className="gha-auth__form" onSubmit={requestReset} noValidate aria-busy={busy}>
+            {emailField}
+            {error ? <AuthNotice>{error}</AuthNotice> : null}
+            <button type="submit" className="gha-btn gha-btn--primary gha-auth__submit" disabled={busy}>
+              {busy ? <Loader2 size={17} className="gha-spin" aria-hidden /> : null}
+              {busy ? 'Sending…' : 'Send reset link'}
+            </button>
+          </form>
+          <button type="button" className="gha-auth__textlink gha-auth__secondary" onClick={() => go('sign-in')}>
+            Back to sign in
+          </button>
+        </>
+      ) : null}
+
+      {status === 'signed-out' && !LOCAL_PREVIEW_AVAILABLE && view === 'reset-sent' ? (
+        <>
+          <AuthHeading title="Check your email" />
+          <AuthNotice tone="success">
+            <span>
+              If <strong>{email.trim()}</strong> belongs to a Green Hill account, a reset link is on its way. The link is
+              valid for one hour.
+            </span>
+          </AuthNotice>
+          <button type="button" className="gha-btn gha-btn--secondary gha-auth__submit" onClick={() => go('sign-in')}>
+            Back to sign in
+          </button>
+        </>
+      ) : null}
+
+      {status === 'signed-out' && LOCAL_PREVIEW_AVAILABLE ? (
+        <>
+          <AuthHeading title="Sign in" />
+          <div className="gha-alert gha-alert--gold">
+            <div>
+              <span className="gha-alert__title">Development build without a database</span>
+              <span>
+                You can open a local preview of the admin. Records are kept in this browser only and are never published.
+                This option does not exist in production.
+              </span>
+            </div>
           </div>
-        </main>
-      </div>
-    </div>
+          <button type="button" className="gha-btn gha-btn--primary gha-auth__submit" onClick={() => void enterLocalPreview()}>
+            Open local preview
+          </button>
+        </>
+      ) : null}
+
+      <div className="gha-auth__links">{backToSite}</div>
+    </AuthShell>
   );
 }

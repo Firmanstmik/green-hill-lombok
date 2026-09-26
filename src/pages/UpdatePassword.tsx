@@ -1,208 +1,240 @@
-﻿import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, type FormEvent } from 'react';
+import { Check, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { AlertCircle, Lock, Eye, EyeOff } from 'lucide-react';
-import { toast } from 'sonner';
+import '@/admin/admin.css';
+import { AuthHeading, AuthNotice, AuthShell, PasswordInput } from '@/admin/auth/AuthShell';
+import { AUTH_MESSAGES, authErrorMessage, resetLinkProblem } from '@/admin/auth/authMessages';
+import { PASSWORD_RULES, meetsPasswordPolicy } from '@/admin/auth/passwordPolicy';
+
+type LinkState = 'checking' | 'valid' | 'expired' | 'invalid';
 
 const UpdatePassword = () => {
   const { language } = useLanguage();
-  const navigate = useNavigate();
+  const signInHref = `/${language}/admin/login`;
 
+  // A failed reset link arrives with error_code in the URL; otherwise wait for the recovery session.
+  const [linkState, setLinkState] = useState<LinkState>(() => resetLinkProblem(window.location) ?? 'checking');
+  const [accountEmail, setAccountEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isValidSession, setIsValidSession] = useState<boolean | null>(null);
+  const [sessionLost, setSessionLost] = useState(false);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Set a new password · Green Hill';
+  }, []);
 
   // Check for valid recovery session
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    if (linkState !== 'checking') return;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
-        setIsValidSession(true);
+        setAccountEmail(session?.user.email ?? '');
+        setLinkState('valid');
       }
     });
 
     // Also check if there's already a session (user may have already been redirected)
+    let timer: ReturnType<typeof setTimeout> | undefined;
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        setIsValidSession(true);
+        setAccountEmail(session.user.email ?? '');
+        setLinkState('valid');
       } else {
         // Give a brief moment for the auth state change to fire
-        setTimeout(() => {
-          setIsValidSession((prev) => prev === null ? false : prev);
+        timer = setTimeout(() => {
+          setLinkState((prev) => (prev === 'checking' ? 'invalid' : prev));
         }, 2000);
       }
     });
 
     return () => {
       subscription?.unsubscribe();
+      if (timer) clearTimeout(timer);
     };
-  }, []);
+  }, [linkState]);
 
-  const handleUpdatePassword = async () => {
-    if (!password.trim()) {
-      setError('Please enter a new password');
+  const handleUpdatePassword = async (event: FormEvent) => {
+    event.preventDefault();
+    if (loading) return;
+    setError(null);
+
+    if (!meetsPasswordPolicy(password)) {
+      setError(AUTH_MESSAGES.weakPassword);
       return;
     }
-
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters');
-      return;
-    }
-
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(AUTH_MESSAGES.mismatch);
       return;
     }
 
     setLoading(true);
-    setError(null);
-
     try {
       const { error } = await supabase.auth.updateUser({ password });
-
       if (error) {
-        throw error;
+        const message = authErrorMessage(error);
+        setSessionLost(message === AUTH_MESSAGES.sessionMissing);
+        setError(message);
+        return;
       }
-
-      toast.success('Password updated successfully');
-      navigate(`/${language}/`, { replace: true });
-    } catch (err: any) {
-      const errorMessage = err?.message || 'Failed to update password. Please try again.';
-      setError(errorMessage);
+      setDone(true);
+    } catch (err) {
+      setError(authErrorMessage(err as { message?: string; name?: string }));
     } finally {
       setLoading(false);
     }
   };
 
-  // Loading state while checking session
-  if (isValidSession === null) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center pb-24">
-        <span className="text-2xl font-serif tracking-wide text-foreground mb-10 block">Green Hill</span>
-        <p className="text-sm text-muted-foreground">Verifying your reset link...</p>
-      </div>
-    );
-  }
-
-  // Invalid or expired token
-  if (isValidSession === false) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center pb-24 px-6">
-        <span className="text-2xl font-serif tracking-wide text-foreground mb-14 block">Green Hill</span>
-        <div className="w-full max-w-md text-center space-y-6">
-          <h1 className="text-2xl font-bold text-foreground">Link expired</h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            This password reset link is no longer valid. Please request a new one.
-          </p>
-          <Button
-            onClick={() => navigate(`/${language}/`, { replace: true })}
-            className="h-14 px-8 text-base font-semibold rounded-xl bg-brand-ink text-white hover:bg-brand-ink/90 hover:shadow-lg hover:shadow-brand-ink/20 transition-all duration-300"
-          >
-            Return home
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const mismatch = confirmPassword.length > 0 && confirmPassword !== password;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center pb-24 px-6">
-      <span className="text-2xl font-serif tracking-wide text-foreground mb-14 block">Green Hill</span>
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Set new password</h1>
-          <p className="text-sm text-muted-foreground">
-            Choose a strong password for your account.
+    <AuthShell homeHref={`/${language}`}>
+      {linkState === 'checking' ? (
+        <>
+          <AuthHeading title="Set a new password" />
+          <p className="gha-auth__checking" role="status">
+            <Loader2 size={16} className="gha-spin" aria-hidden />
+            Verifying your reset link…
           </p>
-        </div>
+        </>
+      ) : null}
 
-        {error && (
-          <div className="p-4 rounded-xl bg-red-50 border border-red-200">
-            <p className="text-sm text-red-600 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              {error}
-            </p>
+      {linkState === 'expired' || linkState === 'invalid' ? (
+        <>
+          <AuthHeading title={linkState === 'expired' ? 'This link has expired' : 'This link isn’t valid'} />
+          <AuthNotice tone="info">
+            <span>
+              {linkState === 'expired'
+                ? AUTH_MESSAGES.expiredLink
+                : 'This password reset link can’t be used, perhaps because it was already opened. Please request a new one.'}
+            </span>
+          </AuthNotice>
+          <a className="gha-btn gha-btn--primary gha-auth__submit" href={`${signInHref}?reset=1`}>
+            Request a new link
+          </a>
+          <div className="gha-auth__links">
+            <a className="gha-auth__textlink" href={signInHref}>
+              Back to sign in
+            </a>
           </div>
-        )}
+        </>
+      ) : null}
 
-        <div className="space-y-6">
-          <div>
-            <Label htmlFor="new-password" className="text-sm font-medium mb-2 block">
-              New password (min. 8 characters)
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-              <Input
+      {linkState === 'valid' && done ? (
+        <div className="gha-auth__success">
+          <span className="gha-auth__seal" aria-hidden>
+            <Check size={20} />
+          </span>
+          <AuthHeading title="Password updated" lead="Your Green Hill account is ready." />
+          <a className="gha-btn gha-btn--primary gha-auth__submit" href={`/${language}/admin`}>
+            Continue to the admin
+          </a>
+        </div>
+      ) : null}
+
+      {linkState === 'valid' && !done ? (
+        <>
+          <AuthHeading
+            title="Set a new password"
+            lead={
+              accountEmail ? (
+                <>
+                  Choose a strong password for <strong>{accountEmail}</strong>.
+                </>
+              ) : (
+                'Choose a strong password for your account.'
+              )
+            }
+          />
+          <form className="gha-auth__form" onSubmit={handleUpdatePassword} noValidate aria-busy={loading}>
+            {/* Lets password managers save the new password against the right account. */}
+            {accountEmail ? (
+              <input type="email" name="username" autoComplete="username" value={accountEmail} readOnly hidden />
+            ) : null}
+            <div className="gha-field">
+              <label className="gha-label" htmlFor="new-password">
+                New password
+              </label>
+              <PasswordInput
                 id="new-password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Enter new password"
+                name="new-password"
+                autoComplete="new-password"
+                aria-describedby="password-rules"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setError(null);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleUpdatePassword();
-                }}
                 disabled={loading}
-                className="h-14 pl-12 pr-12 text-base rounded-xl border-border/50 focus:border-brand-ink/50 focus:ring-2 focus:ring-brand-ink/10 transition-all duration-200"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
+              <ul className="gha-auth__rules" id="password-rules" aria-label="Password requirements">
+                {PASSWORD_RULES.map((rule) => {
+                  const met = rule.test(password);
+                  return (
+                    <li key={rule.id} className={met ? 'is-met' : undefined}>
+                      <span className="gha-auth__rule-mark" aria-hidden>
+                        {met ? <Check size={12} strokeWidth={2.5} /> : null}
+                      </span>
+                      {rule.label}
+                      <span className="gha-sr-only">{met ? ' (met)' : ' (not yet met)'}</span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="confirm-password" className="text-sm font-medium mb-2 block">
-              Confirm password
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-              <Input
+            <div className="gha-field">
+              <label className="gha-label" htmlFor="confirm-password">
+                Confirm password
+              </label>
+              <PasswordInput
                 id="confirm-password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Confirm new password"
+                name="confirm-password"
+                autoComplete="new-password"
+                aria-invalid={mismatch || undefined}
+                aria-describedby={mismatch ? 'confirm-hint' : undefined}
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                   setError(null);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleUpdatePassword();
-                }}
                 disabled={loading}
-                className="h-14 pl-12 pr-5 text-base rounded-xl border-border/50 focus:border-brand-ink/50 focus:ring-2 focus:ring-brand-ink/10 transition-all duration-200"
               />
+              {mismatch ? (
+                <p className="gha-hint" id="confirm-hint">
+                  {AUTH_MESSAGES.mismatch}
+                </p>
+              ) : null}
             </div>
-          </div>
 
-          <Button
-            onClick={handleUpdatePassword}
-            disabled={loading}
-            className="w-full h-14 text-base font-semibold rounded-xl bg-brand-ink text-white hover:bg-brand-ink/90 hover:shadow-lg hover:shadow-brand-ink/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Updating...' : 'Update password'}
-          </Button>
-        </div>
-      </div>
-    </div>
+            {error ? (
+              <AuthNotice>
+                <span>{error}</span>
+                {sessionLost ? (
+                  <a className="gha-auth__textlink" href={`${signInHref}?reset=1`}>
+                    Request a new link
+                  </a>
+                ) : null}
+              </AuthNotice>
+            ) : null}
+
+            <button type="submit" className="gha-btn gha-btn--primary gha-auth__submit" disabled={loading}>
+              {loading ? <Loader2 size={17} className="gha-spin" aria-hidden /> : null}
+              {loading ? 'Updating password…' : 'Update password'}
+            </button>
+          </form>
+          <div className="gha-auth__links">
+            <a className="gha-auth__textlink" href={signInHref}>
+              Back to sign in
+            </a>
+          </div>
+        </>
+      ) : null}
+    </AuthShell>
   );
 };
 
 export default UpdatePassword;
-

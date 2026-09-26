@@ -2336,61 +2336,419 @@ a.gha-signal:hover {
   color: var(--gha-ivory);
 }
 
-/* Login */
-.gha-login {
+/* Private access: Admin sign-in and password update (AuthShell).
+   Phones are the primary composition: one ivory column, logo, content,
+   quiet brand line. From 900px: forest brand panel beside the form. */
+.gha-auth {
   min-height: 100dvh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--gha-ivory);
 }
-.gha-login__side {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 48px;
-  background: var(--gha-forest);
-  color: var(--gha-ivory);
-  overflow: hidden;
-}
-.gha-login__side img.gha-login__logo {
-  width: 220px;
-  height: auto;
-}
-.gha-login__quote {
-  max-width: 30ch;
-  font-family: var(--gha-display);
-  font-size: 28px;
-  line-height: 1.3;
-  color: #fff;
-}
-.gha-login__small {
-  font-size: 13px;
-  color: rgba(241, 237, 229, 0.66);
-}
-.gha-login__form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
-}
-.gha-login__card {
-  width: min(400px, 100%);
-}
-.gha-login__mobile-logo {
+.gha-auth__side {
   display: none;
 }
-@media (max-width: 899.98px) {
-  .gha-login {
-    grid-template-columns: minmax(0, 1fr);
+.gha-auth__main {
+  display: flex;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: max(28px, calc(env(safe-area-inset-top) + 20px)) max(24px, calc(env(safe-area-inset-right) + 20px))
+    max(24px, calc(env(safe-area-inset-bottom) + 16px)) max(24px, calc(env(safe-area-inset-left) + 20px));
+}
+.gha-auth__column {
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100%);
+}
+.gha-auth__logo {
+  align-self: flex-start;
+  display: block;
+  line-height: 0;
+  border-radius: var(--gha-radius-sm);
+  animation: gha-auth-in 420ms var(--gha-ease) both;
+}
+.gha-auth__logo img {
+  width: 164px;
+  height: auto;
+}
+.gha-auth__body {
+  padding-top: clamp(44px, 9vh, 88px);
+  animation: gha-auth-in 480ms var(--gha-ease) 80ms both;
+}
+.gha-auth__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: auto 0 0;
+  padding-top: 48px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gha-faint);
+}
+
+.gha-auth__head .gha-eyebrow {
+  margin-bottom: 14px;
+}
+.gha-auth__title {
+  margin: 0;
+  font-family: var(--gha-display);
+  font-weight: 400;
+  font-size: clamp(31px, 8.4vw, 40px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--gha-forest);
+  text-wrap: balance;
+}
+.gha-auth__lead {
+  margin: 14px 0 0;
+  max-width: 38ch;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--gha-muted);
+}
+.gha-auth__lead strong {
+  font-weight: 500;
+  color: var(--gha-ink);
+  overflow-wrap: anywhere;
+}
+
+.gha-auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 34px;
+}
+.gha-auth__form .gha-field + .gha-field {
+  margin-top: 0;
+}
+.gha-auth__form .gha-field__row {
+  align-items: baseline;
+}
+.gh-admin .gha-auth__input {
+  min-height: 56px;
+  padding: 0 16px;
+  font-size: 16px; /* 16px keeps iOS from zooming into the field */
+  letter-spacing: 0.01em;
+}
+.gha-auth__foot span {
+  white-space: nowrap;
+}
+.gha-auth__foot span + span {
+  color: var(--gha-gold-deep);
+}
+.gha-auth__pw {
+  position: relative;
+}
+/* Jost draws the password bullet very small; the system face reads clearly. */
+.gh-admin .gha-auth__pw input[type='password']:not(:placeholder-shown) {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  letter-spacing: 0.12em;
+}
+.gh-admin .gha-auth__pw .gha-auth__input {
+  padding-right: 56px;
+}
+.gha-auth__eye {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--gha-radius-sm);
+  background: transparent;
+  color: var(--gha-faint);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color var(--gha-fast) var(--gha-ease), background-color var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__eye:hover {
+  color: var(--gha-forest);
+  background: rgba(23, 56, 46, 0.05);
+}
+
+.gh-admin .gha-auth__submit {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 6px;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+}
+.gh-admin .gha-auth__submit.gha-btn--primary:hover:not(:disabled) {
+  background: #1f4638;
+}
+.gha-auth__success .gha-auth__submit,
+.gha-auth__body > .gha-auth__notice + .gha-auth__submit {
+  margin-top: 28px;
+}
+
+.gha-auth__textlink {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 0;
+  margin: -10px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gha-forest);
+  text-decoration: underline;
+  text-decoration-color: rgba(199, 157, 90, 0.7);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  transition: text-decoration-color var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__textlink:hover {
+  text-decoration-color: var(--gha-forest);
+}
+.gha-auth__secondary {
+  margin-top: 18px;
+}
+
+.gha-auth__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--gha-line);
+}
+.gha-auth__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13.5px;
+  color: var(--gha-muted);
+  text-decoration: none;
+  transition: color var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__back:hover {
+  color: var(--gha-forest);
+}
+.gha-auth__back svg {
+  transition: transform var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__back:hover svg {
+  transform: translateX(-3px);
+}
+
+.gha-auth__notice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 13px 16px;
+  border-left: 2px solid var(--gha-error);
+  border-radius: 0 var(--gha-radius-sm) var(--gha-radius-sm) 0;
+  background: var(--gha-error-soft);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gha-ink);
+  animation: gha-rise-soft var(--gha-base) var(--gha-ease);
+}
+.gha-auth__head + .gha-auth__notice {
+  margin-top: 28px;
+}
+.gha-auth__notice strong {
+  font-weight: 500;
+  color: var(--gha-forest);
+}
+.gha-auth__notice--info {
+  border-left-color: var(--gha-gold);
+  background: rgba(255, 255, 255, 0.62);
+}
+.gha-auth__notice--success {
+  border-left-color: var(--gha-success);
+  background: var(--gha-success-soft);
+}
+.gha-auth__notice--success strong {
+  overflow-wrap: anywhere;
+}
+
+.gha-auth__checking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 0;
+  font-size: 14.5px;
+  color: var(--gha-muted);
+}
+
+.gha-auth__rules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--gha-muted);
+}
+.gha-auth__rules li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__rule-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gha-line-strong);
+  border-radius: 50%;
+  transition: background-color var(--gha-fast) var(--gha-ease), border-color var(--gha-fast) var(--gha-ease);
+}
+.gha-auth__rules li.is-met {
+  color: var(--gha-ink);
+}
+.gha-auth__rules li.is-met .gha-auth__rule-mark {
+  border-color: var(--gha-forest);
+  background: var(--gha-forest);
+  color: var(--gha-ivory);
+}
+
+.gha-auth__success {
+  animation: gha-auth-in 420ms var(--gha-ease) both;
+}
+.gha-auth__seal {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 26px;
+  border: 1px solid var(--gha-gold);
+  border-radius: 50%;
+  color: var(--gha-forest);
+}
+
+@keyframes gha-auth-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-  .gha-login__side {
+}
+
+@media (min-width: 480px) {
+  .gha-auth__logo img {
+    width: 188px;
+  }
+}
+
+/* Tablet portrait: the single column sits in the middle of the page. */
+@media (min-width: 600px) and (max-width: 899.98px) {
+  .gha-auth__body {
+    margin-block: auto;
+    padding-block: 56px;
+  }
+  .gha-auth__foot {
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .gha-auth__foot span + span::before {
+    content: '·';
+    margin-right: 12px;
+    color: var(--gha-faint);
+  }
+}
+
+@media (min-width: 900px) {
+  .gha-auth {
+    grid-template-columns: minmax(380px, 44%) minmax(0, 1fr);
+  }
+  .gha-auth__side {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100dvh;
+    padding: clamp(40px, 4.2vw, 64px);
+    background: var(--gha-forest);
+    color: var(--gha-ivory);
+    overflow: hidden;
+  }
+  /* A single hairline frame: architectural, not decorative. */
+  .gha-auth__side::after {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(241, 237, 229, 0.08);
+    pointer-events: none;
+  }
+  .gha-auth__side-logo {
+    width: 205px;
+    height: auto;
+    animation: gha-auth-in 420ms var(--gha-ease) both;
+  }
+  .gha-auth__side-copy {
+    animation: gha-auth-in 560ms var(--gha-ease) 120ms both;
+  }
+  .gha-auth__rule {
+    display: block;
+    width: 44px;
+    height: 1px;
+    margin-bottom: 28px;
+    background: var(--gha-gold);
+  }
+  .gha-auth__quote {
+    margin: 0;
+    max-width: 18ch;
+    font-family: var(--gha-display);
+    font-size: clamp(28px, 2.7vw, 40px);
+    line-height: 1.26;
+    color: #fff;
+  }
+  .gha-auth__brandline {
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(241, 237, 229, 0.62);
+  }
+  .gha-auth__main {
+    align-items: center;
+    padding: 64px clamp(32px, 5vw, 80px);
+  }
+  .gha-auth__logo,
+  .gha-auth__foot {
     display: none;
   }
-  .gha-login__mobile-logo {
-    display: block;
-    width: 180px;
-    height: auto;
-    margin-bottom: 32px;
+  .gha-auth__body {
+    padding-top: 0;
+  }
+  .gha-auth__title {
+    font-size: clamp(34px, 3vw, 42px);
+  }
+  .gh-admin .gha-auth__input,
+  .gh-admin .gha-auth__submit {
+    min-height: 54px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gha-auth__logo,
+  .gha-auth__body,
+  .gha-auth__side-logo,
+  .gha-auth__side-copy,
+  .gha-auth__success,
+  .gha-auth__notice {
+    animation: none;
+  }
+  .gha-auth__back:hover svg {
+    transform: none;
   }
 }
 
