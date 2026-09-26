@@ -35,3 +35,6 @@ dist-ssr
 
 # Supabase CLI link metadata (local only)
 supabase/.temp/
+
+.vercel
+.env*
