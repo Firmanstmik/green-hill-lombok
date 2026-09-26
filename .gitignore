@@ -32,3 +32,6 @@ dist-ssr
 .lovable
 *.tsbuildinfo
 
+
+# Supabase CLI link metadata (local only)
+supabase/.temp/

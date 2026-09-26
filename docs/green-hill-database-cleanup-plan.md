@@ -1,8 +1,17 @@
 # Green Hill — database cleanup plan
 
-Status: **plan only.** No legacy table, column or function is dropped in the
-code cleanup (Phase 6J). Run this as one dedicated migration **after** the
-real Supabase project passes `supabase/PRODUCTION_CHECKLIST.md` §9.
+Status: **EXECUTED on production (2026-09-26)** by
+`supabase/migrations/20260929_green_hill_remove_ukon_legacy.sql`, after a
+dependency audit of the real project (all ten legacy tables empty; no
+Green Hill foreign key, view, policy, function or trigger depended on them).
+Removed: the ten tables, their eleven functions and trigger, the seller-image
+storage policy and the (empty) `seller-profile-images` bucket (deleted through
+the Storage API, since Supabase blocks direct deletes from storage tables),
+the marketplace roles (`user_profiles.role` now `NULL` or `admin`), and 18
+unused marketplace columns on `properties` (ROI, rental income, HOA, parking,
+features…). Kept on purpose: `price_type`, `bedrooms`/`bathrooms`, `user_id`
+(still read by the code). The text below is the original plan, kept for
+reference.
 
 Why wait: the migrations in `supabase/migrations/` were written on top of the
 inherited Ukon schema, and several Green Hill migrations `ALTER` inherited

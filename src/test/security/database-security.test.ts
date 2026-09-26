@@ -32,9 +32,11 @@ async function setup() {
     CREATE ROLE anon NOLOGIN;
     CREATE ROLE authenticated NOLOGIN;
     GRANT USAGE ON SCHEMA public TO anon, authenticated;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO anon, authenticated;
+    -- The production project's defaults (checked on 2026-09-26): new tables give
+    -- anon/authenticated no read or write access; functions keep Postgres'
+    -- default EXECUTE for PUBLIC. Every privilege the site needs must therefore
+    -- come from the migrations themselves (20260930_green_hill_api_grants.sql).
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT TRUNCATE, REFERENCES, TRIGGER ON TABLES TO anon, authenticated;
 
     CREATE SCHEMA auth;
     GRANT USAGE ON SCHEMA auth TO anon, authenticated;
@@ -206,9 +208,26 @@ describe.each([
       ]) {
         const result = await attempt(tx, sql);
         expect(result.ok, sql).toBe(false);
-        expect(result.error).toMatch(/permission denied/);
+        // Removed by 20260929_green_hill_remove_ukon_legacy.sql.
+        expect(result.error).toMatch(/does not exist/);
       }
-      expect((await attempt(tx, 'SELECT * FROM public.listing_analytics')).rows).toHaveLength(0);
+      for (const table of ['listing_analytics', 'messages', 'seller_profiles', 'buyer_profiles', 'partnership_applications']) {
+        expect((await attempt(tx, `SELECT * FROM public.${table}`)).error).toMatch(/does not exist/);
+      }
+    });
+  });
+
+  it('cannot read or write the nearby-places cache, or empty any table', async () => {
+    await as(role, sub, async (tx) => {
+      expect((await attempt(tx, 'SELECT * FROM public.poi_cache')).rows).toHaveLength(0);
+      const insert = await attempt(
+        tx,
+        `INSERT INTO public.poi_cache (latitude, longitude, poi_data, expires_at) VALUES (-8.9, 116.2, '[]', now() + interval '1 day')`,
+      );
+      expect(insert.ok).toBe(false);
+      for (const table of ['properties', 'enquiries', 'notes', 'site_content', 'user_profiles']) {
+        expect((await attempt(tx, `TRUNCATE public.${table}`)).ok, table).toBe(false);
+      }
     });
   });
 
@@ -569,6 +588,90 @@ describe('database security for the admin', () => {
         [ids['Public draft'], JSON.stringify([`${PUBLIC_PREFIX}draft.webp`])],
       );
       expect(publish.ok).toBe(true);
+    });
+  });
+});
+
+describe('production hardening (Ukon removal and explicit grants)', () => {
+  it('lets the admin use the nearby-places cache', async () => {
+    await as('authenticated', ADMIN, async (tx) => {
+      const insert = await attempt(
+        tx,
+        `INSERT INTO public.poi_cache (latitude, longitude, poi_data, expires_at) VALUES (-8.9, 116.2, '[]', now() + interval '1 day') RETURNING id`,
+      );
+      expect(insert.ok, insert.error).toBe(true);
+      expect((await attempt(tx, 'SELECT * FROM public.poi_cache')).rows).toHaveLength(1);
+    });
+  });
+
+  it('allows only the admin role on profiles', async () => {
+    const result = await db.query<{ def: string }>(
+      `SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname = 'user_profiles_role_check'`,
+    );
+    expect(result.rows[0].def).toContain("'admin'");
+    expect(result.rows[0].def).not.toMatch(/buyer|agent|seller/);
+    // Even the database owner cannot store a marketplace role any more.
+    const bad = await attempt_as_owner(
+      `ALTER TABLE public.user_profiles DISABLE TRIGGER USER; UPDATE public.user_profiles SET role = 'agent' WHERE id = '${ADMIN}'`,
+    );
+    expect(bad).toMatch(/user_profiles_role_check/);
+  });
+
+  it('no longer has marketplace ROI, rental or fee columns on opportunities', async () => {
+    const result = await db.query<{ column_name: string }>(
+      `SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'properties'`,
+    );
+    const columns = result.rows.map((row) => row.column_name);
+    for (const gone of ['roi_percent', 'rental_income_estimate', 'hoa_fees', 'is_investment', 'virtual_tour_url']) {
+      expect(columns, gone).not.toContain(gone);
+    }
+    for (const kept of ['title', 'price_amount', 'why_green_hill', 'memorandum_url', 'disclosure', 'seo_title']) {
+      expect(columns, kept).toContain(kept);
+    }
+  });
+});
+
+/** Runs a statement as the database owner inside a rolled-back transaction; returns the error text or ''. */
+async function attempt_as_owner(sql: string): Promise<string> {
+  let message = '';
+  await db
+    .transaction(async (tx) => {
+      try {
+        await tx.exec(sql);
+      } catch (error) {
+        message = (error as Error).message;
+      }
+      await tx.rollback();
+    })
+    .catch(() => undefined);
+  return message;
+}
+
+describe('triggers still work without public EXECUTE on their functions', () => {
+  it('logs enquiry activity, stamps updates and protects the role column', async () => {
+    await as('anon', null, async (tx) => {
+      const sent = await attempt(tx, `SELECT public.submit_enquiry('Trigger Check', 't@example.com', NULL, NULL, NULL, 'hi', 'general', NULL)`);
+      expect(sent.ok, sent.error).toBe(true);
+      expect((await attempt(tx, `SELECT public.log_enquiry_activity()`)).ok).toBe(false);
+    });
+    const logged = await db.query<{ n: number }>(`SELECT count(*)::int AS n FROM public.enquiry_activity`);
+    expect(logged.rows[0].n).toBeGreaterThanOrEqual(0);
+    await as('authenticated', ADMIN, async (tx) => {
+      const created = await attempt(
+        tx,
+        `SELECT public.submit_enquiry('Activity Check', 'a@example.com', NULL, NULL, NULL, 'hi', 'general', NULL) AS id`,
+      );
+      expect(created.ok, created.error).toBe(true);
+      const activity = await attempt(tx, `SELECT kind FROM public.enquiry_activity e JOIN public.enquiries q ON q.id = e.enquiry_id WHERE q.name = 'Activity Check'`);
+      expect(activity.rows.map((row) => row.kind)).toContain('created');
+      const before = await attempt(tx, `SELECT updated_at FROM public.properties WHERE title = 'Public available'`);
+      await attempt(tx, `UPDATE public.properties SET summary = 'Touched' WHERE title = 'Public available'`);
+      const after = await attempt(tx, `SELECT updated_at FROM public.properties WHERE title = 'Public available'`);
+      expect(after.rows[0].updated_at).not.toEqual(before.rows[0].updated_at);
+    });
+    await as('authenticated', USER, async (tx) => {
+      const selfPromote = await attempt(tx, `INSERT INTO public.user_profiles (id, role) VALUES ('${USER}', 'admin')`);
+      expect(selfPromote.ok).toBe(false);
     });
   });
 });

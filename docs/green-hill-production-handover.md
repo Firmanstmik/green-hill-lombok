@@ -23,7 +23,7 @@ as owner and the developer invited as a member only.
 |---|---|---|---|---|
 | Domain registrar | The domain (e.g. greenhilllombok.com, not yet confirmed) | Green Hill | None needed (DNS changes via Green Hill) | NEEDS PRODUCTION SETUP |
 | Hosting: **Vercel** (decided) | Serves the built site (`npm run build` → `dist/`), SPA fallback and link previews (`vercel.json`, `middleware.ts`) | Green Hill | Member | NEEDS PRODUCTION SETUP |
-| Supabase: a **new, dedicated** project (region Singapore), never the inherited Ukon project or keys | Database, admin login, file storage | Green Hill (organisation owner) | Developer role | NEEDS PRODUCTION SETUP (not created yet) |
+| Supabase: organisation **Green Hill Lombok**, project **green-hill-lombok** (Singapore), new and dedicated, never the inherited Ukon project or keys | Database, admin login, file storage | Green Hill (organisation owner) | Developer role | LIVE (19 migrations, admin created, verified 64/64) |
 | Mapbox | Maps on the memo and in the admin | Green Hill | None (public token only) | NEEDS PRODUCTION SETUP |
 | Google Analytics 4 | Visitor analytics | Green Hill | Editor | NEEDS PRODUCTION SETUP |
 | Meta Business (Pixel) | Instagram/Facebook campaign measurement | Green Hill | Partner access | NEEDS PRODUCTION SETUP |
@@ -126,6 +126,8 @@ Full, step-by-step setup and the real verification run:
 - **Database**: Supabase daily backups on a paid plan; point-in-time
   recovery is an add-on for stricter needs. Before any schema change
   (for example the legacy clean-up), take a manual `pg_dump`.
+- **Public image URLs** are cached by Supabase's CDN for up to about 60
+  seconds after an image is replaced or unpublished (measured on the project).
 - **Storage (photographs, PDFs)**: Supabase database backups do **not**
   include storage files. Keep the original photographs and PDFs in Green
   Hill's own drive, or schedule a periodic copy of the `opportunity-media`
@@ -147,7 +149,13 @@ Full, step-by-step setup and the real verification run:
 - **Password reset**: "Forgot password" on `/<lang>/admin/login` emails a
   link to `/<lang>/auth/update-password` (the redirect URL must be allowed in
   Supabase Auth → URL configuration). The developer never sets or knows the
-  password.
+  password. Reece's account was created **without a password**: his first
+  sign-in is "Forgot password" once email delivery works (see checklist §4:
+  invite him to the Supabase organisation or configure SMTP).
+- **Auth settings as code**: `supabase/config.toml` (pulled from the project,
+  secrets only as `env(...)`). Change it, check `npx supabase config diff`,
+  then `npx supabase config push`. Note: `[auth.email] enable_signup` switches
+  the email provider itself; sign-ups are closed by `[auth] enable_signup`.
 - Strong password; enable MFA in Supabase Auth if available on the plan.
 - Remove developer access from Supabase, hosting and code when a contract
   ends; rotate the anon key only if it was misused (it is public by design).
@@ -172,7 +180,8 @@ not be set until this is decided.
 | Code, tests (142), TypeScript, build, public/admin/CMS browser QA | LOCALLY VERIFIED |
 | Production bundle: no local preview store, no demo inventory, no invoice, no service-role key | LOCALLY VERIFIED |
 | Link-preview middleware | LOCALLY VERIFIED (tests + bundle run) |
-| Supabase project, migrations on Supabase, storage, Auth, admin account, checklist steps 1–18 | NOT RUN: the Supabase project has not been created yet |
+| Supabase project, migrations, storage, Auth settings, admin account, RLS/storage/CMS/enquiry flows | VERIFIED on the production project, 64/64 live checks (checklist §10) |
+| Password-reset email to Reece | BLOCKED until Reece is invited to the Supabase organisation or custom SMTP is set |
 | Domain, DNS, HTTPS, live link previews | NOT RUN: domain not confirmed, Vercel project not created |
 
 Results of the real run are recorded in `supabase/PRODUCTION_CHECKLIST.md` §10.

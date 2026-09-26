@@ -1,10 +1,13 @@
 # Green Hill — Supabase production checklist
 
 Green Hill is a single-admin CMS. Visitors read published public opportunities
-and submit enquiries; one admin account manages everything. Nothing below is
-verified against a real Supabase project yet: **the project has not been
-created** (status on 2026-09-26, see §10). Hosting is Vercel (decided); the
-domain is not confirmed.
+and submit enquiries; one admin account manages everything.
+
+**Status 2026-09-26:** the production project exists (organisation *Green Hill
+Lombok*, project *green-hill-lombok*, region Singapore), all 19 migrations are
+applied, the admin exists, and the live end-to-end run passed 64/64 (§10).
+Open items: the production domain (not confirmed), the Vercel project, and
+email delivery for password resets (§4). Hosting is Vercel (decided).
 
 Legend:
 
@@ -28,10 +31,9 @@ Legend:
 
 - [ ] Apply every file in `supabase/migrations/` in filename order
       (`supabase db push`, or paste them in order into the SQL editor).
-      LOCAL VERIFIED: all 16 apply cleanly in order on Postgres 16
-      (`20260927_green_hill_content.sql`: site content, Notes and the
-      `site-media` bucket; the last is `20260928_green_hill_content_pages.sql`:
-      the Opportunities, Notes and Enquiry pages join the content model).
+      LOCAL VERIFIED and APPLIED TO PRODUCTION (2026-09-26): all 19 apply
+      cleanly in order; the last three are `20260929_green_hill_remove_ukon_legacy.sql`,
+      `20260930_green_hill_api_grants.sql`, `20261001_green_hill_trigger_function_privileges.sql`.
 - [ ] Confirm in the SQL editor:
       ```sql
       select id, public, file_size_limit, allowed_mime_types
@@ -71,7 +73,18 @@ Legend:
 - [ ] Password reset from the admin login screen reaches
       `/<lang>/auth/update-password` and the new password works.
 - [ ] Optional: enable MFA for the admin account.
-      All REQUIRES REAL SUPABASE VERIFICATION.
+- [ ] **Email delivery.** The project has no custom SMTP. Supabase's built-in
+      mailer only delivers to members of the Supabase organisation (and only a
+      few emails per hour). Before Reece can receive a password-reset email,
+      either invite Reece's address to the *Green Hill Lombok* organisation or
+      configure custom SMTP (Auth → SMTP settings).
+
+Done on 2026-09-26 (via `supabase/config.toml`, pushed with `supabase config push`):
+sign-ups disabled (`disable_signup: true`; a sign-up attempt returns
+`signup_disabled`), email/password sign-in on, phone and every external
+provider off, password minimum 12 characters with lower/upper case and
+digits. Site URL is `http://localhost:8080` with `http://localhost:8080/**`
+allowed until the domain exists; then set both to the domain.
 
 ## 5. Row level security (database)
 
@@ -234,4 +247,12 @@ Only when every step passes: production security is verified.
 | Date | Step(s) | Result | By |
 |---|---|---|---|
 | 2026-09-26 | Local gate: 142 tests, TypeScript, build; public QA 95/95; admin QA 49/49; CMS QA 53/53; 7B coverage 21/21; production bundle scans (no local store, demo data, invoice or service-role key) | PASS | developer |
-| — | Steps 1–19 on the real project and domain | NOT RUN: Supabase project not created, domain not confirmed | — |
+| 2026-09-26 | Migrations: all 19 applied (local = remote, no duplicates after renaming `20260222_properties_rls` → `20260223_properties_rls`; `db push --dry-run` has nothing pending) | PASS | developer |
+| 2026-09-26 | Found and fixed on the real project: tables were not exposed to the Data API (new-project default) → `20260930_green_hill_api_grants.sql`; `poi_cache` had RLS off → admin-only; trigger functions callable over RPC → `20261001_…`; legacy Ukon schema removed → `20260929_…` | PASS | developer |
+| 2026-09-26 | Supabase security advisor: only the five intended public functions remain as warnings (`submit_enquiry`, `private_teaser(s)`, `private_opportunity_count`, `is_admin`) | PASS | developer |
+| 2026-09-26 | Storage: exactly `opportunity-media` (private), `property-images`, `opportunity-files`, `site-media` (public); admin-only write policies; anonymous and non-admin uploads refused | PASS | developer |
+| 2026-09-26 | Admin: one auth user (Reece, confirmed, no password yet — he sets it via "Forgot password"), `user_profiles.role = 'admin'`, `is_admin()` true for him and false for visitors | PASS | developer |
+| 2026-09-26 | Live end-to-end run against the production project (production build, 64 checks): public site in 4 languages with honest empty states; opportunity draft/preview/publish/reserved/sold/private/teaser/archive/restore; exact IDR price; private media private, signed links working and expiring, public copies created and removed; content draft invisible, preview, publish, SEO, image publish/replace; Notes draft/publish/unpublish; enquiry via public form → WhatsApp, stored, status and note by admin, unreadable by visitors; non-admin refused everywhere; sign-out | 64/64 PASS | developer |
+| 2026-09-26 | Deleted/unpublished public images stop being served after ~60 s (Supabase CDN invalidation window, measured) | NOTED | developer |
+| 2026-09-26 | All QA records, files and the temporary non-admin account removed afterwards; production holds only Reece's admin profile | PASS | developer |
+| — | Domain, Vercel deployment, password-reset email, link previews (steps 18–19) | NOT RUN: domain not confirmed, Vercel project not created, no SMTP | — |
