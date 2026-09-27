@@ -1331,6 +1331,7 @@
   font-variation-settings: "wght" 550;
   letter-spacing: 0.03em;
   text-transform: none;
+  text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
   transition:
@@ -2070,6 +2071,7 @@
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -4282,6 +4284,7 @@
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: none;
+  text-decoration: none;
   cursor: pointer;
   transition:
     color 0.42s cubic-bezier(0.22, 1, 0.36, 1),
@@ -5469,7 +5472,7 @@
 }
 
 /* ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ SECTION 06 ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Final CTA / Talk to Reece ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ
- * Closing personal invitation. Forest panel. #contact destination.
+ * Closing personal invitation. Forest panel. Primary action opens WhatsApp.
  * Hierarchy: invitation ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ value ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ primary CTA ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ secondary ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ three steps.
  * No unverified WhatsApp/email/phone exposed.
  */
@@ -6073,6 +6076,7 @@
   display: block;
   width: auto;
   height: clamp(2.6rem, 4.2vw, 3.15rem);
+  aspect-ratio: 1561 / 420;
   object-fit: contain;
 }
 
@@ -7329,6 +7333,23 @@
   .gh-footer__credit {
     justify-self: start;
     text-align: left;
+  }
+}
+
+@media (max-width: 767px) {
+  .gh-footer__logo {
+    align-self: center;
+  }
+
+  .gh-footer__logo-img {
+    height: 7.75rem;
+    aspect-ratio: 851 / 640;
+  }
+
+  .gh-footer__eyebrow {
+    align-self: stretch;
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -14660,6 +14681,7 @@ button.gh-arch-chip {
   font-size: 0.86rem;
   font-weight: 500;
   letter-spacing: 0.02em;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -16877,6 +16899,7 @@ button.gh-arch-chip {
   border-radius: 999px;
   background: var(--gh-gold);
   color: #fff;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -17156,6 +17179,7 @@ button.gh-arch-chip {
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.2;
+  text-decoration: none;
   cursor: pointer;
   pointer-events: auto;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);

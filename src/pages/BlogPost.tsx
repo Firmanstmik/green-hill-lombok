@@ -7,7 +7,6 @@ import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { GhIconArrow } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
 import { applyPageSeo } from '@/lib/seo';
 import { useNotesArticles } from '@/content/hooks';
 import {
@@ -68,8 +67,7 @@ const NotesArticle = () => {
   const { t, language } = useLanguage();
   const reduce = Boolean(useReducedMotion());
   const hero = useInView({ threshold: 0.15 });
-  const whatsappUrl = getPublicWhatsAppUrl();
-  const talkHref = `/${language}/#contact`;
+  const enquireHref = `/${language}/enquire`;
   const archiveHref = `/${language}/properties`;
   const notesHref = `/${language}/intelligence`;
 
@@ -77,14 +75,6 @@ const NotesArticle = () => {
   const article = slug ? getNoteBySlug(slug, articles) : null;
   const content = article ? getNoteContent(article, language) : null;
   const related = article ? getRelatedNotes(article, 3, articles) : [];
-
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = talkHref;
-  };
 
   useEffect(() => {
     if (!article || !content) {
@@ -317,10 +307,10 @@ const NotesArticle = () => {
                 {t('notes.page.articleEndTitle')}
               </motion.h2>
               <motion.div className="gh-notes-actions gh-notes-actions--center" {...reveal(inView, reduce, 0.2, 8)}>
-                <button type="button" className="gh-final__cta gh-final__cta--primary gh-notes-cta--forest" onClick={openTalk}>
+                <Link to={enquireHref} className="gh-final__cta gh-final__cta--primary gh-notes-cta--forest">
                   <span className="gh-final__cta-label">{t('notes.page.talkCta')}</span>
                   <GhIconArrow />
-                </button>
+                </Link>
                 <Link to={archiveHref} className="gh-final__cta gh-notes-cta--outline">
                   <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
                   <GhIconArrow />

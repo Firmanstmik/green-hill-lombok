@@ -54,13 +54,6 @@ export function GreenHillPrivate() {
 
   const headlineLines = t('private.headline').split('|');
 
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 72;
-    window.scrollTo({ top, behavior: 'smooth' });
-  };
-
   return (
     <section id="private" className="gh-private" aria-labelledby="gh-private-heading">
       <div className="gh-private__backdrop" aria-hidden>
@@ -99,14 +92,10 @@ export function GreenHillPrivate() {
             </motion.p>
 
             <motion.div className="gh-private__actions" {...reveal(0.46, 8)}>
-              <button
-                type="button"
-                className="gh-private__cta"
-                onClick={scrollToContact}
-              >
+              <Link to={`/${language}/private`} className="gh-private__cta">
                 <span className="gh-private__cta-label">{t('private.cta')}</span>
                 <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-              </button>
+              </Link>
               <Link to={`/${language}/private`} className="gh-private__journey">
                 <span>{t('private.journey')}</span>
                 <ArrowRight size={14} strokeWidth={1.75} aria-hidden />

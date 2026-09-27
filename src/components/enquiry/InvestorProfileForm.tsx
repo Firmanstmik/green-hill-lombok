@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import { GhIconArrow } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trackContact, trackLead } from '@/lib/analytics';
-import { getContact, getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl, getContact, getPublicWhatsAppUrl } from '@/lib/contact';
 import { recordEnquiry } from '@/lib/enquiries';
 import {
   BUDGET_BANDS,
@@ -173,16 +173,16 @@ export function InvestorProfileForm({
       form.timeframe ? `Timeframe: ${form.timeframe}` : '',
       form.message.trim() ? `\n${form.message.trim()}` : '',
     ].filter(Boolean);
-    const text = encodeURIComponent(lines.join('\n'));
+    const body = lines.join('\n');
 
     if (whatsappUrl) {
       trackContact({ channel: 'whatsapp', form: isPrivate ? 'private' : 'investor' });
-      window.open(`${whatsappUrl}?text=${text}`, '_blank', 'noopener,noreferrer');
+      window.open(buildWhatsAppUrl(body), '_blank', 'noopener,noreferrer');
       setSent('whatsapp');
       return;
     }
     trackContact({ channel: 'email', form: isPrivate ? 'private' : 'investor' });
-    window.location.href = `mailto:${getContact().email}?subject=${encodeURIComponent(lines[0])}&body=${text}`;
+    window.location.href = `mailto:${getContact().email}?subject=${encodeURIComponent(lines[0])}&body=${encodeURIComponent(body)}`;
     setSent('email');
   };
 

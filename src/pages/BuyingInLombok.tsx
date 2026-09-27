@@ -9,7 +9,6 @@ import { BUYING_KEYS } from '@/components/home/trustEducationKeys';
 import { useCmsPageSeo, useContentImage } from '@/content/hooks';
 import { contentValue, useContentState } from '@/content/ContentContext';
 import { BUYING_EXTRA_TOPICS } from '@/content/schema';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
 import heroPhoto from '@/assets/greenhill/hero-hills.webp';
 
 /**
@@ -21,7 +20,6 @@ export default function BuyingInLombok() {
   const location = useLocation();
   const content = useContentState();
   const hero = useContentImage('buying.hero', heroPhoto);
-  const whatsappUrl = getPublicWhatsAppUrl();
   useCmsPageSeo({ titleKey: 'cms.buying.seo.title', descriptionKey: 'cms.buying.seo.description', imageSlot: 'buying.seo.image', path: '/buying-in-lombok' });
 
   const chapters = [
@@ -45,14 +43,6 @@ export default function BuyingInLombok() {
     const top = el.getBoundingClientRect().top + window.scrollY - 104;
     window.scrollTo({ top, behavior: 'smooth' });
   }, [location.hash]);
-
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = `/${language}/#contact`;
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -115,10 +105,10 @@ export default function BuyingInLombok() {
               </h2>
             </div>
             <div className="gh-buy__actions">
-              <button type="button" className="gh-final__cta gh-final__cta--primary gh-buy__cta" onClick={openTalk}>
+              <Link to={`/${language}/enquire`} className="gh-final__cta gh-final__cta--primary gh-buy__cta">
                 <span className="gh-final__cta-label">{t('trust.talkCta')}</span>
                 <GhIconArrow size={15} aria-hidden />
-              </button>
+              </Link>
               <Link to={`/${language}/why-lombok`} className="gh-final__cta gh-final__cta--secondary gh-buy__back">
                 <span className="gh-final__cta-label">{t('trust.backToWhy')}</span>
                 <GhIconArrow size={14} aria-hidden />

@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@/icons/iconsax';
 import { Link } from 'react-router-dom';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl, getPublicWhatsAppUrl } from '@/lib/contact';
 import { trackContact } from '@/lib/analytics';
 import talkPhoto1 from '@/assets/greenhill/sec-talk-to-reece1.webp';
 import talkPhoto2 from '@/assets/greenhill/sec-talk-to-reece2.webp';
@@ -36,10 +35,9 @@ const GALLERY = [
 ] as const;
 
 /**
- * Section 06 — Final CTA / Talk to Reece.
- * Personal invitation to begin a conversation — not a contact form.
- * Anchored as #contact for Hero/Nav/Private CTAs.
- * Does not invent or expose unverified WhatsApp/email/phone.
+ * Section 06 — Final CTA.
+ * "Speak with Reece" opens WhatsApp. The investor-profile link goes to enquire.
+ * The section keeps id="contact" so an old bookmark still lands on this invitation.
  */
 export function FinalCTA() {
   const plates = [
@@ -51,8 +49,7 @@ export function FinalCTA() {
   const { ref, isInView } = useInView({ threshold: 0.14 });
   const { language, t } = useLanguage();
   const reduce = useReducedMotion();
-  const [pendingShown, setPendingShown] = useState(false);
-  const whatsappUrl = getPublicWhatsAppUrl();
+  const whatsappHref = getPublicWhatsAppUrl() ? buildWhatsAppUrl(t('hero.whatsappMessage')) : null;
 
   const reveal = (delay: number, duration: number, y = 14) => {
     if (reduce) {
@@ -85,15 +82,6 @@ export function FinalCTA() {
   };
 
   const headlineLines = t('final.headline').split('|');
-
-  const handleSpeak = () => {
-    if (whatsappUrl) {
-      trackContact({ channel: 'whatsapp', form: 'home-final' });
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    setPendingShown(true);
-  };
 
   return (
     <section id="contact" className="gh-final" aria-labelledby="gh-final-heading">
@@ -133,14 +121,23 @@ export function FinalCTA() {
             </motion.p>
 
             <motion.div className="gh-final__actions" {...reveal(0.45, 0.55, 8)}>
-              <button
-                type="button"
-                className="gh-final__cta gh-final__cta--primary"
-                onClick={handleSpeak}
-              >
-                <span className="gh-final__cta-label">{t('final.primaryCta')}</span>
-                <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-              </button>
+              {whatsappHref ? (
+                <a
+                  href={whatsappHref}
+                  className="gh-final__cta gh-final__cta--primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackContact({ channel: 'whatsapp', form: 'home-final' })}
+                >
+                  <span className="gh-final__cta-label">{t('final.primaryCta')}</span>
+                  <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
+                </a>
+              ) : (
+                <Link to={`/${language}/enquire`} className="gh-final__cta gh-final__cta--primary">
+                  <span className="gh-final__cta-label">{t('final.primaryCta')}</span>
+                  <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
+                </Link>
+              )}
 
               <Link
                 to={`/${language}/properties`}
@@ -154,12 +151,6 @@ export function FinalCTA() {
             <motion.p className="gh-final__alt" {...reveal(0.55, 0.55, 6)}>
               <Link to={`/${language}/enquire`}>{t('final.profileCta')}</Link>
             </motion.p>
-
-            {pendingShown && !whatsappUrl && (
-              <p className="gh-final__pending" role="status">
-                {t('final.contactPending')}
-              </p>
-            )}
           </div>
 
           <div className="gh-final__gallery">

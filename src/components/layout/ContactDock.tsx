@@ -8,7 +8,7 @@ import {
   GhIconWhatsApp,
 } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { generalWhatsAppLink } from '@/lib/contact';
+import { buildWhatsAppUrl } from '@/lib/contact';
 import { useContactSettings } from '@/content/hooks';
 import ghLogoSolid from '@/assets/greenhill/hero/green-hill-logo-solid-112.webp';
 import ghLogoSolid2x from '@/assets/greenhill/hero/green-hill-logo-solid-168.webp';
@@ -22,7 +22,7 @@ import ghLogoSolid2x from '@/assets/greenhill/hero/green-hill-logo-solid-168.web
 export function ContactDock() {
   const { language, t } = useLanguage();
   const contact = useContactSettings();
-  const whatsappHref = generalWhatsAppLink(language);
+  const whatsappHref = buildWhatsAppUrl(t('hero.whatsappMessage'));
   const location = useLocation();
   const panelId = useId();
   const [open, setOpen] = useState(false);

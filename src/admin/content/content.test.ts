@@ -3,7 +3,7 @@ import { mergeRows } from '@/content/ContentContext';
 import { PAGES, allFields, allMedia, pageDef } from '@/content/schema';
 import { ORIGINAL_MEDIA, originalValue } from '@/content/originals';
 import { noteFromRow } from '@/content/types';
-import { generalWhatsAppLink, getContact, setContactOverrides } from '@/lib/contact';
+import { generalWhatsAppLink, getContact, setContactOverrides, whatsAppConversation } from '@/lib/contact';
 import {
   convertImage,
   emptyNote,
@@ -122,6 +122,18 @@ describe('contact settings', () => {
     expect(generalWhatsAppLink('es')).toBe('https://wa.me/6281234567890?text=Hello%20Reece');
     setContactOverrides({}, {});
     expect(generalWhatsAppLink('en')).not.toContain('?text=');
+  });
+
+  it('builds a direct chat from the configured number and the caller message', () => {
+    setContactOverrides(
+      { 'cms.site.contact.whatsapp': '+62 812 3456 7890' },
+      { en: { 'cms.site.whatsapp.message': 'Hello from the footer' } },
+    );
+    expect(whatsAppConversation('Hi Reece, from the homepage.')).toBe(
+      'https://wa.me/6281234567890?text=Hi%20Reece%2C%20from%20the%20homepage.',
+    );
+    expect(generalWhatsAppLink('en')).toBe('https://wa.me/6281234567890?text=Hello%20from%20the%20footer');
+    expect(whatsAppConversation('   ')).toBe('https://wa.me/6281234567890');
   });
 });
 

@@ -3529,7 +3529,19 @@ html:has(.gha-editor-head) {
   }
   .gh-admin .gha-tile .gha-input {
     min-height: 44px;
-    font-size: 16px; /* 16px keeps iOS from zooming into the field */
+  }
+  /* 16px keeps iOS from zooming into a field when it is tapped. */
+  .gh-admin .gha-input,
+  .gh-admin .gha-select,
+  .gh-admin .gha-textarea {
+    font-size: 16px;
+  }
+  .gh-admin .gha-avatar--button {
+    width: 44px;
+    height: 44px;
+  }
+  .gh-admin .gha-crumbs a {
+    min-height: 44px;
   }
 }
 
@@ -3885,7 +3897,8 @@ html:has(.gha-editor-head) {
   display: none;
 }
 
-@media (min-width: 1200px) {
+/* The live preview needs room: below 1360px the editor keeps the full width (Preview still opens every device). */
+@media (min-width: 1360px) {
   .gha-studio[data-preview='on'] {
     grid-template-columns: minmax(0, 1fr) 414px;
     grid-template-areas:
@@ -3992,6 +4005,29 @@ html:has(.gha-editor-head) {
     font-size: 13.5px;
     box-shadow: 0 8px 24px rgba(18, 41, 32, 0.2);
     cursor: pointer;
+  }
+}
+
+/*
+ * On larger screens every section stays in view: the strip wraps into a
+ * contents list at the top instead of a sticky bar that hides sections
+ * off-screen or grows to several rows.
+ */
+@media (min-width: 1024px) and (max-width: 1599.98px) {
+  .gha-studio-nav {
+    position: static;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    backdrop-filter: none;
+    border: 0;
+  }
+  .gha-studio-nav__list {
+    flex-wrap: wrap;
+  }
+  .gha-scard {
+    scroll-margin-top: calc(var(--gha-topbar) + var(--gha-head-h, 0px) + 20px);
   }
 }
 

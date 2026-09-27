@@ -136,8 +136,6 @@ const Properties = () => {
           transition: { duration: 0.75, delay, ease: EASE },
         };
 
-  const homeHash = (hash: string) => `/${language}/#${hash}`;
-
   return (
     <div className="gh-arch min-h-screen overflow-x-hidden">
       <Navbar />
@@ -258,14 +256,14 @@ const Properties = () => {
               </h2>
               <p className="gh-arch-close__lead">{t('properties.archive.closeLead')}</p>
               <div className="gh-arch-close__actions">
-                <a className="gh-final__cta gh-final__cta--primary" href={homeHash('contact')}>
+                <Link className="gh-final__cta gh-final__cta--primary" to={`/${language}/enquire`}>
                   <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
                   <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-                </a>
-                <a className="gh-final__cta gh-final__cta--secondary" href={`/${language}/private`}>
+                </Link>
+                <Link className="gh-final__cta gh-final__cta--secondary" to={`/${language}/private`}>
                   <span className="gh-final__cta-label">{t('properties.archive.closePrivate')}</span>
                   <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-                </a>
+                </Link>
               </div>
             </div>
             <div className="gh-arch-close__stage" aria-hidden>

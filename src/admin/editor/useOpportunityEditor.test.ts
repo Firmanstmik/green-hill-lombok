@@ -63,4 +63,19 @@ describe('opportunity editor saving', () => {
     expect(result.current.state.kind).toBe('saved');
     expect(result.current.dirty).toBe(false);
   });
+
+  it('stops showing "Couldn’t save" once the fields that blocked the save are fixed', async () => {
+    const { result } = renderHook(() => useOpportunityEditor(null, 'GH-LOM-001'));
+    act(() =>
+      result.current.update({ title: 'Mawun ridge', priceOnRequest: false, priceAmount: 100, priceDisplay: 'range', priceAmountMax: 50 }),
+    );
+    await act(async () => {
+      await result.current.persist();
+    });
+    expect(calls).toEqual([]);
+    expect(result.current.state.kind).toBe('error');
+
+    act(() => result.current.update({ priceAmountMax: 200 }));
+    expect(result.current.state.kind).toBe('dirty');
+  });
 });

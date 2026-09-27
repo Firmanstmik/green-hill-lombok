@@ -153,6 +153,37 @@ describe('hero — founder presence', () => {
   });
 });
 
+describe('hero — Speak with Reece', () => {
+  it('opens WhatsApp with the English note and leaves the enquiry page to the navbar', async () => {
+    renderHero();
+    const link = await screen.findByRole('link', { name: 'Speak with Reece' });
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    const href = link.getAttribute('href') ?? '';
+    expect(href.startsWith('https://wa.me/')).toBe(true);
+    expect(decodeURIComponent(href)).toContain(
+      "Hi Reece, I'd like to learn more about Green Hill and the property opportunities in South Lombok.",
+    );
+    expect(href).not.toContain('/enquire');
+  });
+
+  it('uses the Indonesian note on the Indonesian homepage', async () => {
+    render(
+      <MemoryRouter initialEntries={['/id']}>
+        <LanguageProvider>
+          <CurrencyProvider>
+            <HeroSection />
+          </CurrencyProvider>
+        </LanguageProvider>
+      </MemoryRouter>,
+    );
+    const link = await screen.findByRole('link', { name: 'Berbicara dengan Reece' });
+    expect(decodeURIComponent(link.getAttribute('href') ?? '')).toContain(
+      'Halo Reece, saya ingin mengetahui lebih lanjut tentang Green Hill dan peluang properti di South Lombok.',
+    );
+  });
+});
+
 describe('hero — assets', () => {
   it('points every slide at a resolved master URL', () => {
     for (const slide of HERO_SLIDES) {

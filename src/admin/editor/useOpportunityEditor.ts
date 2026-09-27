@@ -64,6 +64,8 @@ export function clearBackup(id: string | null) {
   }
 }
 
+const NEEDS_ATTENTION = 'Some fields need attention before saving.';
+
 function same(a: Opportunity, b: Opportunity) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
@@ -112,7 +114,7 @@ export function useOpportunityEditor(loaded: Opportunity | null, fallbackReferen
       const started = recordRef.current;
       const target = { ...started, ...overrides };
       if (Object.keys(draftErrors(target)).length > 0) {
-        setState({ kind: 'error', message: 'Some fields need attention before saving.', conflict: false });
+        setState({ kind: 'error', message: NEEDS_ATTENTION, conflict: false });
         return null;
       }
       setState({ kind: 'saving' });
@@ -162,12 +164,16 @@ export function useOpportunityEditor(loaded: Opportunity | null, fallbackReferen
     [save],
   );
 
-  // Reflect edits in the save state.
+  // Reflect edits in the save state. A save stopped only by field problems
+  // stops reading "Couldn't save" once those fields are fixed.
+  const hasErrors = Object.keys(errors).length > 0;
+  const stoppedByFields = state.kind === 'error' && !state.conflict && state.message === NEEDS_ATTENTION;
   useEffect(() => {
     if (state.kind === 'saving') return;
-    if (dirty && state.kind !== 'error') setState({ kind: 'dirty' });
-    if (!dirty && state.kind === 'dirty') setState(record.id ? { kind: 'saved', at: record.updatedAt } : { kind: 'new' });
-  }, [dirty, record.id, record.updatedAt, state.kind]);
+    const fixed = stoppedByFields && !hasErrors;
+    if (dirty && (state.kind !== 'error' || fixed)) setState({ kind: 'dirty' });
+    if (!dirty && (state.kind === 'dirty' || fixed)) setState(record.id ? { kind: 'saved', at: record.updatedAt } : { kind: 'new' });
+  }, [dirty, record.id, record.updatedAt, state.kind, stoppedByFields, hasErrors]);
 
   // Local backup for new and live records.
   useEffect(() => {

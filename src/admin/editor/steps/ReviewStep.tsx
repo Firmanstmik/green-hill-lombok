@@ -29,6 +29,8 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
   const ready = isReadyToPublish(o);
   const missing = required.filter((check) => !check.done);
   const isPrivate = o.visibility === 'private';
+  // A private opportunity presented as a teaser does have a public page, showing only the switched-on fields.
+  const isTeaser = isPrivate && o.privateTeaser;
   const live = isLive(o.status);
   const price =
     o.priceOnRequest || !o.priceAmount
@@ -41,7 +43,14 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
   const url = `/${language}/property/${o.slug || slugify(o.title) || '…'}`;
 
   const publicRows: { label: string; value: string }[] = [
-    { label: 'Appears', value: isPrivate ? 'Private: never shown on the website' : 'Public' },
+    {
+      label: 'Appears',
+      value: isTeaser
+        ? 'Private, presented as a teaser on Green Hill Private'
+        : isPrivate
+          ? 'Private: never shown on the website'
+          : 'Public',
+    },
     { label: 'Status', value: STATUS_LABEL[live ? o.status : status] },
     { label: 'Title', value: o.title || '—' },
     { label: 'Location', value: publicLocationLine(o) || '—' },
@@ -52,6 +61,7 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
     ...(o.tenure ? [{ label: 'Tenure', value: o.tenure }] : []),
     ...(o.featured && !isPrivate ? [{ label: 'Featured', value: 'Yes, may appear on the homepage' }] : []),
     ...(!isPrivate ? [{ label: 'Public page address', value: url }] : []),
+    ...(isTeaser ? [{ label: 'Teaser page address', value: `/${language}/private/${o.reference || '…'}` }] : []),
   ];
 
   return (
@@ -113,9 +123,16 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
 
         <section aria-labelledby="gha-public">
           <h3 className="gha-h2" id="gha-public">
-            {isPrivate ? 'What stays private' : 'What becomes public'}
+            {isTeaser ? 'What the teaser is based on' : isPrivate ? 'What stays private' : 'What becomes public'}
           </h3>
-          {isPrivate ? (
+          {isTeaser ? (
+            <p className="gha-hint" style={{ marginTop: 12, display: 'flex', gap: 8 }}>
+              <Lock size={14} aria-hidden style={{ marginTop: 3, flex: 'none' }} />
+              The teaser page shows the title, summary, story and photographs. Price, exact location, map, tenure, developer
+              and documents appear only where you switched them on in Basics and Media. The investment memorandum and your
+              private notes are never shown.
+            </p>
+          ) : isPrivate ? (
             <p className="gha-hint" style={{ marginTop: 12, display: 'flex', gap: 8 }}>
               <Lock size={14} aria-hidden style={{ marginTop: 3, flex: 'none' }} />
               Nothing below appears on the website. It is shown in your Private workspace, and the Green Hill Private page
@@ -142,8 +159,10 @@ export function ReviewStep({ o, goTo, onPublish, onPreview, publishing }: Review
           <div className="gha-publish__text">
             <strong>{isPrivate ? 'Activate privately' : 'Publish opportunity'}</strong>
             {ready
-              ? isPrivate
-                ? 'It becomes active in your Private workspace. The website does not show it.'
+              ? isTeaser
+                ? 'It becomes active in your Private workspace, and its teaser appears on Green Hill Private straight away.'
+                : isPrivate
+                  ? 'It becomes active in your Private workspace. The website does not show it.'
                 : 'It will appear on the website straight away. You can unpublish or archive it at any time.'
               : 'Complete the required items above first.'}
             <fieldset style={{ border: 0, padding: 0, margin: '14px 0 0' }}>

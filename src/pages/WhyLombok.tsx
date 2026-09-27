@@ -10,7 +10,6 @@ import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { GhIconArrow } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
 import heroPhoto from '@/assets/greenhill/hero section image bg/green-hill-hero-section-1.webp';
 import placePhoto from '@/assets/greenhill/land-holding.jpg';
 import placePhotoCoast from '@/assets/greenhill/land-coastal.jpg';
@@ -352,18 +351,9 @@ const WhyLombok = () => {
   const { t, language } = useLanguage();
   const reduce = Boolean(useReducedMotion());
   const hero = useInView({ threshold: 0.2 });
-  const whatsappUrl = getPublicWhatsAppUrl();
-  const talkHref = `/${language}/#contact`;
   const archiveHref = `/${language}/properties`;
   const buyingHref = `/${language}/buying-in-lombok`;
-
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = talkHref;
-  };
+  const enquireHref = `/${language}/enquire`;
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -465,15 +455,10 @@ const WhyLombok = () => {
                   <GhIconArrow size={15} aria-hidden />
                 </Link>
               </motion.div>
-              <motion.button
-                type="button"
-                className="gh-final__cta gh-final__cta--secondary"
-                onClick={openTalk}
-                {...heroReveal(0.6, 8)}
-              >
+              <Link to={enquireHref} className="gh-final__cta gh-final__cta--secondary">
                 <span className="gh-final__cta-label">{t('whyLombok.page.talk')}</span>
                 <GhIconArrow size={14} aria-hidden />
-              </motion.button>
+              </Link>
             </div>
           </div>
 
@@ -827,15 +812,10 @@ const WhyLombok = () => {
                     <p>{t('whyLombok.page.ground.note')}</p>
                     <cite>{t('whyLombok.page.ground.attr')}</cite>
                   </motion.blockquote>
-                  <motion.button
-                    type="button"
-                    className="gh-why-reece__cta"
-                    onClick={openTalk}
-                    {...reveal(isInView, sectionReduce, 0.48, 8)}
-                  >
+                  <Link to={enquireHref} className="gh-why-reece__cta">
                     <span>{t('whyLombok.page.talk')}</span>
                     <GhIconArrow size={14} aria-hidden />
-                  </motion.button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -860,10 +840,10 @@ const WhyLombok = () => {
                 <span className="gh-final__cta-label">{t('whyLombok.page.explore')}</span>
                 <GhIconArrow size={15} aria-hidden />
               </Link>
-              <button type="button" className="gh-final__cta gh-final__cta--secondary" onClick={openTalk}>
+              <Link to={enquireHref} className="gh-final__cta gh-final__cta--secondary">
                 <span className="gh-final__cta-label">{t('whyLombok.page.talk')}</span>
                 <GhIconArrow size={14} aria-hidden />
-              </button>
+              </Link>
               <Link className="gh-final__cta gh-final__cta--secondary" to={buyingHref}>
                 <span className="gh-final__cta-label">{t('whyLombok.page.buying')}</span>
                 <GhIconArrow size={14} aria-hidden />

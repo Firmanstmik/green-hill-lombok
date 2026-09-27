@@ -13,7 +13,6 @@ import {
 } from '@/components/brand/GhIcons';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
 import { applyPageSeo } from '@/lib/seo';
 import { useContentImage, useNotesArticles } from '@/content/hooks';
 import {
@@ -144,8 +143,7 @@ const Notes = () => {
   const { t, language } = useLanguage();
   const reduce = Boolean(useReducedMotion());
   const hero = useInView({ threshold: 0.2 });
-  const whatsappUrl = getPublicWhatsAppUrl();
-  const talkHref = `/${language}/#contact`;
+  const enquireHref = `/${language}/enquire`;
   const archiveHref = `/${language}/properties`;
   const articles = useNotesArticles();
   const notes = getPublishedNotes(articles);
@@ -155,14 +153,6 @@ const Notes = () => {
   const heroImage = useContentImage('notes.hero.portrait', heroPortrait);
   const journalImage = useContentImage('notes.journal.photo', journalPhoto);
   const seoImage = useContentImage('notes.seo.image', heroBackground.src);
-
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = talkHref;
-  };
 
   useEffect(() => {
     const image = new URL(seoImage.src, window.location.origin).href;
@@ -328,14 +318,13 @@ const Notes = () => {
                       <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
                       <GhIconArrow />
                     </Link>
-                    <button
-                      type="button"
+                    <Link
+                      to={enquireHref}
                       className="gh-final__cta gh-final__cta--secondary gh-notes-cta--dark"
-                      onClick={openTalk}
                     >
                       <span className="gh-final__cta-label">{t('notes.page.talkCta')}</span>
                       <GhIconArrow />
-                    </button>
+                    </Link>
                   </motion.div>
                   <motion.p className="gh-notes-journal__meta" {...reveal(inView, reduce, 0.44, 8)}>
                     <span className="gh-notes-journal__meta-rule" aria-hidden />
@@ -698,14 +687,13 @@ const Notes = () => {
                 className="gh-notes-actions gh-notes-actions--center"
                 {...reveal(inView, reduce, 0.28, 8)}
               >
-                <button
-                  type="button"
+                <Link
+                  to={enquireHref}
                   className="gh-final__cta gh-final__cta--primary gh-notes-cta--forest"
-                  onClick={openTalk}
                 >
                   <span className="gh-final__cta-label">{t('notes.page.talkCta')}</span>
                   <GhIconArrow />
-                </button>
+                </Link>
                 <Link
                   to={archiveHref}
                   className="gh-final__cta gh-notes-cta--outline"

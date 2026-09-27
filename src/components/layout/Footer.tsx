@@ -15,12 +15,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { ContactDock } from '@/components/layout/ContactDock';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink } from '@/lib/contact';
+import { buildWhatsAppUrl } from '@/lib/contact';
 import { useContactSettings, useContentImage } from '@/content/hooks';
-import ghLogoSolid from '@/assets/greenhill/hero/green-hill-logo-solid-112.webp';
-import ghLogoSolid2x from '@/assets/greenhill/hero/green-hill-logo-solid-168.webp';
-import ghLogoSolidStacked from '@/assets/greenhill/hero/green-hill-logo-solid-stacked-88.webp';
-import ghLogoSolidStacked2x from '@/assets/greenhill/hero/green-hill-logo-solid-stacked-132.webp';
+import ghLogoSolidHd from '@/assets/greenhill/hero/green-hill-logo-solid-hd.webp';
+import ghLogoSolidStackedHd from '@/assets/greenhill/hero/green-hill-logo-solid-stacked-hd.webp';
 import footerCardPhoto from '@/assets/greenhill/land-coastal.jpg';
 
 /**
@@ -34,14 +32,13 @@ const MAP_EMBED_SRC =
 interface FooterLink {
   labelKey: string;
   path: string;
-  hash?: boolean;
 }
 
 const exploreLinks: FooterLink[] = [
   { labelKey: 'navigation.opportunities', path: '/properties' },
   { labelKey: 'navigation.whyLombok', path: '/why-lombok' },
   { labelKey: 'navigation.about', path: '/about' },
-  { labelKey: 'navigation.speakWithUs', path: '/#contact', hash: true },
+  { labelKey: 'navigation.speakWithUs', path: '/enquire' },
 ];
 
 const approachLinks: FooterLink[] = [
@@ -54,7 +51,7 @@ const approachLinks: FooterLink[] = [
 const guideLinks: FooterLink[] = [
   { labelKey: 'footer.buyingInLombok', path: '/buying-in-lombok' },
   { labelKey: 'navigation.notes', path: '/intelligence' },
-  { labelKey: 'navigation.speakWithUs', path: '/#contact', hash: true },
+  { labelKey: 'navigation.speakWithUs', path: '/enquire' },
 ];
 
 const trustItems = [
@@ -97,7 +94,7 @@ function GreenHillMapPin({ className }: { className?: string }) {
 export function Footer() {
   const { language, t } = useLanguage();
   const contact = useContactSettings();
-  const whatsappHref = generalWhatsAppLink(language);
+  const whatsappHref = buildWhatsAppUrl(t('hero.whatsappMessage'));
   const footerPhoto = useContentImage('site.footer.photo', footerCardPhoto);
   const { ref, isInView } = useInView({ threshold: 0.08 });
 
@@ -106,23 +103,14 @@ export function Footer() {
     return `/${language}${pathname}${query ? `?${query}` : ''}`;
   };
 
-  const hashHref = (path: string) => {
-    const [pathPart, hashPart] = path.split('#');
-    const base = pathPart === '/' ? `/${language}` : `/${language}${pathPart}`;
-    return `${base}#${hashPart}`;
-  };
-
-  const renderNavLink = (link: FooterLink) => {
-    const to = link.hash ? hashHref(link.path) : withLang(link.path);
-    return (
-      <Link to={to} className="gh-footer__link">
-        <span className="gh-footer__chev" aria-hidden>
-          <GhIconCaretRight size={12} />
-        </span>
-        <span>{t(link.labelKey)}</span>
-      </Link>
-    );
-  };
+  const renderNavLink = (link: FooterLink) => (
+    <Link to={withLang(link.path)} className="gh-footer__link">
+      <span className="gh-footer__chev" aria-hidden>
+        <GhIconCaretRight size={12} />
+      </span>
+      <span>{t(link.labelKey)}</span>
+    </Link>
+  );
 
   return (
     <footer
@@ -135,17 +123,12 @@ export function Footer() {
           <div className="gh-footer__brand">
             <Link to={withLang('/')} className="gh-footer__logo" aria-label="Green Hill Lombok">
               <picture>
-                <source
-                  media="(min-width: 768px)"
-                  srcSet={`${ghLogoSolid} 1x, ${ghLogoSolid2x} 2x`}
-                  type="image/webp"
-                />
+                <source media="(min-width: 768px)" srcSet={ghLogoSolidHd} type="image/webp" />
                 <img
-                  src={ghLogoSolidStacked}
-                  srcSet={`${ghLogoSolidStacked} 1x, ${ghLogoSolidStacked2x} 2x`}
+                  src={ghLogoSolidStackedHd}
                   alt="Green Hill Lombok"
-                  width={117}
-                  height={88}
+                  width={851}
+                  height={640}
                   className="gh-footer__logo-img"
                   decoding="async"
                   loading="lazy"
@@ -157,7 +140,7 @@ export function Footer() {
             <p className="gh-footer__intro">{t('footer.tagline')}</p>
 
             <div className="gh-footer__chip-row">
-              <Link to={hashHref('/#contact')} className="gh-footer__chip">
+              <Link to={withLang('/')} className="gh-footer__chip">
                 <span className="gh-footer__chip-mark" aria-hidden>
                   <BrandCurveMark className="gh-footer__chip-mark-svg" isInView={isInView} />
                 </span>
@@ -237,14 +220,9 @@ export function Footer() {
               </li>
               <li className="gh-footer__contact-item">
                 <GhIconConverse className="gh-footer__contact-icon" size={16} />
-                <a
-                  href={whatsappHref}
-                  className="gh-footer__contact-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link to={withLang('/enquire')} className="gh-footer__contact-link">
                   {t('navigation.speakWithUs')}
-                </a>
+                </Link>
               </li>
               <li className="gh-footer__contact-item">
                 <GhIconRose className="gh-footer__contact-icon" size={16} />
@@ -277,15 +255,10 @@ export function Footer() {
               </div>
             </div>
               <div className="gh-footer__card-actions">
-                <a
-                  href={whatsappHref}
-                  className="gh-footer__card-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link to={withLang('/enquire')} className="gh-footer__card-btn">
                   <GhIconPlace className="gh-footer__card-btn-icon" size={14} />
                   {t('footer.cardTalk')}
-                </a>
+                </Link>
                 <Link to={withLang('/properties')} className="gh-footer__card-btn">
                   {t('footer.cardExplore')}
                   <GhIconArrow className="gh-footer__card-btn-icon" size={14} />

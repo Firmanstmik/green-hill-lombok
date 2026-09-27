@@ -22,6 +22,7 @@
     "subheadline": "Geselecteerd ter plaatse. Overwogen voor de lange termijn.",
     "locationLabel": "Zuid-Lombok, Indonesië",
     "speakWithUs": "Spreek met Reece",
+    "whatsappMessage": "Hi Reece, ik wil graag meer weten over Green Hill en de vastgoedmogelijkheden in South Lombok.",
     "founderName": "Reece Green",
     "founderRole": "Oprichter · Investeerder · Zuid-Lombok",
     "founderNote": "Ik bezoek en selecteer persoonlijk de kansen die wij vertegenwoordigen.",
@@ -118,7 +119,7 @@
       "otherOpportunities": "Andere kansen",
       "otherLead": "Geselecteerde records uit de huidige collectie.",
       "seeMore": "Meer bekijken",
-      "whatsappMessage": "Hallo Reece, ik heb interesse in {title} {reference}.",
+      "whatsappMessage": "Hi Reece, ik heb interesse in {title}{reference}. Ik wil graag meer weten over deze kans en de vervolgstappen bespreken.",
       "sendEnquiry": "Stuur een aanvraag",
       "requestMemorandum": "Vraag het investeringsmemorandum aan",
       "privateInformation": "Volledige investeringsinformatie is privé beschikbaar via Green Hill.",
@@ -181,6 +182,7 @@
       "heroSpine": "Ter plaatse",
       "heroCaption": "Zuid Lombok, Persoonlijk geselecteerd",
       "talk": "Praat met Reece",
+      "whatsappMessage": "Hi Reece, ik wil graag meer weten over Green Hill Private en de private mogelijkheden die op dit moment worden bekeken.",
       "explore": "Ontdek Kansen",
       "audience": {
         "eyebrow": "Voor wie",
@@ -410,7 +412,7 @@
     "eyebrow": "Praat met Reece",
     "headline": "Vertel wat u zoekt.|Daar beginnen we.",
     "lead": "Deel het gebied dat u interesseert, het type vastgoed dat u voor ogen heeft, of gewoon wat u overweegt. Reece kan u helpen kansen te zien die mogelijk relevant zijn.",
-    "primaryCta": "Praat met Reece",
+    "primaryCta": "Spreek met Reece",
     "secondaryCta": "Verken kansen",
     "contactPending": "Een direct contactkanaal wordt binnenkort bevestigd. Verken voorlopig kansen of kom terug wanneer spreken met Reece live is.",
     "steps": {

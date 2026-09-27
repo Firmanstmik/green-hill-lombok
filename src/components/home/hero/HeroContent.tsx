@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from '@/icons/iconsax';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { trackContact } from '@/lib/analytics';
+import { buildWhatsAppUrl } from '@/lib/contact';
 import { useHeroReveal } from './useHeroReveal';
 import { useHeroNarrow } from './useHeroRag';
 import { HeroPlotMark } from './HeroPlotMark';
@@ -10,7 +12,6 @@ import { HeroCaption } from './HeroCaption';
 import type { HeroSlide } from './heroData';
 
 type HeroContentProps = {
-  onSpeak: () => void;
   /** The chapters, for the caption that follows the photograph on screen. */
   slides: HeroSlide[];
   activeIndex: number;
@@ -27,7 +28,7 @@ type HeroContentProps = {
  * breaks that fit, and leads line two with the ampersand — deliberate rather
  * than stranded.
  */
-export function HeroContent({ onSpeak, slides, activeIndex }: HeroContentProps) {
+export function HeroContent({ slides, activeIndex }: HeroContentProps) {
   const { language, t } = useLanguage();
   const { reveal } = useHeroReveal();
   const narrow = useHeroNarrow();
@@ -84,10 +85,16 @@ export function HeroContent({ onSpeak, slides, activeIndex }: HeroContentProps) 
           <span className="gh-hero-btn__label">{t('hero.exploreOpportunities')}</span>
           <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
         </Link>
-        <button type="button" onClick={onSpeak} className="gh-hero-btn gh-hero-btn--ghost">
+        <a
+          href={buildWhatsAppUrl(t('hero.whatsappMessage'))}
+          className="gh-hero-btn gh-hero-btn--ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackContact({ channel: 'whatsapp', form: 'home-hero' })}
+        >
           <span className="gh-hero-btn__label">{t('hero.speakWithUs')}</span>
           <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
-        </button>
+        </a>
       </motion.div>
     </div>
   );

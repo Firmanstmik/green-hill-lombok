@@ -29,7 +29,7 @@ import { isSupabaseConfigured } from '@/lib/supabase';
 import { publicOpportunities, publicOpportunityByKey } from '@/lib/publicOpportunities';
 import { useOpportunityPriceDetail } from '@/lib/opportunityPrice';
 import { fetchPrivateTeaser } from '@/lib/privateTeasers';
-import { getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl, getPublicWhatsAppUrl } from '@/lib/contact';
 import { useContactSettings, useContentImage } from '@/content/hooks';
 import { trackContact } from '@/lib/analytics';
 import { isPreviewRequest, readOpportunityPreview } from '@/lib/opportunityPreview';
@@ -202,30 +202,31 @@ function fromRow(data: Record<string, unknown>): OpportunityRecord {
  */
 function MemoActions({
   teaser,
-  whatsapp,
-  talkHref,
+  whatsappHref,
+  onWhatsApp,
   enquireHref,
   secondaryHref,
   secondaryLabel,
 }: {
   teaser: boolean;
-  whatsapp: (() => void) | null;
-  talkHref: string;
+  whatsappHref: string | null;
+  onWhatsApp: () => void;
   enquireHref: string;
   secondaryHref: string;
   secondaryLabel: string;
 }) {
   const { t } = useLanguage();
-  const talk = whatsapp ? (
-    <button type="button" className={`gh-final__cta ${teaser ? 'gh-final__cta--secondary' : 'gh-final__cta--primary'}`} onClick={whatsapp}>
-      <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
-      <GhIconArrow size={teaser ? 14 : 15} />
-    </button>
-  ) : (
-    <a className={`gh-final__cta ${teaser ? 'gh-final__cta--secondary' : 'gh-final__cta--primary'}`} href={talkHref}>
+  const talkClass = `gh-final__cta ${teaser ? 'gh-final__cta--secondary' : 'gh-final__cta--primary'}`;
+  const talk = whatsappHref ? (
+    <a href={whatsappHref} className={talkClass} target="_blank" rel="noopener noreferrer" onClick={onWhatsApp}>
       <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
       <GhIconArrow size={teaser ? 14 : 15} />
     </a>
+  ) : (
+    <Link className={talkClass} to={enquireHref}>
+      <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
+      <GhIconArrow size={teaser ? 14 : 15} />
+    </Link>
   );
   const enquire = (
     <Link className={`gh-final__cta ${teaser ? 'gh-final__cta--primary' : 'gh-final__cta--secondary'}`} to={enquireHref}>
@@ -537,7 +538,6 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
   const priceLabel = priceDetail?.display ?? null;
   const whatsappUrl = getPublicWhatsAppUrl();
   const archiveHref = `/${language}/properties`;
-  const talkHref = `/${language}/#contact`;
   const privateHref = `/${language}/private`;
 
   if (loading) {
@@ -577,13 +577,13 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
   // Brief §11: prepopulate WhatsApp with the opportunity so the lead's source is clear.
   const whatsappMessage = fill(t('properties.memo.whatsappMessage'), {
     title: property.title,
-    reference: reference ? `(${reference})` : '',
+    reference: reference ? ` (${reference})` : '',
   });
-  const openWhatsApp = () => {
-    if (!whatsappUrl) return;
+  const whatsappHref = whatsappUrl
+    ? buildWhatsAppUrl(`${whatsappMessage}\n${window.location.origin}${window.location.pathname}`)
+    : null;
+  const onWhatsApp = () => {
     trackContact({ channel: 'whatsapp', opportunity: reference || property.title, teaser: teaser ? 'yes' : 'no' });
-    const text = encodeURIComponent(`${whatsappMessage}\n${window.location.origin}${window.location.pathname}`);
-    window.open(`${whatsappUrl}?text=${text}`, '_blank', 'noopener,noreferrer');
   };
   const enquireHref = teaser
     ? `/${language}/enquire?private=${encodeURIComponent(reference || property.id)}`
@@ -953,8 +953,8 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
                 <div className="gh-memo-rail__actions">
                   <MemoActions
                     teaser={teaser}
-                    whatsapp={whatsappUrl ? openWhatsApp : null}
-                    talkHref={talkHref}
+                    whatsappHref={whatsappHref}
+                    onWhatsApp={onWhatsApp}
                     enquireHref={enquireHref}
                     secondaryHref={teaser ? privateHref : archiveHref}
                     secondaryLabel={t(teaser ? 'properties.archive.closePrivate' : 'properties.memo.exploreOther')}
@@ -1004,8 +1004,8 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
               <div className="gh-memo-close__actions">
                 <MemoActions
                   teaser={teaser}
-                  whatsapp={whatsappUrl ? openWhatsApp : null}
-                  talkHref={talkHref}
+                  whatsappHref={whatsappHref}
+                  onWhatsApp={onWhatsApp}
                   enquireHref={enquireHref}
                   secondaryHref={teaser ? privateHref : archiveHref}
                   secondaryLabel={t(teaser ? 'properties.archive.closePrivate' : 'properties.memo.exploreOther')}

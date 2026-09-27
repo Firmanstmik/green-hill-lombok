@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { InvestorProfileForm, type EnquiryOpportunity } from '@/components/enquiry/InvestorProfileForm';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl, getPublicWhatsAppUrl } from '@/lib/contact';
 import { trackContact } from '@/lib/analytics';
 import { demoOpportunities as demoProperties, type Property } from '@/data/mockData';
 import { publicOpportunityByKey } from '@/lib/publicOpportunities';
@@ -211,7 +211,7 @@ export default function Enquire() {
                 <p className="gh-priv-body gh-priv-body--narrow gh-enquire__direct">
                   {t('enquiry.page.direct')}{' '}
                   <a
-                    href={generalWhatsAppLink(language)}
+                    href={buildWhatsAppUrl(t('hero.whatsappMessage'))}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackContact({ channel: 'whatsapp', form: 'enquire-direct' })}

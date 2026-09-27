@@ -29,7 +29,7 @@ import { GhIconArrow } from '@/components/brand/GhIcons';
 import { HeroPlotMark } from '@/components/home/hero/HeroPlotMark';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl } from '@/lib/contact';
 import heroPortrait from '@/assets/greenhill/founder/green-hill-reece-green.webp';
 import heroCutout from '@/assets/greenhill/founder/green-hill-reece-cutout.png';
 import heroAtmosphere from '@/assets/greenhill/about-sec.webp';
@@ -182,19 +182,10 @@ const About = () => {
   const { t, language } = useLanguage();
   const reduce = Boolean(useReducedMotion());
   const hero = useInView({ threshold: 0.2 });
-  const whatsappUrl = getPublicWhatsAppUrl();
-  const talkHref = `/${language}/#contact`;
+  const enquireHref = `/${language}/enquire`;
   const archiveHref = `/${language}/properties`;
   const privateHref = `/${language}/private`;
   const whyHref = `/${language}/why-lombok`;
-
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = talkHref;
-  };
 
   const selectHref = (to: (typeof SELECT_KEYS)[number]['to']) =>
     to === 'private' ? privateHref : archiveHref;
@@ -219,18 +210,6 @@ const About = () => {
     setActiveRelation(key);
     setRelationView(key);
   }, []);
-
-  const openRelationTalk = useCallback(
-    (key: (typeof RELATION_KEYS)[number]) => {
-      const message = encodeURIComponent(t(`about.page.relations.prefills.${key}`));
-      if (whatsappUrl) {
-        window.open(`${whatsappUrl}?text=${message}`, '_blank', 'noopener,noreferrer');
-        return;
-      }
-      window.location.href = talkHref;
-    },
-    [t, talkHref, whatsappUrl]
-  );
 
   const showApproachPrev = useCallback(() => {
     setApproachView((current) => {
@@ -416,10 +395,10 @@ const About = () => {
               </motion.p>
 
               <motion.div className="gh-hero-actions" {...heroReveal(0.58, 8)}>
-                <button type="button" className="gh-hero-btn gh-hero-btn--primary" onClick={openTalk}>
+                <Link className="gh-hero-btn gh-hero-btn--primary" to={enquireHref}>
                   <span className="gh-hero-btn__label">{t('about.page.talk')}</span>
                   <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
-                </button>
+                </Link>
                 <Link className="gh-hero-btn gh-hero-btn--ghost" to={archiveHref}>
                   <span className="gh-hero-btn__label">{t('about.page.explore')}</span>
                   <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
@@ -807,14 +786,13 @@ const About = () => {
                       </p>
                     </div>
                     <div className="gh-about-approach__plate-aside">
-                      <button
-                        type="button"
+                      <Link
+                        to={enquireHref}
                         className="gh-about-approach__plate-btn"
-                        onClick={openTalk}
                         aria-label={t('about.page.talk')}
                       >
                         <ArrowUpRight size={18} strokeWidth={1.75} aria-hidden />
-                      </button>
+                      </Link>
                       <p className="gh-about-approach__plate-meta">
                         {PRINCIPLE_KEYS.map((key, index) => (
                           <span key={key}>
@@ -1081,10 +1059,10 @@ const About = () => {
               </motion.p>
               <div className="gh-about-actions gh-about-actions--center">
                 <motion.div {...reveal(isInView, sectionReduce, 0.32, 8)}>
-                  <button type="button" className="gh-final__cta gh-final__cta--primary gh-about-cta--forest" onClick={openTalk}>
+                  <Link to={enquireHref} className="gh-final__cta gh-final__cta--primary gh-about-cta--forest">
                     <span className="gh-final__cta-label">{t('about.page.talk')}</span>
                     <GhIconArrow size={15} aria-hidden />
-                  </button>
+                  </Link>
                 </motion.div>
                 <motion.div {...reveal(isInView, sectionReduce, 0.38, 8)}>
                   <Link className="gh-final__cta gh-final__cta--secondary gh-about-cta--dark" to={archiveHref}>
@@ -1111,10 +1089,10 @@ const About = () => {
             </h2>
             <p className="gh-about-body gh-about-body--light">{t('about.page.final.lead')}</p>
             <div className="gh-about-actions gh-about-actions--center">
-              <button type="button" className="gh-final__cta gh-final__cta--primary" onClick={openTalk}>
+              <Link to={enquireHref} className="gh-final__cta gh-final__cta--primary">
                 <span className="gh-final__cta-label">{t('about.page.talk')}</span>
                 <GhIconArrow size={15} aria-hidden />
-              </button>
+              </Link>
               <Link className="gh-final__cta gh-final__cta--secondary" to={archiveHref}>
                 <span className="gh-final__cta-label">{t('about.page.explore')}</span>
                 <GhIconArrow size={14} aria-hidden />
@@ -1253,14 +1231,15 @@ const About = () => {
                         <p className="gh-about-approach-lightbox__note">
                           {t('about.page.relations.doorNote')}
                         </p>
-                        <button
-                          type="button"
+                        <a
+                          href={buildWhatsAppUrl(t(`about.page.relations.prefills.${relationView}`))}
                           className="gh-about-approach-lightbox__cta"
-                          onClick={() => openRelationTalk(relationView)}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           <span>{t('about.page.relations.doorCta')}</span>
                           <ArrowUpRight size={16} strokeWidth={1.75} aria-hidden />
-                        </button>
+                        </a>
                       </div>
                     </motion.div>
                   </AnimatePresence>

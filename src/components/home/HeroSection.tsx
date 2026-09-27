@@ -274,7 +274,7 @@ export function HeroSection() {
 
       <div className="gh-hero-frame">
         <div className="gh-hero-grid">
-          <HeroContent onSpeak={() => scrollTo('contact')} slides={slides} activeIndex={slide} />
+          <HeroContent slides={slides} activeIndex={slide} />
           <HeroFounder onMeet={() => scrollTo('about')} />
         </div>
 

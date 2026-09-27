@@ -281,15 +281,6 @@ export function Navbar() {
     scrollToSection(hash);
   };
 
-  const handleSpeakWithUs = () => {
-    setIsMobileMenuOpen(false);
-    if (!isHome) {
-      window.location.href = `${withLang('/')}#contact`;
-      return;
-    }
-    scrollToSection('contact');
-  };
-
   const renderNavLinks = (className: string) =>
     navLinksConfig.map((link) => {
       if ('path' in link && link.path) {
@@ -406,14 +397,10 @@ export function Navbar() {
 
             <motion.div className="gh-nav-hero__end" {...heroChrome(0.56, -4)}>
               <LocaleDropdown tone="dark" />
-              <button
-                type="button"
-                onClick={handleSpeakWithUs}
-                className="gh-nav-cta gh-nav-cta--dark"
-              >
+              <Link to={withLang('/enquire')} className="gh-nav-cta gh-nav-cta--dark">
                 <span>{t('navigation.speakWithUs')}</span>
                 <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-              </button>
+              </Link>
             </motion.div>
 
             <motion.div className="gh-nav-hero__mobile" {...heroChrome(0.28, -6)}>
@@ -443,14 +430,10 @@ export function Navbar() {
 
             <div className="gh-nav-bar__end">
               <LocaleDropdown />
-              <button
-                type="button"
-                onClick={handleSpeakWithUs}
-                className="gh-nav-cta gh-nav-cta--light"
-              >
+              <Link to={withLang('/enquire')} className="gh-nav-cta gh-nav-cta--light">
                 <span>{t('navigation.speakWithUs')}</span>
                 <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-              </button>
+              </Link>
             </div>
 
             <div className="gh-nav-bar__mobile">
@@ -601,10 +584,10 @@ export function Navbar() {
               </div>
 
               <motion.div className="gh-menu__foot" {...menuRise(0.34 + navLinksConfig.length * 0.06, 10)}>
-                <button type="button" onClick={handleSpeakWithUs} className="gh-menu__cta">
+                <Link to={withLang('/enquire')} onClick={() => setIsMobileMenuOpen(false)} className="gh-menu__cta">
                   <span>{t('navigation.speakWithUs')}</span>
                   <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-                </button>
+                </Link>
                 {/* The globe lives in the top bar, which this panel covers. */}
                 <div className="gh-menu__locale">
                   <LocaleDropdown tone="dark" align="start" />

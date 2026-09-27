@@ -111,6 +111,10 @@ export const PAGES: PageDef[] = [
           line('hero.subheadline', 'Supporting line', { required: true }),
           line('hero.exploreOpportunities', 'Main button'),
           line('hero.speakWithUs', 'Second button'),
+          text('hero.whatsappMessage', 'WhatsApp message for Speak with Reece', {
+            help: 'Pre-filled when the homepage hero opens WhatsApp. Opportunity pages keep their own message.',
+            max: 300,
+          }),
           text('hero.founderNote', 'Reece’s note beside the hero'),
           line('hero.meetReece', 'Link to Reece’s story'),
           line('hero.founderName', 'Name beside the hero'),
@@ -590,6 +594,10 @@ export const PAGES: PageDef[] = [
           title('private.page.headline'),
           text('private.page.lead', 'Introduction', { required: true }),
           line('private.page.talk', 'Talk button'),
+          text('private.page.whatsappMessage', 'WhatsApp message for Talk to Reece', {
+            max: 300,
+            help: 'Pre-filled when Talk to Reece on Green Hill Private opens WhatsApp.',
+          }),
           line('private.page.explore', 'Explore button'),
           line('private.page.heroCaption', 'Photograph caption'),
           line('private.page.heroSpine', 'Side label'),
@@ -945,7 +953,7 @@ export const PAGES: PageDef[] = [
           },
           { key: 'cms.site.contact.instagram', label: 'Instagram link', kind: 'url', shared: true, help: 'e.g. https://www.instagram.com/greenhilllombok/' },
           text('cms.site.whatsapp.message', 'WhatsApp opening message', {
-            help: 'Pre-filled when a visitor taps a general “Talk to Reece” button. Opportunity buttons name the opportunity automatically.',
+            help: 'Pre-filled for general WhatsApp buttons in the footer and on interior pages. The homepage hero and each opportunity use their own message.',
             max: 300,
           }),
         ],

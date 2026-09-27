@@ -115,7 +115,7 @@ export function DescriptionEditor({
             }`}
         >
             {/* Toolbar */}
-            <div className="flex items-center gap-0.5 px-4 py-2 border-b border-border/50 bg-secondary/5">
+            <div className="flex flex-wrap items-center gap-0.5 px-4 py-2 border-b border-border/50 bg-secondary/5">
                 <ToolbarButton
                     onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                     isActive={editor.isActive('heading', { level: 2 })}

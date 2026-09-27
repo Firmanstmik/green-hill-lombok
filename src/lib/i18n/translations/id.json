@@ -22,6 +22,7 @@
     "subheadline": "Dipilih di lapangan. Dipertimbangkan untuk jangka panjang.",
     "locationLabel": "Lombok Selatan, Indonesia",
     "speakWithUs": "Berbicara dengan Reece",
+    "whatsappMessage": "Halo Reece, saya ingin mengetahui lebih lanjut tentang Green Hill dan peluang properti di South Lombok.",
     "founderName": "Reece Green",
     "founderRole": "Founder · Investor · Lombok Selatan",
     "founderNote": "Saya secara pribadi mengunjungi dan memilih peluang yang kami wakili.",
@@ -118,7 +119,7 @@
       "otherOpportunities": "Peluang lain",
       "otherLead": "Catatan terpilih dari koleksi saat ini.",
       "seeMore": "Lihat lebih banyak",
-      "whatsappMessage": "Halo Reece, saya tertarik dengan {title} {reference}.",
+      "whatsappMessage": "Halo Reece, saya tertarik dengan {title}{reference}. Saya ingin mengetahui lebih lanjut tentang peluang ini dan membahas langkah selanjutnya.",
       "sendEnquiry": "Kirim pertanyaan",
       "requestMemorandum": "Minta memorandum investasi",
       "privateInformation": "Informasi investasi lengkap tersedia secara privat melalui Green Hill.",
@@ -181,6 +182,7 @@
       "heroSpine": "Di lapangan",
       "heroCaption": "Lombok Selatan, Dipilih langsung",
       "talk": "Bicara dengan Reece",
+      "whatsappMessage": "Halo Reece, saya ingin mengetahui lebih lanjut tentang Green Hill Private dan peluang private yang sedang dipertimbangkan.",
       "explore": "Jelajahi Peluang",
       "audience": {
         "eyebrow": "Untuk siapa",
@@ -410,7 +412,7 @@
     "eyebrow": "Bicara dengan Reece",
     "headline": "Ceritakan apa yang Anda cari.|Kami akan mulai dari sana.",
     "lead": "Ceritakan area yang Anda minati, jenis properti yang Anda cari, atau sekadar apa yang sedang Anda pertimbangkan. Reece dapat membantu Anda melihat peluang yang mungkin relevan.",
-    "primaryCta": "Bicara dengan Reece",
+    "primaryCta": "Berbicara dengan Reece",
     "secondaryCta": "Jelajahi peluang",
     "contactPending": "Saluran kontak langsung akan dikonfirmasi segera. Untuk saat ini, jelajahi peluang atau kembali ke halaman ini setelah berbicara dengan Reece tersedia.",
     "steps": {

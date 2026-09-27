@@ -91,6 +91,18 @@ export function getPublicWhatsAppUrl(): string | null {
 
 /** A general "Talk to Reece" link, with Reece's opening message if one is set. */
 export function generalWhatsAppLink(locale: string): string {
-  const message = current.message[locale] ?? current.message.en;
-  return message ? `${current.whatsappUrl}?text=${encodeURIComponent(message)}` : current.whatsappUrl;
+  const message = current.message[locale] ?? current.message.en ?? '';
+  return buildWhatsAppUrl(message);
 }
+
+/**
+ * Direct WhatsApp chat on the configured Green Hill number.
+ * The message is encoded once. Pass the localized sentence, not a pre-encoded string.
+ */
+export function buildWhatsAppUrl(message?: string): string {
+  const text = message?.trim() ?? '';
+  return text ? `${current.whatsappUrl}?text=${encodeURIComponent(text)}` : current.whatsappUrl;
+}
+
+/** @see buildWhatsAppUrl */
+export const whatsAppConversation = buildWhatsAppUrl;

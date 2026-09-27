@@ -18,7 +18,7 @@ import { isPrivateOpportunity } from '@/components/properties/opportunityMeta';
 import { demoOpportunities as mockProperties, type Property } from '@/data/mockData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
-import { generalWhatsAppLink, getPublicWhatsAppUrl } from '@/lib/contact';
+import { buildWhatsAppUrl } from '@/lib/contact';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { privateOpportunityCount } from '@/lib/publicOpportunities';
 import { InvestorProfileForm } from '@/components/enquiry/InvestorProfileForm';
@@ -147,9 +147,8 @@ const Private = () => {
     useState<(typeof AUDIENCE_KEYS)[number]>('investors');
   const [audiencePaused, setAudiencePaused] = useState(false);
 
-  const talkHref = `/${language}/#contact`;
   const archiveHref = `/${language}/properties`;
-  const whatsappUrl = getPublicWhatsAppUrl();
+  const privateWhatsApp = buildWhatsAppUrl(t('private.page.whatsappMessage'));
 
   const audienceIndex = AUDIENCE_KEYS.indexOf(activeAudience);
 
@@ -291,12 +290,11 @@ const Private = () => {
     brief: 'other',
   };
 
-  const openTalk = () => {
-    if (whatsappUrl) {
-      window.open(generalWhatsAppLink(language), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    window.location.href = talkHref;
+  const scrollToPrivateForm = () => {
+    formRef.current?.scrollIntoView({
+      behavior: reduce ? 'auto' : 'smooth',
+      block: 'center',
+    });
   };
 
   return (
@@ -337,15 +335,17 @@ const Private = () => {
                 ))}
             </motion.div>
             <div className="gh-priv-actions">
-              <motion.button
-                type="button"
-                className="gh-final__cta gh-final__cta--primary"
-                onClick={openTalk}
-                {...heroReveal(0.54, 8)}
-              >
-                <span className="gh-final__cta-label">{t('private.page.talk')}</span>
-                <GhIconArrow size={15} aria-hidden />
-              </motion.button>
+              <motion.div {...heroReveal(0.54, 8)}>
+                <a
+                  href={privateWhatsApp}
+                  className="gh-final__cta gh-final__cta--primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="gh-final__cta-label">{t('private.page.talk')}</span>
+                  <GhIconArrow size={15} aria-hidden />
+                </a>
+              </motion.div>
               <motion.div {...heroReveal(0.62, 8)}>
                 <Link className="gh-final__cta gh-final__cta--secondary" to={archiveHref}>
                   <span className="gh-final__cta-label">{t('private.page.explore')}</span>
@@ -724,7 +724,7 @@ const Private = () => {
                       <button
                         type="button"
                         className="gh-priv-why-reasons__row"
-                        onClick={openTalk}
+                        onClick={scrollToPrivateForm}
                       >
                         <span className="gh-priv-why-reasons__index" aria-hidden>
                           {String(index + 1).padStart(2, '0')}
@@ -777,14 +777,15 @@ const Private = () => {
                   className="gh-priv-actions gh-priv-actions--pad"
                   {...reveal(isInView, sectionReduce, 0.34, 8)}
                 >
-                  <button
-                    type="button"
+                  <a
+                    href={privateWhatsApp}
                     className="gh-final__cta gh-final__cta--primary gh-priv-cta--ink"
-                    onClick={openTalk}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span className="gh-final__cta-label">{t('private.page.talk')}</span>
                     <GhIconArrow size={15} aria-hidden />
-                  </button>
+                  </a>
                 </motion.div>
               </div>
               <motion.figure
@@ -937,14 +938,15 @@ const Private = () => {
                   className="gh-priv-actions"
                   {...reveal(isInView, sectionReduce, 0.74, 8)}
                 >
-                  <button
-                    type="button"
+                  <a
+                    href={privateWhatsApp}
                     className="gh-final__cta gh-final__cta--primary gh-priv-cta--ink"
-                    onClick={openTalk}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span className="gh-final__cta-label">{t('private.page.talk')}</span>
                     <GhIconArrow size={15} aria-hidden />
-                  </button>
+                  </a>
                 </motion.div>
               </div>
             </>
@@ -1054,10 +1056,10 @@ const Private = () => {
               className="gh-priv-actions"
               {...reveal(final.isInView, reduce, 0.36, 8)}
             >
-              <button type="button" className="gh-final__cta gh-final__cta--primary" onClick={openTalk}>
+              <a href={privateWhatsApp} className="gh-final__cta gh-final__cta--primary" target="_blank" rel="noopener noreferrer">
                 <span className="gh-final__cta-label">{t('private.page.talk')}</span>
                 <GhIconArrow size={15} aria-hidden />
-              </button>
+              </a>
               <Link className="gh-final__cta gh-final__cta--secondary" to={archiveHref}>
                 <span className="gh-final__cta-label">{t('private.page.final.explore')}</span>
                 <GhIconArrow size={14} aria-hidden />
