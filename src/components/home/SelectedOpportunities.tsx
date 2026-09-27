@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { Link } from 'react-router-dom';
 import { demoOpportunities as mockProperties, type Property } from '@/data/mockData';
 import { useInView } from '@/hooks/useInView';
@@ -11,6 +11,7 @@ import { publicOpportunities } from '@/lib/publicOpportunities';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { CuratedOpportunityCard } from './opportunities/CuratedOpportunityCard';
 import { selectCuratedOpportunities } from './opportunities/selectCuratedOpportunities';
+import { withGoldStop } from '@/components/brand/GoldStop';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -114,7 +115,7 @@ export function SelectedOpportunities() {
           <h2 id="gh-opp-heading" className="gh-opp__headline">
             {headlineLines.map((line, i) => (
               <motion.span key={i} className="gh-opp__headline-line" {...reveal(0.22 + i * 0.06, 12)}>
-                {line}
+                {i === headlineLines.length - 1 ? withGoldStop(line) : line}
               </motion.span>
             ))}
           </h2>
@@ -138,7 +139,7 @@ export function SelectedOpportunities() {
           )}
 
           {curated.length > 1 && (
-            <div className="gh-opp__list" role="list">
+            <div className="gh-sel-list" role="list">
               {curated.slice(1).map((property, i) => (
                 <div key={property.id} role="listitem">
                   <CuratedOpportunityCard
@@ -155,7 +156,7 @@ export function SelectedOpportunities() {
         <motion.div className="gh-opp__footer" {...reveal(0.52, 10)}>
           <Link to={`/${language}/properties`} className="gh-opp__view-all">
             <span className="gh-opp__view-all-label">{t('selected.viewAll')}</span>
-            <ArrowUpRight size={16} strokeWidth={1.75} aria-hidden />
+            <ArrowRight size={16} strokeWidth={1.75} aria-hidden />
           </Link>
         </motion.div>
       </div>

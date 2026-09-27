@@ -105,6 +105,7 @@ const NotesArticle = () => {
       lang: language,
       image,
       ogType: 'article',
+      robots: article.slug.startsWith('demo-') ? 'noindex, nofollow' : undefined,
     });
   }, [article, content, language, slug, t]);
 
@@ -146,40 +147,44 @@ const NotesArticle = () => {
       <main>
         <article>
           <header className="gh-notes-article-hero" ref={hero.ref}>
-            <div className="gh-notes-article-hero__inner">
-              <p className="gh-notes-eyebrow">
-                <BrandCurveMark className="gh-notes-mark" isInView={hero.isInView} />
-                <span>{t('notes.page.eyebrow')}</span>
-              </p>
-              <p className="gh-notes-article-hero__topic">{article.topic}</p>
-              <motion.h1
-                className="gh-notes-article-hero__title"
-                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
-                animate={hero.isInView ? { opacity: 1, y: 0 } : undefined}
-                transition={{ duration: reduce ? 0 : 0.85, ease: EASE }}
-              >
-                {content.title}
-              </motion.h1>
-              {(content.dek || content.excerpt) && (
-                <motion.p
-                  className="gh-notes-article-hero__dek"
-                  initial={reduce ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            <div className="gh-notes-article-hero__head">
+              <div className="gh-notes-article-hero__copy">
+                <p className="gh-notes-eyebrow">
+                  <BrandCurveMark className="gh-notes-mark" isInView={hero.isInView} />
+                  <span>{t('notes.page.eyebrow')}</span>
+                </p>
+                <p className="gh-notes-article-hero__topic">{article.topic}</p>
+                {article.slug.startsWith('demo-') ? (
+                  <p className="gh-notes-article-hero__sample">{t('notes.page.sampleNote')}</p>
+                ) : null}
+                <motion.h1
+                  className="gh-notes-article-hero__title"
+                  initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
                   animate={hero.isInView ? { opacity: 1, y: 0 } : undefined}
-                  transition={{ duration: reduce ? 0 : 0.8, delay: reduce ? 0 : 0.12, ease: EASE }}
+                  transition={{ duration: reduce ? 0 : 0.85, ease: EASE }}
                 >
-                  {content.dek || content.excerpt}
-                </motion.p>
-              )}
-              <motion.p
-                className="gh-notes-article-hero__meta"
-                initial={reduce ? { opacity: 1 } : { opacity: 0 }}
-                animate={hero.isInView ? { opacity: 1 } : undefined}
-                transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 0.2 }}
-              >
-                <span>{article.author || t('notes.page.authorLabel')}</span>
-                {dateLabel ? <span className="gh-notes-article-hero__meta-dot" aria-hidden /> : null}
-                {dateLabel ? <time dateTime={article.date ?? undefined}>{dateLabel}</time> : null}
-              </motion.p>
+                  {content.title}
+                </motion.h1>
+                {(content.dek || content.excerpt) && (
+                  <motion.p
+                    className="gh-notes-article-hero__dek"
+                    initial={reduce ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                    animate={hero.isInView ? { opacity: 1, y: 0 } : undefined}
+                    transition={{ duration: reduce ? 0 : 0.8, delay: reduce ? 0 : 0.12, ease: EASE }}
+                  >
+                    {content.dek || content.excerpt}
+                  </motion.p>
+                )}
+                <ul className="gh-notes-article-hero__facts">
+                  <li>{article.author || t('notes.page.authorLabel')}</li>
+                  {dateLabel ? <li><time dateTime={article.date ?? undefined}>{dateLabel}</time></li> : null}
+                  <li>{article.topic}</li>
+                </ul>
+              </div>
+              <Link className="gh-notes-article-hero__back" to={notesHref}>
+                {t('notes.page.backToNotes')}
+                <GhIconArrow size={14} />
+              </Link>
             </div>
 
             <div className="gh-notes-article-hero__media">
@@ -187,7 +192,7 @@ const NotesArticle = () => {
                 src={article.heroImage}
                 alt={article.heroAlt}
                 width={1600}
-                height={1000}
+                height={900}
                 fetchPriority="high"
                 loading="eager"
                 decoding="async"
@@ -312,11 +317,11 @@ const NotesArticle = () => {
                 {t('notes.page.articleEndTitle')}
               </motion.h2>
               <motion.div className="gh-notes-actions gh-notes-actions--center" {...reveal(inView, reduce, 0.2, 8)}>
-                <button type="button" className="gh-final__cta gh-final__cta--primary" onClick={openTalk}>
+                <button type="button" className="gh-final__cta gh-final__cta--primary gh-notes-cta--forest" onClick={openTalk}>
                   <span className="gh-final__cta-label">{t('notes.page.talkCta')}</span>
                   <GhIconArrow />
                 </button>
-                <Link to={archiveHref} className="gh-final__cta gh-final__cta--secondary">
+                <Link to={archiveHref} className="gh-final__cta gh-notes-cta--outline">
                   <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
                   <GhIconArrow />
                 </Link>

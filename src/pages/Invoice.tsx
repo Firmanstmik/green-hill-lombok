@@ -1,5 +1,5 @@
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import { Download } from 'lucide-react';
+import { Download } from '@/icons/iconsax';
 import { useMemo, useState } from 'react';
 import { websiteDevelopmentInvoice } from '@/invoice/invoiceData';
 import { websiteDevelopmentInvoiceId } from '@/invoice/invoiceData.id';

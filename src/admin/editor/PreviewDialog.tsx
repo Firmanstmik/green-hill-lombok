@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowUpRight, Monitor, Smartphone, X } from 'lucide-react';
+import { ArrowUpRight, Monitor, Smartphone, X } from '@/icons/iconsax';
 
 /**
  * Shows the real public memo (PropertyDetail in preview mode) inside the admin.
@@ -12,14 +12,20 @@ export function PreviewDialog({
   url,
   isPrivate,
   note,
+  initialDevice = 'desktop',
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   url: string;
   isPrivate: boolean;
   note?: string;
+  /** Which width to open on (the content studio opens tablet or desktop from its live preview). */
+  initialDevice?: 'desktop' | 'tablet' | 'mobile';
 }) {
-  const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
+  const [device, setDevice] = useState<'desktop' | 'tablet' | 'mobile'>(initialDevice);
+  useEffect(() => {
+    if (open) setDevice(initialDevice);
+  }, [open, initialDevice]);
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -49,6 +55,15 @@ export function PreviewDialog({
               >
                 <Monitor size={15} aria-hidden />
                 Desktop
+              </button>
+              <button
+                type="button"
+                className="gha-btn gha-btn--sm gha-btn--ghost"
+                aria-pressed={device === 'tablet'}
+                style={device === 'tablet' ? { background: '#fff', boxShadow: '0 1px 2px rgba(18,41,32,.12)' } : undefined}
+                onClick={() => setDevice('tablet')}
+              >
+                Tablet
               </button>
               <button
                 type="button"

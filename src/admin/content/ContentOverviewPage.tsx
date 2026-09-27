@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { PAGES, type PageKey } from '@/content/schema';
 import { useContentRows, useNotesList } from '../data/queries';
 import { useAdminPath } from '../paths';

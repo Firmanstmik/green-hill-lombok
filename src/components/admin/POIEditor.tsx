@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Trash2, Plus, Loader2, MapPin } from 'lucide-react';
+import { Trash2, Plus, Loader2, MapPin } from '@/icons/iconsax';
 
 interface POIEditorProps {
   pois: NearbyPOI[];

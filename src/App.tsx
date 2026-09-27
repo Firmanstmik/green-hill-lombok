@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { GreenHillLoader } from "@/components/brand/GreenHillLoader";
+import { BrandIntro } from "@/components/brand/BrandIntro";
+import { introState } from "@/components/brand/introState";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ContentProvider } from "@/content/ContentContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
@@ -111,6 +113,10 @@ function HomeRedirect() {
 }
 
 function PageLoader() {
+  // The first page is ready when its code has arrived and this loader leaves.
+  useEffect(() => () => introState.markPageReady(), []);
+  // Under the cold-load intro, stay blank rather than stacking a second loader.
+  if (introState.active) return <div className="min-h-screen" style={{ background: "#f1ede5" }} />;
   return <GreenHillLoader />;
 }
 
@@ -167,6 +173,7 @@ function AppRoutes() {
 function AppContent() {
   return (
     <>
+      <BrandIntro />
       <ScrollToTop />
       <RouteTracker />
       <AppRoutes />

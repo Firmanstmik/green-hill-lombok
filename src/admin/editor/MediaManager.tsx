@@ -13,7 +13,7 @@ import { SortableContext, arrayMove, rectSortingStrategy, sortableKeyboardCoordi
 import { CSS } from '@dnd-kit/utilities';
 import { useDropzone, type FileRejection } from 'react-dropzone';
 import { toast } from 'sonner';
-import { GripVertical, ImagePlus, Loader2, RefreshCw, Star, Trash2 } from 'lucide-react';
+import { GripVertical, ImagePlus, Loader2, RefreshCw, Star, Trash2 } from '@/icons/iconsax';
 import { useRepository } from '../AdminSession';
 import { IMAGE_TYPES, MAX_IMAGE_BYTES } from '../data/repository';
 import { MAX_IMAGES } from '../domain/opportunity';

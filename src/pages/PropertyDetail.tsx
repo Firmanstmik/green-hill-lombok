@@ -9,6 +9,7 @@ import { DescriptionRenderer } from '@/components/property/DescriptionRenderer';
 import { OpportunityCard } from '@/components/properties/OpportunityCard';
 import {
   isPrivateOpportunity,
+  isSampleOpportunity,
   landSizeLabel,
   opportunityImage,
   opportunityLensOf,
@@ -304,7 +305,16 @@ function coordinates(property: OpportunityRecord): { lat: number; lng: number } 
   return { lat, lng };
 }
 
-function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
+/**
+ * Sets a memo meta tag. The site-wide default for the same key (index.html) is
+ * taken out while the memo is open, so crawlers read one description, not two,
+ * and put back by the effect's cleanup.
+ */
+function upsertMeta(attr: 'name' | 'property', key: string, content: string, stash: Element[]) {
+  document.head.querySelectorAll(`meta[${attr}="${key}"]:not([data-gh-memo])`).forEach((node) => {
+    stash.push(node);
+    node.remove();
+  });
   let el = document.head.querySelector(`meta[${attr}="${key}"][data-gh-memo]`);
   if (!el) {
     el = document.createElement('meta');
@@ -491,12 +501,23 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
         : `${window.location.origin}/${language}/property/${property?.slug || id || ''}`);
 
     document.title = title;
-    upsertMeta('name', 'description', description);
-    upsertMeta('property', 'og:title', title);
-    upsertMeta('property', 'og:description', description);
-    upsertMeta('property', 'og:type', 'article');
-    if (imageUrl) upsertMeta('property', 'og:image', imageUrl);
-    upsertMeta('property', 'og:url', canonical);
+    const defaults: Element[] = [];
+    upsertMeta('name', 'description', description, defaults);
+    upsertMeta('property', 'og:title', title, defaults);
+    upsertMeta('property', 'og:description', description, defaults);
+    upsertMeta('property', 'og:type', 'article', defaults);
+    upsertMeta('property', 'og:url', canonical, defaults);
+    upsertMeta('name', 'twitter:title', title, defaults);
+    upsertMeta('name', 'twitter:description', description, defaults);
+    if (imageUrl) {
+      upsertMeta('property', 'og:image', imageUrl, defaults);
+      upsertMeta('name', 'twitter:image', imageUrl, defaults);
+      // The default image's dimensions do not describe this one.
+      document.head.querySelectorAll('meta[property="og:image:width"], meta[property="og:image:height"]').forEach((node) => {
+        defaults.push(node);
+        node.remove();
+      });
+    }
 
     let link = document.head.querySelector('link[rel="canonical"][data-gh-memo]');
     if (!link) {
@@ -506,11 +527,12 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
       document.head.appendChild(link);
     }
     link.setAttribute('href', canonical);
-    if (preview) upsertMeta('name', 'robots', 'noindex, nofollow');
+    if (preview || (property && isSampleOpportunity(property))) upsertMeta('name', 'robots', 'noindex, nofollow', defaults);
 
     return () => {
       document.title = previousTitle;
       document.head.querySelectorAll('[data-gh-memo]').forEach((node) => node.remove());
+      defaults.forEach((node) => document.head.appendChild(node));
     };
   }, [property, loading, language, id, t, preview, teaser]);
 
@@ -524,8 +546,15 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
   if (loading) {
     return (
       <Shell>
-        <main className="gh-memo-state" aria-busy="true">
-          <p>{t('properties.memo.loading')}</p>
+        <main className="gh-memo-state gh-memo-state--wait" aria-busy="true">
+          <div className="gh-memo-wait" role="status" aria-live="polite">
+            <BrandCurveMark className="gh-memo-wait__mark" isInView />
+            <p className="gh-memo-wait__name">Green Hill</p>
+            <span className="gh-memo-wait__line" aria-hidden>
+              <span className="gh-memo-wait__line-fill" />
+            </span>
+            <p className="gh-memo-wait__label">{t('properties.memo.loading')}</p>
+          </div>
         </main>
       </Shell>
     );
@@ -681,6 +710,9 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
             >
               {property.title}
             </motion.h1>
+            {isSampleOpportunity(property) ? (
+              <p className="gh-memo-sample">{t('properties.archive.sampleLabel')}</p>
+            ) : null}
             {meta.length > 0 ? (
               <ul className="gh-memo-meta">
                 {meta.map((item) => (

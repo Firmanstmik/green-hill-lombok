@@ -11,6 +11,8 @@ export type PageSeoInput = {
   lang: string;
   image?: string;
   ogType?: 'website' | 'article';
+  /** When set, a robots meta is written and restored on cleanup. */
+  robots?: string;
 };
 
 type MetaKey = { attr: 'name' | 'property'; key: string };
@@ -24,6 +26,7 @@ const META_KEYS: MetaKey[] = [
   { attr: 'property', key: 'og:url' },
   { attr: 'name', key: 'twitter:title' },
   { attr: 'name', key: 'twitter:description' },
+  { attr: 'name', key: 'robots' },
 ];
 
 function metaSelector(attr: 'name' | 'property', key: string) {
@@ -77,6 +80,7 @@ export function applyPageSeo(input: PageSeoInput): () => void {
     'property:og:url': canonical,
     'name:twitter:title': input.title,
     'name:twitter:description': input.description,
+    'name:robots': input.robots,
   };
 
   for (const { attr, key } of META_KEYS) {

@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { Link } from 'react-router-dom';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { useInView } from '@/hooks/useInView';
@@ -130,7 +130,7 @@ export function TrustEducation() {
                       </span>
                       <span className="gh-trust__pathway-cta">
                         <span>{t('trust.explore')}</span>
-                        <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                        <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
                       </span>
                     </Link>
                   </li>
@@ -156,7 +156,7 @@ export function TrustEducation() {
         <motion.div className="gh-trust__footer" {...reveal(0.68, 10)}>
           <Link to={`/${language}/buying-in-lombok`} className="gh-trust__cta">
             <span className="gh-trust__cta-label">{t('trust.cta')}</span>
-            <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
+            <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
           </Link>
         </motion.div>
       </div>

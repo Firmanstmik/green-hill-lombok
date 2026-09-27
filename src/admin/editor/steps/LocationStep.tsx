@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
-import { Loader2, MapPin } from 'lucide-react';
+import { Loader2, MapPin } from '@/icons/iconsax';
 import { toast } from 'sonner';
 import { AddressAutocomplete } from '@/components/map/AddressAutocomplete';
 import POIEditor from '@/components/admin/POIEditor';

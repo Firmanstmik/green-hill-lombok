@@ -128,7 +128,8 @@ const CardSwap = ({
       if (r.current) placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount);
     });
 
-    if (reduce || total < 2) return;
+    const phone = window.matchMedia('(max-width: 767px)').matches;
+    if (reduce || total < 2 || phone) return;
 
     const swap = () => {
       if (order.current.length < 2) return;

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowDownWideNarrow, ArrowRight, Plus, Search } from 'lucide-react';
+import { ArrowDownWideNarrow, ArrowRight, Plus, Search } from '@/icons/iconsax';
 import { useOpportunities } from '../data/queries';
 import {
   OPPORTUNITY_TYPES,

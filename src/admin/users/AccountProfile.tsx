@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { KeyRound, Loader2 } from 'lucide-react';
+import { KeyRound, Loader2 } from '@/icons/iconsax';
 import { useAdminPath } from '../paths';
 import { Field } from '../ui/primitives';
 import { LANGUAGES, useSaveProfile, useSelf } from './usersApi';

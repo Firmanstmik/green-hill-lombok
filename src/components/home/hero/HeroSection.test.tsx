@@ -37,10 +37,19 @@ describe('hero — structure', () => {
     expect(await screen.findAllByRole('heading', { level: 1 })).toHaveLength(1);
   });
 
-  it('gives the photograph descriptive alt text, not a filename', async () => {
-    renderHero();
-    const img = await screen.findByRole('img', { name: /south lombok/i });
-    expect(img.getAttribute('alt')!.length).toBeGreaterThan(30);
+  it('describes the photograph once: in the visible caption, not again as alt text', async () => {
+    const { container } = renderHero();
+    await screen.findByRole('heading', { level: 1 });
+    const img = container.querySelector('img.gh-hero-img') as HTMLImageElement;
+    // Decorative next to its caption, so screen readers skip it…
+    expect(img.getAttribute('alt')).toBe('');
+    expect(screen.queryByRole('img', { name: /lombok/i })).toBeNull();
+    // …and read the caption, which is real text with a real description.
+    const caption = container.querySelector('.gh-hero-caption__text[data-state="active"]')!;
+    expect(caption.textContent!.length).toBeGreaterThan(30);
+    expect(caption.textContent).not.toMatch(/\.(webp|jpe?g|png)/i);
+    expect(caption).not.toHaveAttribute('aria-hidden');
+    expect(screen.getByText(caption.textContent!)).toBe(caption);
   });
 });
 
@@ -152,5 +161,43 @@ describe('hero — assets', () => {
       expect(slide.width).toBeGreaterThan(1000);
       expect(slide.height).toBeGreaterThan(500);
     }
+  });
+});
+
+describe('hero — caption follows the photograph', () => {
+  it('shows the current photograph’s own description under the headline', async () => {
+    const { container } = renderHero();
+    await screen.findByRole('heading', { level: 1 });
+    const captions = [...container.querySelectorAll('.gh-hero-caption__text')];
+    expect(captions).toHaveLength(HERO_SLIDES.length);
+    const active = captions.filter((c) => c.getAttribute('data-state') === 'active');
+    expect(active).toHaveLength(1);
+    // The editor's description of the photograph on screen (CMS, first chapter), not a hard-coded line.
+    expect(active[0]).toBe(captions[0]);
+    expect(active[0].textContent!.length).toBeGreaterThan(30);
+    // Only the current caption is read out; the others only reserve space.
+    expect(captions.filter((c) => c.getAttribute('aria-hidden') === 'true')).toHaveLength(HERO_SLIDES.length - 1);
+    // Caption sits between the headline and the supporting line.
+    const h1 = screen.getByRole('heading', { level: 1 });
+    const caption = container.querySelector('.gh-hero-caption')!;
+    const body = container.querySelector('.gh-hero-body')!;
+    expect(h1.compareDocumentPosition(caption) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(caption.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('moves image, chapter and caption together when a chapter is chosen', async () => {
+    const { container } = renderHero();
+    const nav = await screen.findByRole('navigation', { name: /hero chapters/i });
+    // jsdom never loads images; the switch still happens (bounded wait).
+    within(nav).getAllByRole('button')[2].click();
+    await vi.waitFor(
+      () => {
+        const active = container.querySelector('.gh-hero-caption__text[data-state="active"]');
+        expect(active?.textContent).toBe(container.querySelectorAll('.gh-hero-caption__text')[2].textContent);
+      },
+      { timeout: 2500 },
+    );
+    expect(within(nav).getAllByRole('button')[2]).toHaveAttribute('aria-current', 'true');
+    expect(container.querySelector('.gh-hero-caption__text[data-state="leaving"]')).not.toBeNull();
   });
 });

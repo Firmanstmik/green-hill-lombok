@@ -1,4 +1,4 @@
-import { Home, Map, Leaf, MessageCircle } from 'lucide-react';
+import { Home, Map, Leaf, MessageCircle } from '@/icons/iconsax';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { Link } from 'react-router-dom';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { useInView } from '@/hooks/useInView';
@@ -139,7 +139,7 @@ export function FinalCTA() {
                 onClick={handleSpeak}
               >
                 <span className="gh-final__cta-label">{t('final.primaryCta')}</span>
-                <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
               </button>
 
               <Link
@@ -147,7 +147,7 @@ export function FinalCTA() {
                 className="gh-final__cta gh-final__cta--secondary"
               >
                 <span className="gh-final__cta-label">{t('final.secondaryCta')}</span>
-                <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
               </Link>
             </motion.div>
 

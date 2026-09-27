@@ -10,7 +10,7 @@ import {
     List,
     ListOrdered,
     Minus,
-} from 'lucide-react';
+} from '@/icons/iconsax';
 import { FormatSuggestionsButton } from './FormatSuggestionsButton';
 import type { JSONContent } from '@/lib/tiptap-utils';
 import { analyzeContent } from '@/lib/tiptap-utils';
@@ -35,7 +35,7 @@ function ToolbarButton({ onClick, isActive, children, title }: ToolbarButtonProp
             type="button"
             onClick={onClick}
             title={title}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`gh-rte-tool p-1.5 rounded-lg transition-colors ${
                 isActive
                     ? 'bg-[#17382e]/10 text-[#17382e]'
                     : 'text-muted-foreground hover:bg-secondary/10 hover:text-foreground'

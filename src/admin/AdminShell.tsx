@@ -16,7 +16,7 @@ import {
   UsersRound,
   X,
   type LucideIcon,
-} from 'lucide-react';
+} from '@/icons/iconsax';
 import logoIvory from '@/assets/greenhill/hero/green-hill-logo-hero-168.webp';
 import logoSolid from '@/assets/greenhill/hero/green-hill-logo-solid-112.webp';
 import { useAdminSession } from './AdminSession';

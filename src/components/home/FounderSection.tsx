@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Signature } from 'lucide-react';
+import { Signature } from '@/icons/iconsax';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';

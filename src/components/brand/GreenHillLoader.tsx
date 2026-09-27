@@ -4,14 +4,27 @@ import './GreenHillLoader.css';
 
 /**
  * Green Hill's loading moment: the official logo (the same files the public
- * header uses, so usually already cached), a slow breath and a fine gold line.
- * Only for application-level waits (first load of a page, restoring a
- * session). Content inside pages uses skeletons; buttons show their own progress.
- * It stays invisible for the first 200 ms, so fast loads never flash.
+ * header uses, so usually already cached) and a fine gold rule drawn beneath it.
+ *
+ * - `wait` (default): for route and session waits. Invisible for the first
+ *   200 ms, so fast or cached loads never flash; then the same reveal.
+ * - `intro`: the opening of the public site on a cold load (BrandIntro). The
+ *   ivory ground is there at once; `leaving` fades it into the page.
+ *
+ * Sequence (from when the loader is shown): logo 150→410 ms, gold rule
+ * 450→750 ms; while still waiting, the logo breathes and the rule glints.
  */
-export function GreenHillLoader({ label = 'Loading Green Hill' }: { label?: string }) {
+export function GreenHillLoader({
+  label = 'Loading Green Hill',
+  mode = 'wait',
+  leaving = false,
+}: {
+  label?: string;
+  mode?: 'wait' | 'intro';
+  leaving?: boolean;
+}) {
   return (
-    <div className="ghl" role="status" aria-live="polite">
+    <div className={`ghl ghl--${mode}`} data-leaving={leaving || undefined} role="status" aria-live="polite">
       <div className="ghl__mark">
         <img
           className="ghl__logo"

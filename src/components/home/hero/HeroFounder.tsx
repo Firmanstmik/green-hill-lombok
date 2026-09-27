@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useHeroReveal } from './useHeroReveal';
 import { HERO_EASE } from './heroData';
@@ -80,7 +80,7 @@ export function HeroFounder({ onMeet }: Props) {
 
       <button type="button" onClick={onMeet} className="gh-hero-founder__link">
         <span>{t('hero.meetReece')}</span>
-        <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden />
+        <ArrowRight size={13} strokeWidth={1.75} aria-hidden />
       </button>
     </motion.aside>
   );

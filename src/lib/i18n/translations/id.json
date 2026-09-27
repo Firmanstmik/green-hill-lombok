@@ -7,7 +7,14 @@
     "speakWithUs": "Bicara dengan Reece",
     "menu": "Menu",
     "close": "Tutup",
-    "notes": "Catatan"
+    "notes": "Catatan",
+    "descriptions": {
+      "opportunities": "Lahan dan vila, dipilih langsung di lapangan",
+      "whyLombok": "Mengapa Reece memilih Lombok Selatan",
+      "private": "Lahan dan pengembangan besar, disajikan secara privat",
+      "about": "Reece, dan awal mula Green Hill",
+      "notes": "Catatan dari Lombok"
+    }
   },
   "hero": {
     "headline": "Peluang properti &|investasi terkurasi|di Lombok Selatan.",
@@ -54,6 +61,7 @@
       "closeLead": "Beberapa peluang lebih baik dibahas secara pribadi. Jika Anda sudah memiliki lokasi, anggaran, waktu, atau tujuan investasi, mulailah percakapan.",
       "closePrivate": "Green Hill Private",
       "privateLabel": "Peluang privat",
+      "sampleLabel": "Contoh peluang",
       "privateNote": "Tersedia melalui percakapan",
       "talkToReece": "Bicara dengan Reece",
       "statusAvailable": "Tersedia",
@@ -125,10 +133,10 @@
   "selected": {
     "eyebrow": "Peluang Terpilih",
     "headline": "Seleksi yang dipertimbangkan|dari tempat dengan potensi.",
-    "lead": "Contoh peluang lahan dan villa di Lombok, masing-masing ditampilkan sebagai bagian dari seleksi kecil yang dikurasi, bukan katalog pasar.",
-    "viewOpportunity": "Lihat Peluang",
-    "viewAll": "Lihat Semua Peluang",
-    "priceOnRequest": "Harga atas Permintaan",
+    "lead": "Pilihan kecil lahan dan vila di Lombok Selatan, masing-masing dikunjungi dan dipilih langsung oleh Reece. Kami tidak menampilkan semuanya, hanya yang menurut kami layak dilihat lebih dekat.",
+    "viewOpportunity": "Lihat peluang",
+    "viewAll": "Lihat seluruh koleksi",
+    "priceOnRequest": "Harga atas permintaan",
     "empty": "Peluang baru sedang dipilih. Sementara itu, ceritakan kepada Reece apa yang Anda cari."
   },
   "private": {
@@ -666,6 +674,7 @@
       "latestLead": "Observasi terpilih, ditulis dengan kehati-hatian yang sama seperti cara Green Hill memilih peluang.",
       "emptyBody": "Ruang ini akan memuat perspektif Green Hill tentang Lombok, lahan, dan pertanyaan yang membentuk proses membeli di sini. Tanpa isi pengisi. Hanya yang layak dibaca.",
       "readNote": "Baca catatan",
+      "sampleNote": "Catatan contoh",
       "topicsEyebrow": "Perspektif",
       "topicsTitle": "Lanjutkan menjelajah.",
       "topicsLead": "Catatan berada bersama bagian lain Green Hill: tempat, orang, pendekatan, dan peluang terpilih.",

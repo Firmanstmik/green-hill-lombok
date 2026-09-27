@@ -68,8 +68,18 @@ export const HERO_SLIDES: HeroSlide[] = [
 /** Quiet, expensive easing — used across hero motion. */
 export const HERO_EASE = [0.22, 1, 0.36, 1] as const;
 
-/** Autoplay dwell between slides (ms). */
-export const HERO_AUTO_MS = 7400;
+/** Slower-settling cinematic ease for the photograph crossfade. */
+export const HERO_CINEMA_EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Each chapter stays this long (ms) — time to see the photograph and read its caption. */
+export const HERO_AUTO_MS = 7000;
 
 /** Crossfade duration (seconds) — editorial page-turn, not a carousel wipe. */
-export const HERO_CROSSFADE_S = 1.05;
+export const HERO_CROSSFADE_S = 1.2;
+
+/**
+ * Caption choreography (ms, from the start of the crossfade): the old caption
+ * leaves after 180 ms, the new one enters from 340 ms and settles by ~900 ms.
+ * The values live in CSS (.gh-hero-caption); kept here as the reference.
+ */
+export const HERO_CAPTION_TIMING = { outDelay: 180, outDuration: 420, inDelay: 340, inDuration: 560 } as const;

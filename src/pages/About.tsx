@@ -20,7 +20,7 @@ import {
   Focus,
   DoorOpen,
   UserRound,
-} from 'lucide-react';
+} from '@/icons/iconsax';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { useFocusTrap } from '@/components/layout/useFocusTrap';
@@ -422,7 +422,7 @@ const About = () => {
                 </button>
                 <Link className="gh-hero-btn gh-hero-btn--ghost" to={archiveHref}>
                   <span className="gh-hero-btn__label">{t('about.page.explore')}</span>
-                  <ArrowUpRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
+                  <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
                 </Link>
               </motion.div>
 
@@ -1024,8 +1024,8 @@ const About = () => {
                   <img
                     src={ground.src}
                     alt={t('about.page.ground.imageAlt')}
-                    width={1600}
-                    height={2000}
+                    width={1506}
+                    height={941}
                     loading="lazy"
                     decoding="async"
                   />

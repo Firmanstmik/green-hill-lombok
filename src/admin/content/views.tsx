@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { PAGES } from '@/content/schema';
 import { useAdminPath } from '../paths';
 import ContentEditorPage from './ContentEditorPage';

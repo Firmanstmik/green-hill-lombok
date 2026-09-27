@@ -1,5 +1,5 @@
 import { useId, type ReactNode } from 'react';
-import { AlertCircle, ImageIcon, Lock, Star } from 'lucide-react';
+import { AlertCircle, ImageIcon, Lock, Star } from '@/icons/iconsax';
 import { STATUS_LABEL, type OpportunityStatus, type Visibility } from '../domain/opportunity';
 import { ENQUIRY_STATUS_LABEL, type EnquiryStatus } from '../domain/enquiry';
 import { MediaImg } from './media';

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Archive, ArrowLeft, Eye, ImagePlus, Loader2, Plus, RotateCcw, Send, Trash2, Undo2, X } from 'lucide-react';
+import { Archive, ArrowLeft, Eye, ImagePlus, Loader2, Plus, RotateCcw, Send, Trash2, Undo2, X } from '@/icons/iconsax';
 import type { NotesLocale, NotesTopic } from '@/data/notesData';
 import { CONTENT_LOCALES, LOCALE_LABEL } from '@/content/schema';
 import { useNoteActions, useNotesList } from '../data/queries';

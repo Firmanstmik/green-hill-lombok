@@ -7,7 +7,14 @@
     "speakWithUs": "Praat met Reece",
     "menu": "Menu",
     "close": "Sluiten",
-    "notes": "Notities"
+    "notes": "Notities",
+    "descriptions": {
+      "opportunities": "Grond en villa's, ter plekke geselecteerd",
+      "whyLombok": "Waarom Reece voor Zuid-Lombok koos",
+      "private": "Grotere grond en ontwikkeling, privé gepresenteerd",
+      "about": "Reece, en hoe Green Hill begon",
+      "notes": "Notities uit Lombok"
+    }
   },
   "hero": {
     "headline": "Geselecteerde vastgoed- &|investeringskansen|in Zuid-Lombok.",
@@ -54,6 +61,7 @@
       "closeLead": "Sommige kansen bespreekt u beter privé. Heeft u een locatie, budget, tijdlijn of investeringsdoel, begin dan een gesprek.",
       "closePrivate": "Green Hill Private",
       "privateLabel": "Privékans",
+      "sampleLabel": "Voorbeeldkans",
       "privateNote": "Beschikbaar via gesprek",
       "talkToReece": "Spreek met Reece",
       "statusAvailable": "Beschikbaar",
@@ -125,10 +133,10 @@
   "selected": {
     "eyebrow": "Geselecteerde Kansen",
     "headline": "Een doordachte selectie|van plekken met potentieel.",
-    "lead": "Voorbeeld grond- en villakansen op Lombok, elk gepresenteerd als onderdeel van een kleine curated selectie, geen marktplaatscatalogus.",
-    "viewOpportunity": "Bekijk Kans",
-    "viewAll": "Bekijk Alle Kansen",
-    "priceOnRequest": "Prijs op Aanvraag",
+    "lead": "Een kleine selectie grond en villa's in Zuid-Lombok, elk bezocht en uitgekozen door Reece. We tonen niet alles, alleen wat volgens ons een nadere blik verdient.",
+    "viewOpportunity": "Bekijk kans",
+    "viewAll": "Bekijk de volledige collectie",
+    "priceOnRequest": "Prijs op aanvraag",
     "empty": "Nieuwe kansen worden geselecteerd. Vertel Reece intussen waar u naar zoekt."
   },
   "private": {
@@ -666,6 +674,7 @@
       "latestLead": "Geselecteerde observaties, geschreven met dezelfde zorg waarmee Green Hill kansen selecteert.",
       "emptyBody": "Deze ruimte zal Green Hill-perspectieven bevatten over Lombok, grond en de vragen die kopen hier vormgeven. Geen vulling. Alleen wat het lezen waard is.",
       "readNote": "Lees de note",
+      "sampleNote": "Voorbeeldnote",
       "topicsEyebrow": "Perspectieven",
       "topicsTitle": "Verken verder.",
       "topicsLead": "Notes hoort bij de rest van Green Hill: plek, persoon, aanpak en geselecteerde kansen.",

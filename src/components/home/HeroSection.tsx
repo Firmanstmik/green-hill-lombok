@@ -51,6 +51,50 @@ function useHeroPrefetch(slides: HeroSlide[], nextIndex: number) {
   }, [nextIndex, nextSrc]);
 }
 
+/**
+ * Knows which hero photographs are decoded and ready to show. Warms them in
+ * order — the one on screen, then the next, then the rest — so a crossfade
+ * never reveals an empty plate.
+ */
+function useHeroImages(slides: HeroSlide[], activeIndex: number) {
+  const ready = useRef(new Map<string, Promise<void>>());
+  const done = useRef(new Set<string>());
+
+  const load = useCallback((src: string): Promise<void> => {
+    const known = ready.current.get(src);
+    if (known) return known;
+    const promise = new Promise<void>((resolve) => {
+      const img = new Image();
+      img.decoding = 'async';
+      const finish = () => {
+        done.current.add(src);
+        resolve();
+      };
+      img.onload = () => (typeof img.decode === 'function' ? img.decode().then(finish, finish) : finish());
+      img.onerror = finish; // never hold the hero on a broken file
+      img.src = src;
+    });
+    ready.current.set(src, promise);
+    return promise;
+  }, []);
+
+  const order = slides.map((_, i) => slides[(activeIndex + i) % slides.length].src).join('|');
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      for (const src of order.split('|')) {
+        if (cancelled) return;
+        await load(src);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [order, load]);
+
+  return { isReady: (src: string) => done.current.has(src), load };
+}
+
 /** The three hero chapters with Reece's published photographs, names and descriptions. */
 function useEditableHeroSlides(): HeroSlide[] {
   const i1 = useContentImage('home.hero.slide1', HERO_SLIDES[0].src, 'cms.home.hero.slide1.alt');
@@ -89,8 +133,8 @@ export function HeroSection() {
    * the hero scrolled out of view, the tab hidden. Tracking them separately
    * stops one reason from clearing another's pause.
    */
-  const [holds, setHolds] = useState({ focus: false, offscreen: false, hidden: false });
-  const paused = holds.focus || holds.offscreen || holds.hidden;
+  const [holds, setHolds] = useState({ focus: false, hover: false, offscreen: false, hidden: false });
+  const paused = holds.focus || holds.hover || holds.offscreen || holds.hidden;
   const slides = useEditableHeroSlides();
   const total = slides.length;
   const pauseRef = useRef(false);
@@ -104,11 +148,26 @@ export function HeroSection() {
 
   useHeroPreload(slides);
   useHeroPrefetch(slides, (slide + 1) % total);
+  const images = useHeroImages(slides, slide);
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+  const slidesRef = useRef(slides);
+  slidesRef.current = slides;
 
+  /** A chosen chapter shows as soon as its photograph is ready (at most 1.2 s), and its timer starts afresh. */
   const goTo = useCallback(
     (index: number) => {
-      setSlide(((index % total) + total) % total);
-      setProgress(0);
+      const target = ((index % total) + total) % total;
+      const show = () => {
+        setSlide(target);
+        setProgress(0);
+      };
+      const src = slidesRef.current[target].src;
+      if (imagesRef.current.isReady(src)) {
+        show();
+        return;
+      }
+      void Promise.race([imagesRef.current.load(src), new Promise((r) => setTimeout(r, 1200))]).then(show);
     },
     [total]
   );
@@ -167,8 +226,10 @@ export function HeroSection() {
       const ratio = Math.min(1, (now - start) / HERO_AUTO_MS);
       setProgress(ratio);
 
-      if (ratio >= 1) {
-        setSlide((s) => (s + 1) % total);
+      // Turn the page only once the next photograph is decoded (no empty plate).
+      const next = (slide + 1) % total;
+      if (ratio >= 1 && imagesRef.current.isReady(slidesRef.current[next].src)) {
+        setSlide(next);
         setProgress(0);
         return;
       }
@@ -201,7 +262,10 @@ export function HeroSection() {
       className="gh-hero"
       aria-roledescription="carousel"
       aria-label="Green Hill Lombok"
-      onFocusCapture={() => hold('focus', true)}
+      onFocusCapture={(e) => {
+        // Keyboard focus pauses the story; a mouse click on a chapter does not.
+        if ((e.target as HTMLElement).matches?.(':focus-visible')) hold('focus', true);
+      }}
       onBlurCapture={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hold('focus', false);
       }}
@@ -210,11 +274,15 @@ export function HeroSection() {
 
       <div className="gh-hero-frame">
         <div className="gh-hero-grid">
-          <HeroContent onSpeak={() => scrollTo('contact')} />
+          <HeroContent onSpeak={() => scrollTo('contact')} slides={slides} activeIndex={slide} />
           <HeroFounder onMeet={() => scrollTo('about')} />
         </div>
 
-        <div className="gh-hero-bottom">
+        <div
+          className="gh-hero-bottom"
+          onPointerEnter={(e) => e.pointerType === 'mouse' && hold('hover', true)}
+          onPointerLeave={() => hold('hover', false)}
+        >
           <HeroLocations
             slides={slides}
             activeIndex={slide}

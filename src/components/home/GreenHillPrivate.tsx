@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
@@ -105,11 +105,11 @@ export function GreenHillPrivate() {
                 onClick={scrollToContact}
               >
                 <span className="gh-private__cta-label">{t('private.cta')}</span>
-                <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
               </button>
               <Link to={`/${language}/private`} className="gh-private__journey">
                 <span>{t('private.journey')}</span>
-                <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
               </Link>
             </motion.div>
           </div>

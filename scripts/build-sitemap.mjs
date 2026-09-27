@@ -25,15 +25,25 @@ if (/^https?:\/\//.test(supabaseUrl) && anonKey) {
   const headers = { apikey: anonKey, Authorization: `Bearer ${anonKey}` };
   try {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/properties?select=id,slug,updated_at&visibility=eq.public&status=in.(available,reserved,sold)`,
+      `${supabaseUrl}/rest/v1/properties?select=id,slug,listing_code,updated_at&visibility=eq.public&status=in.(available,reserved,sold)`,
       { headers },
     );
     if (res.ok) {
-      for (const row of await res.json()) entries.push({ path: `/property/${row.slug || row.id}`, lastmod: row.updated_at });
+      for (const row of await res.json()) {
+        const code = String(row.listing_code || '');
+        const slug = String(row.slug || '');
+        if (code.startsWith('DEMO-') || slug.startsWith('demo-')) continue;
+        entries.push({ path: `/property/${row.slug || row.id}`, lastmod: row.updated_at });
+      }
     }
     const teasers = await fetch(`${supabaseUrl}/rest/v1/rpc/private_teasers`, { method: 'POST', headers });
     if (teasers.ok) {
-      for (const row of await teasers.json()) entries.push({ path: `/private/${row.listing_code || row.slug || row.id}` });
+      for (const row of await teasers.json()) {
+        const code = String(row.listing_code || '');
+        const slug = String(row.slug || '');
+        if (code.startsWith('DEMO-') || slug.startsWith('demo-')) continue;
+        entries.push({ path: `/private/${row.listing_code || row.slug || row.id}` });
+      }
     }
   } catch (error) {
     console.warn('Sitemap: could not read opportunities, core pages only.', error.message);

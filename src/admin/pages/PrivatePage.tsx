@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Lock, Plus } from 'lucide-react';
+import { Lock, Plus } from '@/icons/iconsax';
 import { useOpportunities } from '../data/queries';
 import { publicLocationLine } from '../domain/opportunity';
 import { OpportunityActions } from '../opportunityActions';

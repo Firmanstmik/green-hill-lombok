@@ -284,6 +284,67 @@ export function GhIconCaretDown({ size, className, ...rest }: IconProps) {
   );
 }
 
+/** Land area — a measured parcel, not a generic square. */
+export function GhIconPlot({ size, className, ...rest }: IconProps) {
+  return (
+    <GhIconBase size={size} className={className} {...rest}>
+      <path
+        d="M5.2 8.2 12 5.1l6.8 3.1v7.5L12 18.9 5.2 15.7V8.2Z"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.2 8.2 12 11.4l6.8-3.2M12 11.4v7.5"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+        opacity="0.7"
+      />
+    </GhIconBase>
+  );
+}
+
+/** Rooms — a low bed, used only when a villa states a count. */
+export function GhIconBed({ size, className, ...rest }: IconProps) {
+  return (
+    <GhIconBase size={size} className={className} {...rest}>
+      <path
+        d="M4.2 16.5V10.8A1.6 1.6 0 0 1 5.8 9.2H18.2a1.6 1.6 0 0 1 1.6 1.6v5.7"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.2 13.4h15.6M7.1 9.2V7.9A1.4 1.4 0 0 1 8.5 6.5h2.2a1.4 1.4 0 0 1 1.4 1.4v1.3"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M4.2 16.5v1.6M19.8 16.5v1.6" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+    </GhIconBase>
+  );
+}
+
+/** Price on request — a sealed tag, not a currency glyph. */
+export function GhIconEnquiry({ size, className, ...rest }: IconProps) {
+  return (
+    <GhIconBase size={size} className={className} {...rest}>
+      <path
+        d="M10.2 4.6h5.4l4 4v8.2a1.6 1.6 0 0 1-1.6 1.6H10.2a1.6 1.6 0 0 1-1.6-1.6V6.2a1.6 1.6 0 0 1 1.6-1.6Z"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinejoin="round"
+      />
+      <path d="M15.2 4.7v3.5h3.6" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" />
+      <circle cx="7.15" cy="16.4" r="2.35" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M6.15 16.4h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </GhIconBase>
+  );
+}
+
 /** Fine caret for framed footer links. */
 export function GhIconCaretRight({ size, className, ...rest }: IconProps) {
   return (

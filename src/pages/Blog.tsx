@@ -292,6 +292,7 @@ const Notes = () => {
                   reduce={reduce}
                   eyebrow={t('notes.page.featuredEyebrow')}
                   readLabel={t('notes.page.readNote')}
+                  sampleLabel={t('notes.page.sampleNote')}
                 />
               </div>
             ) : (
@@ -416,7 +417,10 @@ const Notes = () => {
                           </span>
                           <span className="gh-notes-list__body">
                             <span className="gh-notes-list__meta">
-                              <span className="gh-notes-list__topic">{article.topic}</span>
+                              <span className="gh-notes-list__topic">
+                              {article.slug.startsWith('demo-') ? `${t('notes.page.sampleNote')} · ` : ''}
+                              {article.topic}
+                            </span>
                               {dateLabel ? (
                                 <span className="gh-notes-list__date">{dateLabel}</span>
                               ) : null}
@@ -704,7 +708,7 @@ const Notes = () => {
                 </button>
                 <Link
                   to={archiveHref}
-                  className="gh-final__cta gh-final__cta--secondary gh-notes-cta--dark"
+                  className="gh-final__cta gh-notes-cta--outline"
                 >
                   <span className="gh-final__cta-label">{t('notes.page.exploreCta')}</span>
                   <GhIconArrow />
@@ -731,6 +735,7 @@ function FeaturedNote({
   reduce,
   eyebrow,
   readLabel,
+  sampleLabel,
 }: {
   article: NotesArticle;
   language: string;
@@ -738,6 +743,7 @@ function FeaturedNote({
   reduce: boolean;
   eyebrow: string;
   readLabel: string;
+  sampleLabel: string;
 }) {
   const content = getNoteContent(article, language);
   const href = `/${language}/intelligence/${article.slug}`;
@@ -753,6 +759,7 @@ function FeaturedNote({
           <span>{eyebrow}</span>
         </motion.p>
         <motion.p className="gh-notes-journal__topic" {...reveal(inView, reduce, 0.12, 8)}>
+          {article.slug.startsWith('demo-') ? `${sampleLabel} · ` : ''}
           {article.topic}
         </motion.p>
         <motion.h2
@@ -779,8 +786,8 @@ function FeaturedNote({
           <motion.img
             src={article.heroImage}
             alt={article.heroAlt}
-            width={1094}
-            height={1438}
+            width={1600}
+            height={900}
             loading="eager"
             decoding="async"
             {...mediaReveal(inView, reduce, 0.1)}

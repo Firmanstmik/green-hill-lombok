@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown } from '@/icons/iconsax';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useHeroReveal } from './useHeroReveal';
 

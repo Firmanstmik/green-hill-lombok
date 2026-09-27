@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from '@/icons/iconsax';
 import { LOCAL_PREVIEW_AVAILABLE, useAdminSession } from './AdminSession';
 import { useAdminPath } from './paths';
 import { Field } from './ui/primitives';

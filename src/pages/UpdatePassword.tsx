@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react';
-import { Check, Loader2 } from 'lucide-react';
+import { Check, Loader2 } from '@/icons/iconsax';
 import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 import '@/admin/admin.css';

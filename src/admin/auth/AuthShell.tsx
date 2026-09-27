@@ -1,5 +1,5 @@
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from '@/icons/iconsax';
 // The official Green Hill logo, the same optimised files the public header and footer use.
 import logoIvory from '@/assets/greenhill/hero/green-hill-logo-hero-112.webp';
 import logoIvory2x from '@/assets/greenhill/hero/green-hill-logo-hero-168.webp';

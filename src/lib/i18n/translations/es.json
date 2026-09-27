@@ -7,7 +7,14 @@
     "speakWithUs": "Habla con Reece",
     "menu": "Menú",
     "close": "Cerrar",
-    "notes": "Notas"
+    "notes": "Notas",
+    "descriptions": {
+      "opportunities": "Terrenos y villas, seleccionados sobre el terreno",
+      "whyLombok": "Por qué Reece eligió el sur de Lombok",
+      "private": "Terrenos y desarrollos mayores, presentados en privado",
+      "about": "Reece y cómo nació Green Hill",
+      "notes": "Notas desde Lombok"
+    }
   },
   "hero": {
     "headline": "Oportunidades de|propiedad e inversión|seleccionadas|en el sur de Lombok.",
@@ -54,6 +61,7 @@
       "closeLead": "Algunas oportunidades se hablan mejor en privado. Si tiene una ubicación, un presupuesto, un plazo o un objetivo de inversión, empiece la conversación.",
       "closePrivate": "Green Hill Private",
       "privateLabel": "Oportunidad privada",
+      "sampleLabel": "Oportunidad de muestra",
       "privateNote": "Disponible mediante conversación",
       "talkToReece": "Hablar con Reece",
       "statusAvailable": "Disponible",
@@ -125,10 +133,10 @@
   "selected": {
     "eyebrow": "Oportunidades Seleccionadas",
     "headline": "Una selección considerada|de lugares con potencial.",
-    "lead": "Ejemplos de terreno y villas en Lombok, cada uno presentado como parte de una selección curada pequeña, no un catálogo de mercado.",
-    "viewOpportunity": "Ver Oportunidad",
-    "viewAll": "Ver Todas las Oportunidades",
-    "priceOnRequest": "Precio a Consultar",
+    "lead": "Una pequeña selección de terrenos y villas en el sur de Lombok, cada uno visitado y elegido por Reece. No mostramos todo, solo lo que creemos que merece una mirada más atenta.",
+    "viewOpportunity": "Ver oportunidad",
+    "viewAll": "Ver la colección completa",
+    "priceOnRequest": "Precio a consultar",
     "empty": "Se están seleccionando nuevas oportunidades. Mientras tanto, cuéntele a Reece qué busca."
   },
   "private": {
@@ -666,6 +674,7 @@
       "latestLead": "Observaciones seleccionadas, escritas con el mismo cuidado con el que Green Hill elige oportunidades.",
       "emptyBody": "Este espacio reunirá perspectivas de Green Hill sobre Lombok, la tierra y las preguntas que dan forma a comprar aquí. Sin relleno. Solo lo que vale la pena leer.",
       "readNote": "Leer la nota",
+      "sampleNote": "Nota de muestra",
       "topicsEyebrow": "Perspectivas",
       "topicsTitle": "Siga explorando.",
       "topicsLead": "Notes acompaña al resto de Green Hill: lugar, persona, enfoque y oportunidades seleccionadas.",

@@ -4,7 +4,7 @@ import {
   useRef,
   memo,
 } from 'react';
-import { MapPin, AlertCircle, Loader } from 'lucide-react';
+import { MapPin, AlertCircle, Loader } from '@/icons/iconsax';
 import { cn } from '@/lib/utils';
 import { isValidCoordinates } from '@/lib/mapbox';
 import mapboxgl from 'mapbox-gl';

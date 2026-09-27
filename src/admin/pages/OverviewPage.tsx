@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus } from '@/icons/iconsax';
 import { useEnquiries, useOpportunities } from '../data/queries';
 import { PAGES } from '@/content/schema';
 import { useContactSettings } from '@/content/hooks';

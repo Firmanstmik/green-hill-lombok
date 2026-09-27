@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Sparkles } from '@/icons/iconsax';
 import { toast } from 'sonner';
 import type { Editor } from '@tiptap/react';
 import type { JSONContent } from '@/lib/tiptap-utils';
@@ -154,7 +154,7 @@ export function FormatSuggestionsButton({ editor }: FormatSuggestionsButtonProps
             <button
                 type="button"
                 onClick={handleClick}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#17382e] transition-colors mt-2"
+                className="gh-rte-format flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#17382e] transition-colors mt-2"
             >
                 <Sparkles size={14} className="text-emerald-500" />
                 <span className="font-medium">Format</span>

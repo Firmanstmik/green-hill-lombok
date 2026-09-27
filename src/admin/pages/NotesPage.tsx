@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, Plus } from 'lucide-react';
+import { ArrowRight, Plus } from '@/icons/iconsax';
 import { useNotesList } from '../data/queries';
 import type { NoteRecord, NoteStatus } from '../domain/content';
 import { NOTE_TOPICS } from '../domain/content';

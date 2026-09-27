@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, Eye, Loader2, Lock } from 'lucide-react';
+import { Check, Eye, Loader2, Lock } from '@/icons/iconsax';
 import { formatMoney } from '@/lib/opportunityPrice';
 import {
   STATUS_LABEL,

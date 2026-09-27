@@ -1,11 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { GhIconArrow } from '@/components/brand/GhIcons';
+import { GhIconArrow, GhIconBed, GhIconEnquiry, GhIconPlot } from '@/components/brand/GhIcons';
 import type { Property } from '@/data/mockData';
 import { useOpportunityPrice } from '@/lib/opportunityPrice';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   isPrivateOpportunity,
+  isSampleOpportunity,
   landSizeLabel,
   opportunityImage,
   opportunityLensOf,
@@ -27,13 +28,19 @@ type Props = {
   index: number;
   /** A Green Hill Private teaser: shown by name and linked to its teaser page. */
   teaserHref?: string;
+  /**
+   * The featured opportunity leading the collection: same card, given the
+   * full width, a larger photograph and its summary. Editorial prominence,
+   * never a sales label.
+   */
+  feature?: boolean;
 };
 
 function formatIndex(index: number) {
   return String(index + 1).padStart(2, '0');
 }
 
-export function OpportunityCard({ property, index, teaserHref }: Props) {
+export function OpportunityCard({ property, index, teaserHref, feature = false }: Props) {
   const { language, t } = useLanguage();
   const reduce = useReducedMotion();
   const image = opportunityImage(property);
@@ -47,6 +54,8 @@ export function OpportunityCard({ property, index, teaserHref }: Props) {
   const statusKey = statusTranslationKey(property);
   const status = statusKey ? t(statusKey) : rawStatus(property);
   const price = useOpportunityPrice(property) ?? t('selected.priceOnRequest');
+  // Database rows carry the editor's short summary; the legacy demo shape does not.
+  const summary = (property as Property & { summary?: string | null }).summary?.trim();
 
   const location = (property.address || '')
     .split(',')
@@ -54,8 +63,10 @@ export function OpportunityCard({ property, index, teaserHref }: Props) {
     .filter(Boolean)
     .join(' · ');
 
+  const sample = isSampleOpportunity(property);
+
   return (
-    <article className={discreet ? 'gh-arch-card is-private' : 'gh-arch-card'}>
+    <article className={['gh-arch-card', discreet ? 'is-private' : '', feature && !discreet ? 'is-featured' : ''].filter(Boolean).join(' ')}>
       <Link to={discreet ? talkHref : href} className="gh-arch-card__link">
         <motion.div
           className="gh-arch-card__media"
@@ -76,6 +87,8 @@ export function OpportunityCard({ property, index, teaserHref }: Props) {
               width={960}
               height={640}
               loading={index < 3 ? 'eager' : 'lazy'}
+              fetchPriority={feature ? 'high' : undefined}
+              sizes={feature ? '(min-width: 900px) 60vw, 100vw' : undefined}
               decoding="async"
             />
           ) : (
@@ -106,17 +119,30 @@ export function OpportunityCard({ property, index, teaserHref }: Props) {
                 <span className="gh-arch-card__num">{num}</span>
                 {location ? <span className="gh-arch-card__where">{location}</span> : null}
               </p>
+              {sample ? <p className="gh-arch-card__sample">{t('properties.archive.sampleLabel')}</p> : null}
               <h3 className="gh-arch-card__title">{property.title}</h3>
+              {feature && summary ? <p className="gh-arch-card__summary">{summary}</p> : null}
               <p className="gh-arch-card__facts">
-                {size ? <span>{size}</span> : null}
+                {size ? (
+                  <span className="gh-arch-card__fact">
+                    <GhIconPlot size={15} />
+                    <span>{size}</span>
+                  </span>
+                ) : null}
                 {property.ownership ? <span>{property.ownership}</span> : null}
                 {lens === 'villa' && property.bedrooms > 0 ? (
-                  <span>
-                    {property.bedrooms} {t('properties.archive.bedroomsWord')}
+                  <span className="gh-arch-card__fact">
+                    <GhIconBed size={15} />
+                    <span>
+                      {property.bedrooms} {t('properties.archive.bedroomsWord')}
+                    </span>
                   </span>
                 ) : null}
                 {status ? <span className="gh-arch-card__status">{status}</span> : null}
-                <span className="gh-arch-card__price">{price}</span>
+                <span className="gh-arch-card__fact gh-arch-card__price">
+                  <GhIconEnquiry size={15} />
+                  <span>{price}</span>
+                </span>
               </p>
             </>
           )}

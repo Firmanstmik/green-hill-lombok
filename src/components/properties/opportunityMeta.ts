@@ -8,6 +8,17 @@ export function featureValue(property: Property, key: string): string {
   return match ? String(match[1] ?? '').trim() : '';
 }
 
+/** DEMO- references and demo- slugs are client-review samples, never real listings. */
+export function isSampleOpportunity(property: {
+  listingCode?: string;
+  listing_code?: string;
+  slug?: string;
+}): boolean {
+  const code = String(property.listingCode || property.listing_code || '');
+  const slug = String(property.slug || '');
+  return code.startsWith('DEMO-') || slug.startsWith('demo-');
+}
+
 export function isPrivateOpportunity(property: Property): boolean {
   const record = property as Property & {
     isPrivate?: boolean;

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
-import { KeyRound, Loader2, Pencil, Plus } from 'lucide-react';
+import { KeyRound, Loader2, Pencil, Plus } from '@/icons/iconsax';
 import { useAdminSession } from '../AdminSession';
 import { isValidEmail } from '../auth/authMessages';
 import { ConfirmDialog, Modal } from '../ui/overlays';

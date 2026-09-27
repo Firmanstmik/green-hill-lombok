@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Loader2, Lock, Mail, MessageCircle, Plus, Search } from 'lucide-react';
+import { Loader2, Lock, Mail, MessageCircle, Plus, Search } from '@/icons/iconsax';
 import {
   useAddNote,
   useCreateEnquiry,

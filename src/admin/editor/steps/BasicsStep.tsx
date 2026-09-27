@@ -1,4 +1,4 @@
-import { Globe, Lock } from 'lucide-react';
+import { Globe, Lock } from '@/icons/iconsax';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { convertAmount, formatMoney, ratesAreUsable } from '@/lib/opportunityPrice';
 import {

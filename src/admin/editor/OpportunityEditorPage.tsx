@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ArchiveRestore, ArrowLeft, ArrowRight, Check, Eye, Loader2, RotateCcw, Send } from 'lucide-react';
+import { ArchiveRestore, ArrowLeft, ArrowRight, Check, Eye, Loader2, RotateCcw, Send } from '@/icons/iconsax';
 import { useOpportunities, useOpportunity } from '../data/queries';
 import {
   isLive,

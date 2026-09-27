@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
-import { Loader2, X } from 'lucide-react';
+import { Loader2, X } from '@/icons/iconsax';
 
 /**
  * Radix primitives give focus trapping, Escape handling, aria-modal and

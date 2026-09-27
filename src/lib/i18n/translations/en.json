@@ -7,7 +7,14 @@
     "speakWithUs": "Talk to Reece",
     "menu": "Menu",
     "close": "Close",
-    "notes": "Notes"
+    "notes": "Notes",
+    "descriptions": {
+      "opportunities": "Land and villas, selected on the ground",
+      "whyLombok": "Why Reece chose South Lombok",
+      "private": "Larger land and development, presented privately",
+      "about": "Reece, and how Green Hill began",
+      "notes": "Notes from Lombok"
+    }
   },
   "hero": {
     "locationLabel": "South Lombok, Indonesia",
@@ -55,6 +62,7 @@
       "closeLead": "Some opportunities are better discussed privately. If you have a location, budget, timeline or investment objective in mind, start a conversation.",
       "closePrivate": "Green Hill Private",
       "privateLabel": "Private opportunity",
+      "sampleLabel": "Sample opportunity",
       "privateNote": "Available by conversation",
       "talkToReece": "Talk to Reece",
       "statusAvailable": "Available",
@@ -125,10 +133,10 @@
   "selected": {
     "eyebrow": "Selected Opportunities",
     "headline": "A considered selection|of places with potential.",
-    "lead": "Example land and villa opportunities across Lombok, each presented as part of a small curated selection, not a marketplace catalogue.",
-    "viewOpportunity": "View Opportunity",
-    "viewAll": "View All Opportunities",
-    "priceOnRequest": "Price on Request",
+    "lead": "A small selection of land and villas in South Lombok, each one visited and chosen by Reece. We don't show everything, only what we believe deserves a closer look.",
+    "viewOpportunity": "View opportunity",
+    "viewAll": "View the full collection",
+    "priceOnRequest": "Price on request",
     "empty": "New opportunities are being selected. Tell Reece what you are looking for in the meantime."
   },
   "private": {
@@ -666,6 +674,7 @@
       "latestLead": "Selected observations, written with the same care Green Hill brings to every opportunity.",
       "emptyBody": "This space will hold Green Hill perspectives on Lombok, land and the questions that shape buying here. No filler. Only what is worth reading.",
       "readNote": "Read the note",
+      "sampleNote": "Sample note",
       "topicsEyebrow": "Perspectives",
       "topicsTitle": "Continue exploring.",
       "topicsLead": "Notes sit alongside the rest of Green Hill: place, person, approach and selected opportunities.",

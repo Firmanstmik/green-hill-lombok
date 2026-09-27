@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ArrowUpRight, FileText, FileUp, Loader2, Trash2 } from 'lucide-react';
+import { ArrowUpRight, FileText, FileUp, Loader2, Trash2 } from '@/icons/iconsax';
 import { toast } from 'sonner';
 import { getEmbedUrl } from '@/lib/video-utils';
 import { useRepository } from '../../AdminSession';

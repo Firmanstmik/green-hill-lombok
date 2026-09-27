@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LocaleDropdown } from '@/components/layout/LocaleDropdown';
-import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 import { useFocusTrap } from '@/components/layout/useFocusTrap';
 /*
  * Trimmed, full-colour lockups built by `npm run build:hero`. The bar used to
@@ -21,12 +20,29 @@ import ghLogoHero from '@/assets/greenhill/hero/green-hill-logo-hero-112.webp';
 import ghLogoHero2x from '@/assets/greenhill/hero/green-hill-logo-hero-168.webp';
 import ghLogoHeroStacked from '@/assets/greenhill/hero/green-hill-logo-hero-stacked-88.webp';
 import ghLogoHeroStacked2x from '@/assets/greenhill/hero/green-hill-logo-hero-stacked-132.webp';
+import ghLogoHeroStackedHd from '@/assets/greenhill/hero/green-hill-logo-hero-stacked-hd-512.webp';
+import founderAvatar from '@/assets/greenhill/founder/green-hill-reece-green-520.webp';
 
 /** Solid bar height at lg — anchored scrolls clear it by exactly this much. */
 const NAV_OFFSET = 104;
 
 /** Shared with the hero — one easing curve across the whole chrome. */
 const GH_EASE = [0.22, 1, 0.36, 1] as const;
+
+/** The sheet opens from the menu button, like a page being turned back. */
+const MENU_CLOSED = 'circle(0px at calc(100% - 2.6rem) 2.5rem)';
+const MENU_OPEN = 'circle(150vmax at calc(100% - 2.6rem) 2.5rem)';
+
+/** Three unequal strokes. The short gold line is the Green Hill mark, not a stock hamburger. */
+function MenuMark({ open }: { open: boolean }) {
+  return (
+    <span className={`gh-menu-mark${open ? ' is-open' : ''}`} aria-hidden>
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
 
 /** A nav entry is either a page link or an in-page section (hash) link. */
 type NavLinkConfig = { key: string; labelKey: string } & (
@@ -85,6 +101,15 @@ export function Navbar() {
   const location = useLocation();
   const { language, t } = useLanguage();
   const reduceMotion = useReducedMotion();
+  /** Menu contents rise into place one after another once the sheet has opened. */
+  const menuRise = (delay: number, y: number) =>
+    reduceMotion
+      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.25 } }
+      : {
+          initial: { opacity: 0, y },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay, ease: GH_EASE },
+        };
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -387,7 +412,7 @@ export function Navbar() {
                 className="gh-nav-cta gh-nav-cta--dark"
               >
                 <span>{t('navigation.speakWithUs')}</span>
-                <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
               </button>
             </motion.div>
 
@@ -403,7 +428,7 @@ export function Navbar() {
                   aria-expanded={isMobileMenuOpen}
                   aria-label="Toggle menu"
                 >
-                  {isMobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
+                  <MenuMark open={isMobileMenuOpen} />
                 </button>
               </div>
             </motion.div>
@@ -424,7 +449,7 @@ export function Navbar() {
                 className="gh-nav-cta gh-nav-cta--light"
               >
                 <span>{t('navigation.speakWithUs')}</span>
-                <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
               </button>
             </div>
 
@@ -434,11 +459,11 @@ export function Navbar() {
                 ref={menuButtonRef}
                 type="button"
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
-                className="w-11 h-11 rounded-full flex items-center justify-center text-[#1A2116]"
+                className="gh-nav-menu-btn gh-nav-menu-btn--solid"
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                <MenuMark open={isMobileMenuOpen} />
               </button>
             </div>
           </div>
@@ -451,20 +476,6 @@ export function Navbar() {
           <div className="lg:hidden h-[80px]" />
         </>
       )}
-
-      <MobileBottomNav
-        hidden={isMobileMenuOpen}
-        isHome={isHome}
-        activeHash={activeHash}
-        onHome={scrollToTop}
-        onNavigate={(hash) => {
-          if (!isHome) {
-            window.location.href = `${withLang('/')}#${hash}`;
-            return;
-          }
-          scrollToSection(hash);
-        }}
-      />
 
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -485,20 +496,24 @@ export function Navbar() {
             */}
             <motion.div
               ref={menuRef}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.34, ease: GH_EASE }}
+              initial={reduceMotion ? { opacity: 0 } : { clipPath: MENU_CLOSED }}
+              animate={reduceMotion ? { opacity: 1 } : { clipPath: MENU_OPEN }}
+              exit={reduceMotion ? { opacity: 0 } : { clipPath: MENU_CLOSED }}
+              transition={{ duration: reduceMotion ? 0.25 : 0.62, ease: GH_EASE }}
               className="gh-menu fixed inset-0 z-[80] lg:hidden"
               role="dialog"
               aria-modal="true"
               aria-label={t('navigation.menu')}
             >
+              {/* The official monogram, very faint, so the sheet is unmistakably Green Hill. */}
+              <span className="gh-menu__watermark-frame" aria-hidden>
+                <img src={ghLogoHeroStackedHd} alt="" className="gh-menu__watermark" decoding="async" />
+              </span>
+
               <div className="gh-menu__bar">
-                {/* The ivory hero lockup would vanish on this ivory sheet. */}
                 <img
-                  src={ghLogoSolidStacked}
-                  srcSet={`${ghLogoSolidStacked} 1x, ${ghLogoSolidStacked2x} 2x`}
+                  src={ghLogoHeroStacked}
+                  srcSet={`${ghLogoHeroStacked} 1x, ${ghLogoHeroStacked2x} 2x`}
                   alt="Green Hill Lombok"
                   width={117}
                   height={88}
@@ -512,77 +527,87 @@ export function Navbar() {
                   className="gh-menu__close"
                   aria-label={t('navigation.close')}
                 >
-                  <X size={20} strokeWidth={1.5} />
+                  <MenuMark open />
                 </button>
               </div>
 
-              <nav className="gh-menu__nav" aria-label="Primary">
-                <ol className="gh-menu__list">
-                  {navLinksConfig.map((link, i) => {
-                    const hash = 'hash' in link ? link.hash : '';
-                    const isPath = 'path' in link && link.path;
-                    const active = navLinkActive(link, location.pathname, activeHash);
-                    const inner = (
-                      <>
-                        <span className="gh-menu__num" aria-hidden>
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <span className="gh-menu__label">{t(link.labelKey)}</span>
-                      </>
-                    );
-                    return (
-                      <motion.li
-                        key={link.key}
-                        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: reduceMotion ? 0.25 : 0.62,
-                          delay: reduceMotion ? 0 : 0.06 + i * 0.055,
-                          ease: GH_EASE,
-                        }}
-                      >
-                        {isPath ? (
-                          <Link
-                            to={withLang(link.path as string)}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={`gh-menu__link${active ? ' is-active' : ''}`}
-                            aria-current={active ? 'page' : undefined}
-                          >
-                            {inner}
-                          </Link>
-                        ) : (
-                          <Link
-                            to={`${withLang('/')}#${hash}`}
-                            onClick={(e) => handleNavClick(e, hash)}
-                            className={`gh-menu__link${active ? ' is-active' : ''}`}
-                            aria-current={active ? 'true' : undefined}
-                          >
-                            {inner}
-                          </Link>
-                        )}
-                      </motion.li>
-                    );
-                  })}
-                </ol>
-              </nav>
+              <div className="gh-menu__scroll">
+                <motion.p className="gh-menu__eyebrow" {...menuRise(0.18, 8)}>
+                  {t('hero.locationLabel')}
+                </motion.p>
 
-              <motion.div
-                className="gh-menu__foot"
-                initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: reduceMotion ? 0.25 : 0.62,
-                  delay: reduceMotion ? 0 : 0.06 + navLinksConfig.length * 0.055,
-                  ease: GH_EASE,
-                }}
-              >
+                <nav className="gh-menu__nav" aria-label="Primary">
+                  {/* Numbered like the hero chapters: the same editorial contents, one idea. */}
+                  <ul className="gh-menu__list">
+                    {navLinksConfig.map((link, i) => {
+                      const hash = 'hash' in link ? link.hash : '';
+                      const isPath = 'path' in link && link.path;
+                      const active = navLinkActive(link, location.pathname, activeHash);
+                      const descKey = `navigation.descriptions.${link.labelKey.split('.')[1]}`;
+                      const inner = (
+                        <>
+                          <span className="gh-menu__text">
+                            <span className="gh-menu__label">{t(link.labelKey)}</span>
+                            <span className="gh-menu__desc">{t(descKey)}</span>
+                          </span>
+                          <ArrowRight className="gh-menu__arrow" size={16} strokeWidth={1.5} aria-hidden />
+                        </>
+                      );
+                      return (
+                        <motion.li key={link.key} {...menuRise(0.26 + i * 0.06, 14)}>
+                          {isPath ? (
+                            <Link
+                              to={withLang(link.path as string)}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`gh-menu__link${active ? ' is-active' : ''}`}
+                              aria-current={active ? 'page' : undefined}
+                            >
+                              {inner}
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`${withLang('/')}#${hash}`}
+                              onClick={(e) => handleNavClick(e, hash)}
+                              className={`gh-menu__link${active ? ' is-active' : ''}`}
+                              aria-current={active ? 'true' : undefined}
+                            >
+                              {inner}
+                            </Link>
+                          )}
+                        </motion.li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+
+                {/* Reece is never hidden (brief section 3): the person behind the contents. */}
+                <motion.figure className="gh-menu__founder" {...menuRise(0.26 + navLinksConfig.length * 0.06, 10)}>
+                  <img
+                    src={founderAvatar}
+                    alt=""
+                    width={520}
+                    height={692}
+                    className="gh-menu__founder-img"
+                    decoding="async"
+                  />
+                  <figcaption>
+                    <blockquote className="gh-menu__quote">{t('hero.founderNote')}</blockquote>
+                    <p className="gh-menu__who">
+                      {t('hero.founderName')}
+                      <span className="gh-menu__role">{t('footer.dockBrandNote')}</span>
+                    </p>
+                  </figcaption>
+                </motion.figure>
+              </div>
+
+              <motion.div className="gh-menu__foot" {...menuRise(0.34 + navLinksConfig.length * 0.06, 10)}>
                 <button type="button" onClick={handleSpeakWithUs} className="gh-menu__cta">
                   <span>{t('navigation.speakWithUs')}</span>
-                  <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
+                  <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
                 </button>
                 {/* The globe lives in the top bar, which this panel covers. */}
                 <div className="gh-menu__locale">
-                  <LocaleDropdown tone="light" align="start" />
+                  <LocaleDropdown tone="dark" align="start" />
                 </div>
               </motion.div>
             </motion.div>

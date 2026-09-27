@@ -1,14 +1,19 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useHeroReveal } from './useHeroReveal';
 import { useHeroNarrow } from './useHeroRag';
 import { HeroPlotMark } from './HeroPlotMark';
+import { HeroCaption } from './HeroCaption';
+import type { HeroSlide } from './heroData';
 
 type HeroContentProps = {
   onSpeak: () => void;
+  /** The chapters, for the caption that follows the photograph on screen. */
+  slides: HeroSlide[];
+  activeIndex: number;
 };
 
 /**
@@ -22,7 +27,7 @@ type HeroContentProps = {
  * breaks that fit, and leads line two with the ampersand — deliberate rather
  * than stranded.
  */
-export function HeroContent({ onSpeak }: HeroContentProps) {
+export function HeroContent({ onSpeak, slides, activeIndex }: HeroContentProps) {
   const { language, t } = useLanguage();
   const { reveal } = useHeroReveal();
   const narrow = useHeroNarrow();
@@ -66,18 +71,22 @@ export function HeroContent({ onSpeak }: HeroContentProps) {
         })}
       </h1>
 
-      <motion.p {...reveal(tail + 0.05, 12)} className="gh-hero-body">
+      <motion.div {...reveal(tail + 0.04, 10)}>
+        <HeroCaption slides={slides} activeIndex={activeIndex} />
+      </motion.div>
+
+      <motion.p {...reveal(tail + 0.12, 12)} className="gh-hero-body">
         {t('hero.subheadline')}
       </motion.p>
 
-      <motion.div {...reveal(tail + 0.14, 12)} className="gh-hero-actions">
+      <motion.div {...reveal(tail + 0.2, 12)} className="gh-hero-actions">
         <Link to={`/${language}/properties`} className="gh-hero-btn gh-hero-btn--primary">
           <span className="gh-hero-btn__label">{t('hero.exploreOpportunities')}</span>
           <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
         </Link>
         <button type="button" onClick={onSpeak} className="gh-hero-btn gh-hero-btn--ghost">
           <span className="gh-hero-btn__label">{t('hero.speakWithUs')}</span>
-          <ArrowUpRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
+          <ArrowRight className="gh-hero-btn__arrow" size={15} strokeWidth={1.75} aria-hidden />
         </button>
       </motion.div>
     </div>

@@ -14,7 +14,7 @@ import {
   Star,
   Trash2,
   Unlock,
-} from 'lucide-react';
+} from '@/icons/iconsax';
 import { writeOpportunityPreview } from '@/lib/opportunityPreview';
 import { teaserFromRow } from '@/lib/privateTeasers';
 import { useRepository } from './AdminSession';

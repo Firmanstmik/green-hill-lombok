@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Loader2, AlertCircle, MapPin } from 'lucide-react';
+import { Loader2, AlertCircle, MapPin } from '@/icons/iconsax';
 import { geocodeAddress, GeocodingResult } from '@/lib/mapbox';
 import { cn } from '@/lib/utils';
 

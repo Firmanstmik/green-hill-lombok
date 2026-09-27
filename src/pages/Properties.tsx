@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from '@/icons/iconsax';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
@@ -23,6 +23,7 @@ import talkBackdrop from '@/assets/greenhill/bg-sec-talk-to-reece.webp';
 import talkPhoto1 from '@/assets/greenhill/sec-talk-to-reece1.webp';
 import founderPortrait from '@/assets/greenhill/founder/green-hill-reece-green.webp';
 import { useCmsPageSeo, useContentImage } from '@/content/hooks';
+import { withGoldStop } from '@/components/brand/GoldStop';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -97,7 +98,7 @@ const Properties = () => {
     fetchProperties();
   }, []);
 
-  const { filters, setFilter, resetFilters, filteredProperties } = useFilters(displayProperties);
+  const { filters, setFilter, resetFilters, filteredProperties, isFiltered } = useFilters(displayProperties);
   const lenses = useMemo(() => lensesPresent(displayProperties), [displayProperties]);
   const lens = filters.collection;
 
@@ -118,10 +119,13 @@ const Properties = () => {
     resetFilters();
   };
 
-  const visible = filteredProperties.filter((property) => {
+  const matching = filteredProperties.filter((property) => {
     if (lens === 'all') return true;
     return opportunityLensOf(property) === lens;
   });
+  // The unfiltered collection opens with the featured opportunity, at the same card size as the rest.
+  const lead = !isFiltered && lens === 'all' ? matching.find((property) => property.featured) : undefined;
+  const visible = lead ? [lead, ...matching.filter((property) => property !== lead)] : matching;
 
   const reveal = (delay: number) =>
     reduce
@@ -160,7 +164,7 @@ const Properties = () => {
               <motion.span {...reveal(0.22)}>{t('properties.archive.eyebrow')}</motion.span>
             </p>
             <motion.h1 id="gh-arch-heading" className="gh-arch-hero__title" {...reveal(0.4)}>
-              {t('properties.archive.headline')}
+              {withGoldStop(t('properties.archive.headline'))}
             </motion.h1>
             <motion.p className="gh-arch-hero__lead" {...reveal(0.55)}>
               {t('properties.archive.lead')}
@@ -201,11 +205,12 @@ const Properties = () => {
                   className="gh-arch-intro__title"
                   {...sectionReveal(intro.isInView, 0.45, reduce)}
                 >
-                  {t('properties.archive.collectionHeadline')}
+                  {withGoldStop(t('properties.archive.collectionHeadline'))}
                 </motion.h2>
               </div>
               <motion.div className="gh-arch-intro__aside" {...sectionReveal(intro.isInView, 0.65, reduce)}>
-                <p className="gh-arch-count">
+                {/* No "00" flash while the collection is still loading. */}
+                <p className="gh-arch-count" style={loaded || visible.length ? undefined : { visibility: 'hidden' }}>
                   {String(visible.length).padStart(2, '0')} {t('properties.archive.opportunities')}
                 </p>
                 <p className="gh-arch-intro__lead">{t('properties.archive.collectionLead')}</p>
@@ -223,7 +228,7 @@ const Properties = () => {
                 <p>{t('properties.archive.emptyCollection')}</p>
                 <Link className="gh-arch-empty__clear" to={`/${language}/enquire`}>
                   {t('properties.archive.emptyCollectionCta')}
-                  <span aria-hidden>↗</span>
+                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
                 </Link>
               </div>
             ) : (
@@ -231,7 +236,7 @@ const Properties = () => {
                 <p>{t('properties.archive.empty')}</p>
                 <button type="button" className="gh-arch-empty__clear" onClick={clearFilters}>
                   {t('properties.archive.clear')}
-                  <span aria-hidden>↗</span>
+                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
                 </button>
               </div>
             )}
@@ -255,11 +260,11 @@ const Properties = () => {
               <div className="gh-arch-close__actions">
                 <a className="gh-final__cta gh-final__cta--primary" href={homeHash('contact')}>
                   <span className="gh-final__cta-label">{t('properties.archive.talkToReece')}</span>
-                  <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
+                  <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
                 </a>
                 <a className="gh-final__cta gh-final__cta--secondary" href={`/${language}/private`}>
                   <span className="gh-final__cta-label">{t('properties.archive.closePrivate')}</span>
-                  <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden />
+                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
                 </a>
               </div>
             </div>
