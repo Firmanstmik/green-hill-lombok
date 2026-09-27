@@ -97,8 +97,17 @@ function createDisconnectedClient(): SupabaseClient {
   return client as unknown as SupabaseClient;
 }
 
+/**
+ * Some mobile browsers never release `navigator.locks`. `getSession()` then
+ * never returns, and the admin stays on "Checking your session". Skipping the
+ * lock keeps sign-in and the public reads moving.
+ */
+const authLock = async <R,>(_name: string, _acquireTimeout: number, fn: () => Promise<R>) => fn();
+
 export const supabase: SupabaseClient = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { lock: authLock },
+    })
   : createDisconnectedClient();
 
 /**
@@ -115,7 +124,7 @@ export const supabasePublic: SupabaseClient = isSupabaseConfigured
         persistSession: false,
         autoRefreshToken: false,
         detectSessionInUrl: false,
-        lock: async (_name, _acquireTimeout, fn) => fn(),
+        lock: authLock,
       },
     })
   : createDisconnectedClient();

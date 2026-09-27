@@ -1,3 +1,4 @@
+import { isGoogleMapsLink } from '@/lib/googleMaps';
 import type { JSONContent } from '@/lib/tiptap-utils';
 import type { NearbyPOI } from '@/types/poi';
 import {
@@ -98,6 +99,7 @@ function features(o: Opportunity): Record<string, string> {
   if (o.leaseYears && o.leaseYears > 0 && o.tenure && o.tenure !== 'Freehold') out['Term remaining'] = `${o.leaseYears} years`;
   if (o.furnishing) out.Furnishing = o.furnishing;
   if (o.visibility === 'private') out.Private = 'true';
+  if (isGoogleMapsLink(o.mapsUrl)) out._maps = o.mapsUrl.trim();
   return out;
 }
 
@@ -218,6 +220,7 @@ export function fromRow(row: Row): Opportunity {
     address: text(row.formatted_address) || (row.region || row.area ? '' : text(row.address)),
     latitude: num(row.latitude),
     longitude: num(row.longitude),
+    mapsUrl: isGoogleMapsLink(legacyFeatures._maps || '') ? legacyFeatures._maps : '',
     nearbyAmenities: Array.isArray(row.nearby_amenities) ? (row.nearby_amenities as NearbyPOI[]) : [],
     roadAccess: text(row.road_access),
     utilities: text(row.utilities),

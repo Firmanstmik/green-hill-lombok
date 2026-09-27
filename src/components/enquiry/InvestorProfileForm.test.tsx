@@ -63,6 +63,18 @@ describe('investor enquiry (brief §9)', () => {
     expect(url).toContain('Budget: £100–250k');
   });
 
+  it('writes a briefing from the chosen opportunity and keeps later edits', () => {
+    renderForm({
+      variant: 'standard',
+      opportunity: { id: 'o1', title: 'Ridge plot', reference: 'GH-LOM-004' },
+      messageDraft: 'I would like a briefing on Ridge plot (South Lombok · Land).',
+    });
+    const message = screen.getByLabelText('Message') as HTMLTextAreaElement;
+    expect(message.value).toMatch(/Ridge plot/);
+    fireEvent.change(message, { target: { value: 'Please call me tomorrow.' } });
+    expect(message.value).toBe('Please call me tomorrow.');
+  });
+
   it('asks the Green Hill Private qualification questions (brief §21)', () => {
     renderForm({ variant: 'private', opportunity: { id: 'p1', title: 'Beachfront site', reference: 'GH-LOM-009' } });
     expect(screen.getByLabelText('Company')).toBeTruthy();

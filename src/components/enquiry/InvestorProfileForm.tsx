@@ -21,7 +21,17 @@ import {
  * WhatsApp with a summary Reece can read at a glance. Recording never blocks
  * the visitor: if it fails, WhatsApp still opens.
  */
-export type EnquiryOpportunity = { id: string | null; title: string; reference?: string };
+export type EnquiryOpportunity = {
+  id: string | null;
+  title: string;
+  reference?: string;
+  place?: string;
+  kind?: string;
+  size?: string;
+  price?: string;
+  image?: string;
+  summary?: string;
+};
 
 type Variant = 'standard' | 'private';
 
@@ -58,16 +68,21 @@ type Errors = Partial<Record<'name' | 'contact' | 'email', string>>;
 export function InvestorProfileForm({
   variant,
   opportunity,
+  messageDraft,
   preset,
 }: {
   variant: Variant;
   opportunity?: EnquiryOpportunity | null;
+  /** A message written from the chosen opportunity. Applied until the visitor edits it. */
+  messageDraft?: string;
   /** Pre-select an interest (e.g. from a prompt elsewhere on the page); `n` changes on every request. */
   preset?: { interest: string | null; n: number };
 }) {
   const { t } = useLanguage();
   const uid = useId().replace(/:/g, '');
   const formRef = useRef<HTMLFormElement>(null);
+  const messageEdited = useRef(false);
+  const appliedDraft = useRef('');
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState<'whatsapp' | 'email' | null>(null);
@@ -81,6 +96,13 @@ export function InvestorProfileForm({
       current.interests.includes(interest) ? current : { ...current, interests: [...current.interests, interest] },
     );
   }, [preset?.n, preset?.interest]);
+
+  useEffect(() => {
+    const next = messageDraft?.trim() ?? '';
+    if (!next || messageEdited.current) return;
+    appliedDraft.current = next;
+    setForm((current) => (current.message === next ? current : { ...current, message: next }));
+  }, [messageDraft]);
 
   const set = (key: keyof FormState, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -183,13 +205,21 @@ export function InvestorProfileForm({
   return (
     <form ref={formRef} className="gh-priv-form" onSubmit={onSubmit} noValidate>
       {opportunity ? (
-        <p className="gh-priv-field gh-priv-field--full gh-enquiry-about">
-          <span className="gh-priv-field__label">{t('enquiry.form.about')}</span>
-          <span className="gh-enquiry-about__title">
-            {opportunity.title}
-            {opportunity.reference ? <span className="gh-enquiry-about__ref"> · {opportunity.reference}</span> : null}
-          </span>
-        </p>
+        <div className="gh-priv-field gh-priv-field--full gh-enquiry-about">
+          {opportunity.image ? <img src={opportunity.image} alt="" /> : null}
+          <div>
+            <span className="gh-priv-field__label">{t('enquiry.form.about')}</span>
+            <p className="gh-enquiry-about__title">
+              {opportunity.title}
+              {opportunity.reference ? <span className="gh-enquiry-about__ref"> · {opportunity.reference}</span> : null}
+            </p>
+            {[opportunity.place, opportunity.kind, opportunity.size, opportunity.price].some(Boolean) ? (
+              <p className="gh-enquiry-about__facts">
+                {[opportunity.place, opportunity.kind, opportunity.size, opportunity.price].filter(Boolean).join(' · ')}
+              </p>
+            ) : null}
+          </div>
+        </div>
       ) : null}
 
       <label className="gh-priv-field gh-priv-field--full">
@@ -317,9 +347,15 @@ export function InvestorProfileForm({
           rows={5}
           placeholder={t(isPrivate ? 'enquiry.form.privateMessagePlaceholder' : 'enquiry.form.messagePlaceholder')}
           value={form.message}
-          onChange={(event) => set('message', event.target.value)}
+          onChange={(event) => {
+            messageEdited.current = true;
+            set('message', event.target.value);
+          }}
         />
       </label>
+      {messageDraft && form.message === messageDraft.trim() ? (
+        <p className="gh-priv-field gh-priv-field--full gh-enquiry-about__hint">{t('enquiry.form.messageHint')}</p>
+      ) : null}
 
       <div className="gh-priv-form__submit">
         <button type="submit" className="gh-final__cta gh-final__cta--primary gh-priv-cta--ink">

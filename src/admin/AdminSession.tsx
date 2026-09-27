@@ -87,13 +87,25 @@ export function AdminSessionProvider({ children }: { children: ReactNode }) {
       }
     };
 
+    // Never wait forever. A hung lock or a stalled request used to leave the
+    // phone on the loader; the sign-in form is the honest fallback, and a
+    // session that arrives afterwards still opens the admin.
+    const giveUp = window.setTimeout(() => {
+      if (!active) return;
+      setStatus((current) => (current === 'loading' ? 'signed-out' : current));
+    }, 4000);
+
     void supabase.auth.getSession().then(({ data }) => resolve(data.session?.user.email ?? null));
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      void resolve(session?.user.email ?? null);
+      const userEmail = session?.user.email ?? null;
+      window.setTimeout(() => {
+        void resolve(userEmail);
+      }, 0);
     });
 
     return () => {
       active = false;
+      window.clearTimeout(giveUp);
       listener.subscription.unsubscribe();
     };
   }, [openLocal]);

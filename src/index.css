@@ -8572,19 +8572,15 @@ select.gh-arch-field__control {
   }
 
   .gh-arch-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
   }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   .gh-arch-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .gh-arch-card.is-featured {
-    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
   }
 }
 
@@ -8952,6 +8948,17 @@ button.gh-arch-chip {
     font-size: 10.5px;
     letter-spacing: 0.02em;
     white-space: nowrap;
+  }
+
+  .gh-arch-body__inner > .gh-arch-grid {
+    margin-inline: calc(clamp(1.6rem, 5vw, 4.25rem) * -1);
+    gap: 0.85rem;
+  }
+
+  .gh-arch-card {
+    border-radius: 0;
+    border-inline: 0;
+    box-shadow: none;
   }
 
   .gh-arch-card__title {
@@ -9422,41 +9429,34 @@ button.gh-arch-chip {
 }
 
 .gh-memo-block__title {
-  max-width: 18ch;
-  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
-  line-height: 1.14;
+  max-width: none;
+  font-size: clamp(1.85rem, 2.6vw, 2.45rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.gh-memo-chapter--next {
+  margin-top: 2.15rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgba(199, 157, 90, 0.55);
 }
 
 .gh-memo-note,
 .gh-memo-copy,
 .gh-memo-place-line {
-  max-width: 40rem;
-  color: rgba(23, 56, 46, 0.82);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  max-width: none;
+  color: rgba(23, 56, 46, 0.84);
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
 .gh-memo-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.72rem;
-  margin: 1rem 0 0;
-}
-
-.gh-memo-note__mark {
-  width: 3.6em;
-  flex: 0 0 auto;
-  margin-top: 0.35rem;
-}
-
-.gh-memo-note__mark svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.gh-memo-note span {
-  min-width: 0;
+  margin: 0.85rem 0 0;
+  color: var(--gh-forest);
+  font-family: "Prata", Georgia, serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.45;
 }
 
 .gh-memo-copy {
@@ -9477,21 +9477,21 @@ button.gh-arch-chip {
 }
 
 .gh-memo-place-head .gh-memo-block__title {
-  max-width: 22ch;
+  max-width: none;
 }
 
 .gh-memo-rich,
 .gh-memo-rich .text-muted-foreground {
-  max-width: 40rem;
+  max-width: none;
   margin-top: 1.15rem;
-  color: rgba(23, 56, 46, 0.82);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  color: rgba(23, 56, 46, 0.84);
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
 .gh-memo-nearby {
   margin-top: 1.75rem;
-  max-width: 40rem;
+  max-width: none;
 }
 
 .gh-memo-nearby h3 {
@@ -9531,10 +9531,43 @@ button.gh-arch-chip {
   aspect-ratio: 16 / 9;
 }
 
-.gh-memo-film iframe {
+.gh-memo-film iframe,
+.gh-memo-map__frame {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.gh-memo-map__frame {
+  display: block;
+  aspect-ratio: 16 / 9;
+  min-height: 16rem;
+}
+
+.gh-memo-map__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+  color: var(--gh-forest);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid var(--gh-gold, #c79d5a);
+  padding-bottom: 0.12rem;
+}
+
+.gh-memo-map {
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+}
+
+.gh-memo-map__frame {
+  border-radius: 18px;
+  background: #e4ddd2;
 }
 
 .gh-memo-map__canvas,
@@ -9998,23 +10031,42 @@ button.gh-arch-chip {
   }
 
   .gh-memo-mosaic:not([data-count="1"]) {
-    grid-template-columns: 1.15fr 1fr;
-    min-height: min(460px, 52vh);
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    grid-template-rows: minmax(420px, 54vh);
+    align-items: stretch;
   }
 
   .gh-memo-mosaic:not([data-count="1"]) .gh-memo-mosaic__lead {
     aspect-ratio: auto;
-    min-height: min(460px, 52vh);
+    height: 100%;
+    min-height: 0;
   }
 
-  .gh-memo-mosaic__grid {
+  .gh-memo-mosaic:not([data-count="1"]) .gh-memo-mosaic__grid {
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .gh-memo-mosaic[data-count="3"] .gh-memo-mosaic__grid {
     grid-template-rows: 1fr 1fr;
-    min-height: min(460px, 52vh);
+  }
+
+  .gh-memo-mosaic[data-count="4"] .gh-memo-mosaic__grid {
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .gh-memo-mosaic[data-count="5"] .gh-memo-mosaic__grid,
+  .gh-memo-mosaic[data-more="true"] .gh-memo-mosaic__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 
   .gh-memo-mosaic__shot {
     aspect-ratio: auto;
     height: 100%;
+    min-height: 0;
   }
 
   .gh-memo-others__grid {
@@ -10034,9 +10086,9 @@ button.gh-arch-chip {
 
 @media (min-width: 1100px) {
   .gh-memo-body {
-    grid-template-columns: minmax(0, 1.55fr) minmax(17.5rem, 0.78fr);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 22.5rem);
     align-items: start;
-    gap: clamp(2rem, 4vw, 3.75rem);
+    gap: clamp(1.35rem, 2.2vw, 2rem);
   }
 
   .gh-memo-rail {
@@ -10045,12 +10097,7 @@ button.gh-arch-chip {
   }
 
   .gh-memo-mosaic:not([data-count="1"]) {
-    min-height: min(520px, 56vh);
-  }
-
-  .gh-memo-mosaic:not([data-count="1"]) .gh-memo-mosaic__lead,
-  .gh-memo-mosaic__grid {
-    min-height: min(520px, 56vh);
+    grid-template-rows: minmax(480px, 58vh);
   }
 }
 
@@ -10113,6 +10160,10 @@ button.gh-arch-chip {
   .gh-memo-film,
   .gh-memo-map {
     margin-inline: calc(var(--gh-memo-gutter) * -1);
+    border-radius: 0;
+  }
+
+  .gh-memo-map__frame {
     border-radius: 0;
   }
 
@@ -10273,7 +10324,6 @@ button.gh-arch-chip {
   --gh-line: rgba(23, 56, 46, 0.14);
   background: var(--gh-ivory);
   color: var(--gh-ink);
-  overflow-x: hidden;
 }
 
 .gh-priv-eyebrow,
@@ -12763,9 +12813,13 @@ button.gh-arch-chip {
 
 .gh-priv-enquiry {
   display: grid;
-  grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
-  align-items: start;
-  gap: clamp(2.5rem, 6vw, 5.5rem);
+  grid-template-columns: minmax(20rem, 0.86fr) minmax(0, 1.14fr);
+  align-items: stretch;
+  gap: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.gh-priv-enquiry__rail {
+  min-width: 0;
 }
 
 .gh-priv-enquiry__intro {
@@ -12775,7 +12829,7 @@ button.gh-arch-chip {
 }
 
 .gh-priv-enquiry__intro .gh-priv-title {
-  max-width: 14ch;
+  max-width: 22ch;
 }
 
 .gh-priv-form {
@@ -20272,20 +20326,95 @@ button.gh-arch-chip {
   text-underline-offset: 4px;
 }
 
-.gh-enquiry-about {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+.gh-enquiry-brief {
+  margin-top: 1.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(23, 56, 46, 0.1);
+  border-radius: 1.15rem;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(23, 56, 46, 0.08);
+}
+
+.gh-enquiry-brief img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.gh-enquiry-brief__body {
+  padding: 1rem 1.15rem 1.2rem;
+}
+
+.gh-enquiry-brief__kicker {
   margin: 0;
-  padding: 0.9rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c79d5a;
+}
+
+.gh-enquiry-brief__title {
+  margin: 0.4rem 0 0;
+  font-family: "Prata", Georgia, serif;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #17382e;
+}
+
+.gh-enquiry-brief__facts,
+.gh-enquiry-brief__summary {
+  margin: 0.55rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(23, 56, 46, 0.72);
+}
+
+.gh-enquiry-about {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  margin: 0;
+  padding: 0.85rem;
   border: 1px solid rgba(23, 56, 46, 0.12);
-  border-radius: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.gh-enquiry-about img {
+  width: 4.75rem;
+  height: 4.75rem;
+  object-fit: cover;
+  border-radius: 0.7rem;
+}
+
+.gh-enquiry-about__facts,
+.gh-enquiry-about__hint {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(23, 56, 46, 0.68);
+}
+
+.gh-enquiry-about:not(:has(img)) {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .gh-enquiry-about__title {
+  margin: 0.15rem 0 0;
   color: #17382e;
   font-family: "Prata", Georgia, serif;
   font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 899px) {
+  .gh-priv-form .gh-enquiry-about {
+    display: none;
+  }
 }
 
 .gh-enquiry-about__ref {

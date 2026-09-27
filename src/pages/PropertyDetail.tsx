@@ -1,4 +1,4 @@
-﻿import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
+﻿import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Navbar } from '@/components/layout/Navbar';
@@ -33,11 +33,8 @@ import { getPublicWhatsAppUrl } from '@/lib/contact';
 import { useContactSettings, useContentImage } from '@/content/hooks';
 import { trackContact } from '@/lib/analytics';
 import { isPreviewRequest, readOpportunityPreview } from '@/lib/opportunityPreview';
+import { googleMapsView } from '@/lib/googleMaps';
 import { getEmbedUrl } from '@/lib/video-utils';
-
-const PropertyMap = lazy(() =>
-  import('@/components/map/PropertyMap').then((mod) => ({ default: mod.PropertyMap })),
-);
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const MAX_IMAGES = 8;
@@ -630,7 +627,11 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
   const video = property.videoUrl ? getEmbedUrl(property.videoUrl) : null;
   const nearby = nearbyLines(property);
   const point = coordinates(property);
-  const mapReady = Boolean(point && import.meta.env.VITE_MAPBOX_ACCESS_TOKEN);
+  const maps = googleMapsView({
+    url: property.features?._maps,
+    latitude: point?.lat,
+    longitude: point?.lng,
+  });
   const meta = [
     typeLabel,
     size,
@@ -662,7 +663,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
     property.developerName ? { label: t('properties.memo.developer'), value: property.developerName } : null,
     ...Object.entries(property.features || {}).flatMap(([key, value]) => {
       const normalized = key.toLowerCase();
-      if (normalized === 'type' || normalized === 'status' || normalized === 'private') return [];
+      if (normalized === 'type' || normalized === 'status' || normalized === 'private' || key.startsWith('_')) return [];
       const text = String(value ?? '').trim();
       if (!text) return [];
       return [{ label: key, value: text }];
@@ -801,10 +802,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
               <h2 id="gh-memo-opportunity" className="gh-memo-block__title">
                 {t('properties.memo.opportunityTitle')}
               </h2>
-              <p className="gh-memo-note">
-                <BrandCurveMark className="gh-memo-note__mark" isInView />
-                <span>{t('hero.subheadline')}</span>
-              </p>
+              <p className="gh-memo-note">{t('hero.subheadline')}</p>
               {written ? <p className="gh-memo-copy">{written}</p> : null}
               {!written && property.descriptionJson ? (
                 <div className="gh-memo-rich">
@@ -814,8 +812,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
               {factual ? <p className="gh-memo-copy">{factual}</p> : null}
               {property.whyGreenHill ? (
                 <>
-                  <p className="gh-memo-chapter">
-                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                  <p className="gh-memo-chapter gh-memo-chapter--next">
                     <span>{t(teaser ? 'properties.memo.whyLookingAtThis' : 'properties.memo.whyGreenHill')}</span>
                   </p>
                   <p className="gh-memo-copy">{property.whyGreenHill}</p>
@@ -823,8 +820,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
               ) : null}
               {property.developmentPotential ? (
                 <>
-                  <p className="gh-memo-chapter">
-                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                  <p className="gh-memo-chapter gh-memo-chapter--next">
                     <span>{t('properties.memo.developmentPotential')}</span>
                   </p>
                   <p className="gh-memo-copy">{property.developmentPotential}</p>
@@ -836,8 +832,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
             {place ? (
               <Reveal className="gh-memo-block" labelledBy="gh-memo-place">
                 <div className="gh-memo-place-head">
-                  <p className="gh-memo-chapter">
-                    <BrandCurveMark className="gh-memo-chapter__mark" isInView />
+                  <p className="gh-memo-chapter gh-memo-chapter--next">
                     <span>{t('properties.memo.location')}</span>
                   </p>
                   <h2 id="gh-memo-place" className="gh-memo-block__title">
@@ -860,17 +855,19 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
                     </ul>
                   </div>
                 ) : null}
-                {mapReady && point ? (
+                {maps ? (
                   <div className="gh-memo-map">
-                    <Suspense fallback={<div className="gh-memo-map__hold" aria-hidden />}>
-                      <PropertyMap
-                        latitude={point.lat}
-                        longitude={point.lng}
-                        address={property.address}
-                        title={property.title}
-                        height="gh-memo-map__canvas"
-                      />
-                    </Suspense>
+                    <iframe
+                      className="gh-memo-map__frame"
+                      src={maps.embed}
+                      title={`${property.title} — ${place}`}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                    <a className="gh-memo-map__link" href={maps.href} target="_blank" rel="noopener noreferrer">
+                      {t('properties.memo.openMap')}
+                      <GhIconArrow size={14} />
+                    </a>
                   </div>
                 ) : null}
               </Reveal>

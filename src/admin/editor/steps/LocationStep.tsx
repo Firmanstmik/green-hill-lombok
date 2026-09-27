@@ -99,9 +99,24 @@ export function LocationStep({ o, update, errors }: StepProps) {
       <fieldset className="gha-fieldset">
         <legend className="gha-legend">Map position</legend>
         <p className="gha-hint">
-          Optional. Coordinates place a map on the memo.
-          {MAPBOX_READY ? ' Search for a place, or type coordinates.' : ' Map search needs a Mapbox key; you can type coordinates instead.'}
+          Optional. A Google Maps link, or coordinates, places a map under the location name. Leave both empty and the page shows only the place name.
         </p>
+        <Field
+          label="Google Maps link"
+          optional
+          hint="Paste a maps.google.com or maps.app.goo.gl link. It is shown on the opportunity and opens in Google Maps."
+        >
+          {(control) => (
+            <input
+              {...control}
+              className="gha-input"
+              inputMode="url"
+              placeholder="https://maps.app.goo.gl/…"
+              value={o.mapsUrl}
+              onChange={(event) => update({ mapsUrl: event.target.value })}
+            />
+          )}
+        </Field>
 
         {MAPBOX_READY ? (
           <div className="gha-field" style={{ marginBottom: 16 }}>

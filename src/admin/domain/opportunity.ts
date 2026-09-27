@@ -85,6 +85,8 @@ export interface Opportunity {
   address: string;
   latitude: number | null;
   longitude: number | null;
+  /** Optional Google Maps link. Empty means the public page shows the place name only. */
+  mapsUrl: string;
   nearbyAmenities: NearbyPOI[];
   roadAccess: string;
   utilities: string;
@@ -155,6 +157,7 @@ export function emptyOpportunity(reference = ''): Opportunity {
     address: '',
     latitude: null,
     longitude: null,
+    mapsUrl: '',
     nearbyAmenities: [],
     roadAccess: '',
     utilities: '',
