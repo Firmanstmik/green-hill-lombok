@@ -80,7 +80,20 @@ async function publishedContent(fetcher: Fetcher, env: PreviewEnv, pages: string
 }
 
 const value = (content: Content, key: string, lang: Lang) => str(content.fields[lang]?.[key]) || str(content.fields['*']?.[key]);
-const publicImage = (url: unknown) => (/^https:\/\//.test(str(url)) ? str(url) : '');
+const STATIC_OG = '/og-green-hill.jpg';
+
+function publicImage(url: unknown): string {
+  if (url && typeof url === 'object' && 'url' in url) return publicImage((url as { url: unknown }).url);
+  return /^https:\/\//.test(str(url)) ? str(url) : '';
+}
+
+function isStaticOg(image: string) {
+  try {
+    return new URL(image).pathname === STATIC_OG;
+  } catch {
+    return image.endsWith(STATIC_OG);
+  }
+}
 
 /**
  * The preview for a path such as `/nl/why-lombok` or `/en/property/ridge-plot`.
@@ -94,7 +107,7 @@ export async function previewFor(pathname: string, origin: string, env: PreviewE
   const rest = parts.slice(1);
   const site = (env.siteUrl || origin).replace(/\/+$/, '');
   const url = `${site}/${parts.join('/')}`;
-  const fallbackImage = `${site}/og-image.jpg`;
+  const fallbackImage = `${site}${STATIC_OG}`;
 
   // One opportunity (public and live only; RLS enforces the same).
   if (rest[0] === 'property' && rest[1] && rest.length === 2) {
@@ -109,7 +122,7 @@ export async function previewFor(pathname: string, origin: string, env: PreviewE
     return {
       title: str(row.seo_title) || `${str(row.title)}${SUFFIX}`,
       description: str(row.seo_description) || str(row.summary),
-      image: publicImage(row.og_image) || publicImage(row.image_url) || publicImage(images[0]) || fallbackImage,
+      image: publicImage(row.og_image) || publicImage(row.image_url) || images.map(publicImage).find(Boolean) || fallbackImage,
       url,
       type: 'article',
     };
@@ -145,8 +158,10 @@ export async function previewFor(pathname: string, origin: string, env: PreviewE
     value(content, seo.descriptionKey, lang) ||
     bundled(lang, seo.descriptionKey) ||
     value(content, 'cms.seo.default.description', lang);
-  const image =
+  let image =
     (seo.imageSlot && publicImage(content.media[seo.imageSlot]?.url)) || publicImage(content.media['seo.default.image']?.url) || fallbackImage;
+  // The homepage share is the Green Hill mark on white, not a photograph.
+  if (rest.length === 0) image = fallbackImage;
   if (!title && !description && image === fallbackImage) return null;
   return { title, description, image, url, type: 'website' };
 }
@@ -170,9 +185,10 @@ export function injectPreview(html: string, preview: Preview, lang?: string): st
   out = setMeta(out, 'property', 'og:type', preview.type);
   out = setMeta(out, 'property', 'og:title', preview.title);
   out = setMeta(out, 'property', 'og:description', preview.description);
-  // The static size tags describe og-image.jpg only.
-  if (preview.image && !preview.image.endsWith('/og-image.jpg')) out = out.replace(/\s*<meta property="og:image:(width|height)"[^>]*>/gi, '');
+  // The static size tags describe the 1200×630 mark only.
+  if (preview.image && !isStaticOg(preview.image)) out = out.replace(/\s*<meta property="og:image:(width|height)"[^>]*>/gi, '');
   out = setMeta(out, 'property', 'og:image', preview.image);
+  out = setMeta(out, 'property', 'og:image:alt', preview.title);
   out = setMeta(out, 'property', 'og:url', preview.url);
   out = setMeta(out, 'name', 'twitter:title', preview.title);
   out = setMeta(out, 'name', 'twitter:description', preview.description);

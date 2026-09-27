@@ -67,7 +67,18 @@ describe('preview values', () => {
       site_content: [{ page_key: 'seo', locale: 'en', fields: { 'cms.seo.default.title': 'Green Hill Lombok' }, media: {} }],
     });
     const home = await previewFor('/en', ORIGIN, ENV, fetcher);
-    expect(home).toMatchObject({ title: 'Green Hill Lombok', image: 'https://greenhill.example/og-image.jpg' });
+    expect(home).toMatchObject({ title: 'Green Hill Lombok', image: 'https://greenhill.example/og-green-hill.jpg' });
+  });
+
+  it('homepage share stays the mark on white even when a photograph is published', async () => {
+    const { fetcher } = fakeFetch({
+      site_content: [
+        { page_key: 'home', locale: '*', fields: {}, media: { 'home.seo.image': { url: 'https://cdn.example/photo.webp' } } },
+        { page_key: 'seo', locale: 'en', fields: { 'cms.seo.default.title': 'Green Hill Lombok' }, media: {} },
+      ],
+    });
+    const home = await previewFor('/en', ORIGIN, ENV, fetcher);
+    expect(home?.image).toBe('https://greenhill.example/og-green-hill.jpg');
   });
 
   it('opportunity: public live records only, its SEO values and public image', async () => {
@@ -89,7 +100,7 @@ describe('preview values', () => {
   it('never uses a private reference as the image', async () => {
     const { fetcher } = fakeFetch({ properties: [{ title: 'Ridge Plot', og_image: 'private-media:images/x.webp', images: [] }] });
     const memo = await previewFor('/en/property/ridge-plot', ORIGIN, ENV, fetcher);
-    expect(memo?.image).toBe('https://greenhill.example/og-image.jpg');
+    expect(memo?.image).toBe('https://greenhill.example/og-green-hill.jpg');
   });
 
   it('note: published only, visitor language with English fallback', async () => {
@@ -113,7 +124,7 @@ describe('preview values', () => {
   it('without a database, content pages still get their approved copy', async () => {
     const about = await previewFor('/en/about', ORIGIN, {}, fakeFetch({}).fetcher);
     expect(about?.title).toContain('Reece');
-    expect(about?.image).toBe(`${ORIGIN}/og-image.jpg`);
+    expect(about?.image).toBe(`${ORIGIN}/og-green-hill.jpg`);
   });
 });
 
@@ -134,7 +145,7 @@ describe('writing the preview into index.html', () => {
   });
 
   it('keeps the static size tags when the static image is used', () => {
-    const html = injectPreview(HTML, { title: 'T', description: '', image: 'https://greenhill.example/og-image.jpg', url: 'u', type: 'website' });
+    const html = injectPreview(HTML, { title: 'T', description: '', image: 'https://greenhill.example/og-green-hill.jpg', url: 'u', type: 'website' });
     expect(html).toContain('og:image:width');
     expect(html).toContain('<meta name="description" content="Static description.">');
   });

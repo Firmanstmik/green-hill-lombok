@@ -4,15 +4,17 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 /**
- * Site-wide social image (public/og-image.jpg). Social networks need an
- * absolute URL, so it becomes absolute once VITE_SITE_URL is configured.
+ * Site-wide social image (public/og-green-hill.jpg): the mark on white.
+ * Social networks need an absolute URL. The production host is the fallback
+ * until VITE_SITE_URL is set.
  */
 function socialImage(site: string): Plugin {
-  const base = /^https:\/\/[^/]+$/.test(site) ? site : "";
+  const configured = /^https:\/\/[^/]+$/.test(site) ? site : "";
+  const base = configured || "https://green-hill-lombok.vercel.app";
   return {
     name: "green-hill-social-image",
     transformIndexHtml(html) {
-      const url = `${base}/og-image.jpg`;
+      const url = `${base}/og-green-hill.jpg`;
       return html.replace(
         '<meta name="twitter:card" content="summary_large_image" />',
         `<meta property="og:image" content="${url}" />
