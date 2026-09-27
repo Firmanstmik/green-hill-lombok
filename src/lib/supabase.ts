@@ -100,3 +100,22 @@ function createDisconnectedClient(): SupabaseClient {
 export const supabase: SupabaseClient = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : createDisconnectedClient();
+
+/**
+ * Reads for visitors. Never attaches a stored login.
+ * A stale session on a phone was sent as the bearer token, the database
+ * rejected it, and the collection rendered as empty while a signed-in laptop
+ * still saw the rows. Some mobile browsers also break the auth lock, so this
+ * client does not take it.
+ */
+export const supabasePublic: SupabaseClient = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storageKey: 'sb-greenhill-public',
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        lock: async (_name, _acquireTimeout, fn) => fn(),
+      },
+    })
+  : createDisconnectedClient();

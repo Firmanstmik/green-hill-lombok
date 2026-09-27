@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabase } from './supabase';
+import { isSupabaseConfigured, supabasePublic } from './supabase';
 import { loadLocalStore } from '@/admin/data/localLoader';
 
 /**
@@ -13,7 +13,7 @@ export type TeaserRow = Record<string, unknown>;
 export async function fetchPrivateTeasers(): Promise<TeaserRow[]> {
   try {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase.rpc('private_teasers');
+      const { data, error } = await supabasePublic.rpc('private_teasers');
       if (error || !Array.isArray(data)) return [];
       return data as TeaserRow[];
     }
@@ -30,7 +30,7 @@ export async function fetchPrivateTeasers(): Promise<TeaserRow[]> {
 export async function fetchPrivateTeaser(key: string): Promise<TeaserRow | null> {
   try {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase.rpc('private_teaser', { p_key: key });
+      const { data, error } = await supabasePublic.rpc('private_teaser', { p_key: key });
       return error || !data ? null : (data as TeaserRow);
     }
     if (loadLocalStore) {

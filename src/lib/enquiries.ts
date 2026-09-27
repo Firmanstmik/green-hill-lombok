@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabase } from './supabase';
+import { isSupabaseConfigured, supabasePublic } from './supabase';
 import { loadLocalStore } from '@/admin/data/localLoader';
 
 export type EnquirySource = 'private' | 'opportunity' | 'general';
@@ -29,7 +29,7 @@ export type EnquirySubmission = {
 export async function recordEnquiry(input: EnquirySubmission): Promise<boolean> {
   try {
     if (isSupabaseConfigured) {
-      const { error } = await supabase.rpc('submit_enquiry', {
+      const { error } = await supabasePublic.rpc('submit_enquiry', {
         p_name: input.name,
         p_email: input.email || null,
         p_whatsapp: input.whatsapp || null,

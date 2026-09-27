@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase, supabasePublic } from '@/lib/supabase';
 import { loadLocalStore } from '@/admin/data/localLoader';
 import type { NotesArticle } from '@/data/notesData';
 import { setContactOverrides } from '@/lib/contact';
@@ -79,9 +79,10 @@ async function signPreviewImages<T>(value: T): Promise<T> {
 async function loadRows(preview: boolean): Promise<{ rows: ContentRow[]; notes: NotesArticle[] }> {
   if (isSupabaseConfigured) {
     const statuses = preview ? ['published', 'draft'] : ['published'];
+    const reader = preview ? supabase : supabasePublic;
     const [content, notes] = await Promise.all([
-      supabase.from('site_content').select('page_key, locale, status, fields, media').in('status', statuses),
-      supabase.from('notes').select('id, slug, status, topic, published_on, author, featured, cover_image, cover_alt, og_image, translations').in('status', preview ? ['published', 'draft'] : ['published']),
+      reader.from('site_content').select('page_key, locale, status, fields, media').in('status', statuses),
+      reader.from('notes').select('id, slug, status, topic, published_on, author, featured, cover_image, cover_alt, og_image, translations').in('status', preview ? ['published', 'draft'] : ['published']),
     ]);
     const rows: ContentRow[] = (content.data ?? []).map((r: Record<string, unknown>) => ({
       page: String(r.page_key),

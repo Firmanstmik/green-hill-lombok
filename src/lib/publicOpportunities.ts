@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabasePublic } from './supabase';
 
 /** Statuses a visitor may see. Drafts and archived records never leave the admin. */
 export const PUBLIC_OPPORTUNITY_STATUSES = ['available', 'reserved', 'sold'] as const;
@@ -30,7 +30,7 @@ export const PUBLIC_OPPORTUNITY_COLUMNS = [
 const PUBLIC_SELECT = PUBLIC_OPPORTUNITY_COLUMNS.join(',');
 
 export function publicOpportunities() {
-  return supabase
+  return supabasePublic
     .from('properties')
     // Type-only cast: supabase-js cannot parse a list built at runtime; rows keep the same untyped shape as before.
     .select(PUBLIC_SELECT as '*')
@@ -48,7 +48,7 @@ export function publicOpportunityByKey(key: string) {
 
 /** Count only. Private records themselves are never sent to the browser. */
 export async function privateOpportunityCount(): Promise<number> {
-  const { data, error } = await supabase.rpc('private_opportunity_count');
+  const { data, error } = await supabasePublic.rpc('private_opportunity_count');
   if (error || typeof data !== 'number') return 0;
   return data;
 }
