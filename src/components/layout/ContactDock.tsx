@@ -15,7 +15,7 @@ import ghLogoSolid2x from '@/assets/greenhill/hero/green-hill-logo-solid-168.web
 
 /**
  * Fixed contact dock — VON-style slide-up rail adapted to Green Hill.
- * Desktop/tablet only (mobile uses MobileBottomNav).
+ * The same open/close tab is used on desktop and on the phone.
  * On the homepage it stays hidden through the hero, then slides up once
  * the visitor reaches the sections below.
  */

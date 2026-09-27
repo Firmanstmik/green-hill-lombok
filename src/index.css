@@ -7140,10 +7140,51 @@
   }
 }
 
-/* Mobile uses MobileBottomNav ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ hide dock below lg */
+/* Phone and tablet: the same open/close rail, stacked so it stays a compact sheet. */
 @media (max-width: 1023px) {
   .gh-contact-dock {
+    --cd-toggle-h: 2.2rem;
+    --cd-panel-h: auto;
+  }
+
+  .gh-contact-dock__toggle {
+    margin-right: 0.85rem;
+    padding: 0 0.75rem;
+    gap: 0.22rem;
+    border-radius: 0.55rem 0.55rem 0 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+
+  .gh-contact-dock__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    padding: 0.85rem 1rem 1rem;
+  }
+
+  .gh-contact-dock__brand-copy,
+  .gh-contact-dock__divider {
     display: none;
+  }
+
+  .gh-contact-dock__logo-img {
+    height: 1.85rem;
+  }
+
+  .gh-contact-dock__actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.45rem;
+    padding: 0;
+  }
+
+  .gh-contact-dock__action {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 3rem;
+    padding: 0.4rem 0.7rem 0.4rem 0.45rem;
   }
 }
 
@@ -8987,7 +9028,6 @@ button.gh-arch-chip {
   background: var(--gh-ivory);
   color: var(--gh-ink);
   font-family: "Jost Variable", "Jost", "Manrope", system-ui, sans-serif;
-  overflow-x: hidden;
 }
 
 .gh-memo main {
@@ -9586,8 +9626,10 @@ button.gh-arch-chip {
   padding: 1.35rem 1.35rem 1.5rem 1.45rem;
   border: 1px solid rgba(23, 56, 46, 0.12);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 1px 0 rgba(23, 56, 46, 0.04);
+  background: #fff;
+  box-shadow:
+    0 1px 0 rgba(23, 56, 46, 0.04),
+    0 18px 44px rgba(23, 56, 46, 0.1);
 }
 
 .gh-memo-rail__inner::before {
@@ -10093,7 +10135,12 @@ button.gh-arch-chip {
 
   .gh-memo-rail {
     position: sticky;
-    top: calc(104px + 1.25rem);
+    top: calc(104px + 1rem);
+    align-self: start;
+    max-height: calc(100dvh - 104px - 2rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(23, 56, 46, 0.28) transparent;
   }
 
   .gh-memo-mosaic:not([data-count="1"]) {
