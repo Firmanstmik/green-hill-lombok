@@ -17,7 +17,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useFilters } from '@/hooks/useFilters';
 import { useInView } from '@/hooks/useInView';
 import { isSupabaseConfigured } from '@/lib/supabase';
-import { publicOpportunities } from '@/lib/publicOpportunities';
+import { usePublicOpportunities } from '@/lib/usePublicOpportunities';
 import heroLand from '@/assets/greenhill/hero-masters/green-hill-hero-section-3.webp';
 import talkBackdrop from '@/assets/greenhill/bg-sec-talk-to-reece.webp';
 import talkPhoto1 from '@/assets/greenhill/sec-talk-to-reece1.webp';
@@ -55,48 +55,30 @@ const Properties = () => {
   const reduce = useReducedMotion();
   const intro = useInView({ threshold: 0.28 });
   const close = useInView({ threshold: 0.3 });
-  // Without a database: the demo set in development or an explicit demo build, otherwise nothing.
+  const live = usePublicOpportunities();
   const [displayProperties, setDisplayProperties] = useState<Property[]>(isSupabaseConfigured ? [] : mockProperties);
-  const [loaded, setLoaded] = useState(!isSupabaseConfigured);
+  const loaded = isSupabaseConfigured ? live.loaded : true;
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
       setDisplayProperties(mockProperties);
       return;
     }
-
-    const fetchProperties = async () => {
-      try {
-        const { data, error } = await publicOpportunities()
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        const propertiesToDisplay = data ?? [];
-
-        const normalized = propertiesToDisplay.map((p) => ({
-          ...p,
-          image: p.image_url || p.image,
-          sqft: p.m2 || p.sqft || 0,
-          priceType: p.price_type || p.priceType,
-          buildingArea: p.building_area || p.buildingArea,
-          surfaceArea: p.surface_area || p.surfaceArea,
-          yearBuilt: p.year_built || p.yearBuilt,
-          listingCode: p.listing_code || p.listingCode,
-          nearbyAmenities: p.nearby_amenities || p.nearbyAmenities,
-        }));
-
-        setDisplayProperties(normalized);
-      } catch (err) {
-        console.error('Error fetching properties:', err);
-        setDisplayProperties([]);
-      } finally {
-        setLoaded(true);
-      }
-    };
-
-    fetchProperties();
-  }, []);
+    if (!live.loaded && live.rows.length === 0) return;
+    setDisplayProperties(
+      live.rows.map((p) => ({
+        ...p,
+        image: p.image_url || p.image,
+        sqft: p.m2 || p.sqft || 0,
+        priceType: p.price_type || p.priceType,
+        buildingArea: p.building_area || p.buildingArea,
+        surfaceArea: p.surface_area || p.surfaceArea,
+        yearBuilt: p.year_built || p.yearBuilt,
+        listingCode: p.listing_code || p.listingCode,
+        nearbyAmenities: p.nearby_amenities || p.nearbyAmenities,
+      })) as Property[],
+    );
+  }, [live.loaded, live.rows]);
 
   const { filters, setFilter, resetFilters, filteredProperties, isFiltered } = useFilters(displayProperties);
   const lenses = useMemo(() => lensesPresent(displayProperties), [displayProperties]);

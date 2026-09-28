@@ -8859,6 +8859,107 @@ button.gh-arch-chip {
   border-bottom-color: var(--gh-gold);
 }
 
+@media (max-width: 767px) {
+  .gh-arch-seam {
+    margin-bottom: 0.2rem;
+  }
+
+  .gh-arch-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .gh-arch-filters__cats {
+    gap: 0.1rem 1rem;
+    padding-bottom: 0;
+  }
+
+  .gh-arch-filters__cat {
+    padding-bottom: 0.45rem;
+  }
+
+  .gh-arch-filters__tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: none;
+    align-content: start;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .gh-arch-search,
+  .gh-arch-pop--end,
+  .gh-arch-clear,
+  .gh-arch-menu:has(.gh-arch-menu__list),
+  .gh-arch-pop:has(.gh-arch-pop__panel) {
+    grid-column: 1 / -1;
+  }
+
+  .gh-arch-menu,
+  .gh-arch-pop {
+    position: static;
+    min-width: 0;
+  }
+
+  .gh-arch-search,
+  .gh-arch-select,
+  .gh-arch-chip {
+    width: 100%;
+    min-height: 42px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+  }
+
+  .gh-arch-search input {
+    font-size: 16px;
+  }
+
+  .gh-arch-select span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gh-arch-clear {
+    justify-self: end;
+    min-height: 32px;
+    margin-top: -0.05rem;
+    font-size: 0.78rem;
+  }
+
+  .gh-arch-menu__list,
+  .gh-arch-pop__panel,
+  .gh-arch-pop__panel--size {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: none;
+    margin-top: 0.15rem;
+    border-radius: 14px;
+    border-color: rgba(23, 56, 46, 0.1);
+    box-shadow:
+      0 1px 0 rgba(199, 157, 90, 0.45),
+      0 14px 32px rgba(23, 56, 46, 0.08);
+  }
+
+  .gh-arch-pop__panel,
+  .gh-arch-pop__panel--size {
+    padding: 1rem 1.05rem 0.85rem;
+  }
+
+  .gh-arch-size {
+    gap: 0.85rem;
+  }
+
+  .gh-arch-size input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
 .gh-arch-size__rule {
   width: 0.65rem;
   height: 1px;
@@ -8911,6 +9012,13 @@ button.gh-arch-chip {
 
 .gh-arch-clear:hover {
   color: var(--gh-forest);
+}
+
+@media (max-width: 767px) {
+  .gh-arch-clear {
+    min-height: 32px;
+    margin-left: auto;
+  }
 }
 
 .gh-arch-card__cta::after {
@@ -9181,10 +9289,9 @@ button.gh-arch-chip {
 
 .gh-memo-head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
   padding:
     clamp(2.25rem, 4.5vw, 3.5rem)
     var(--gh-memo-gutter)
@@ -9301,16 +9408,20 @@ button.gh-arch-chip {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   min-height: 44px;
-  padding-bottom: 0.35rem;
+  margin-bottom: 0.15rem;
   color: var(--gh-forest);
   font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   flex: 0 0 auto;
+}
+
+.gh-memo-back__icon {
+  transform: rotate(180deg);
 }
 
 .gh-memo-back::after {
@@ -9582,60 +9693,57 @@ button.gh-arch-chip {
 
 .gh-memo-film,
 .gh-memo-map {
-  margin-top: 1.5rem;
-  overflow: hidden;
-  border-radius: 18px;
-  background: #e4ddd2;
+  margin-top: 1.35rem;
 }
 
 .gh-memo-film {
+  overflow: hidden;
+  border-radius: 18px;
+  background: #e4ddd2;
   aspect-ratio: 16 / 9;
 }
 
-.gh-memo-film iframe,
-.gh-memo-map__frame {
+.gh-memo-film iframe {
   width: 100%;
   height: 100%;
   border: 0;
 }
 
+.gh-memo-map__stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  min-height: 18rem;
+  max-height: 32rem;
+  border-radius: 18px;
+  background: #cfc6b8;
+  border: 1px solid rgba(23, 56, 46, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(199, 157, 90, 0.28),
+    0 18px 40px rgba(23, 56, 46, 0.12);
+}
+
 .gh-memo-map__frame {
-  display: block;
-  aspect-ratio: 16 / 9;
-  min-height: 16rem;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .gh-memo-map__link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.85rem;
+  margin-top: 0.75rem;
   color: var(--gh-forest);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
   border-bottom: 1px solid var(--gh-gold, #c79d5a);
   padding-bottom: 0.12rem;
-}
-
-.gh-memo-map {
-  overflow: visible;
-  border-radius: 0;
-  background: transparent;
-}
-
-.gh-memo-map__frame {
-  border-radius: 18px;
-  background: #e4ddd2;
-}
-
-.gh-memo-map__canvas,
-.gh-memo-map__hold {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  min-height: 16rem;
 }
 
 .gh-memo-rail {
@@ -10225,14 +10333,11 @@ button.gh-arch-chip {
     line-height: 1.55;
   }
 
-  .gh-memo-film,
-  .gh-memo-map {
-    margin-inline: calc(var(--gh-memo-gutter) * -1);
-    border-radius: 0;
-  }
-
-  .gh-memo-map__frame {
-    border-radius: 0;
+  .gh-memo-map__stage {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    max-height: none;
+    border-radius: 14px;
   }
 
   .gh-memo-note {
@@ -12906,16 +13011,16 @@ button.gh-arch-chip {
   grid-template-columns: 1fr 1fr;
   max-width: none;
   margin-top: 0;
-  gap: 1.45rem 1.25rem;
-  padding: clamp(1.85rem, 3.4vw, 2.65rem);
-  border: 1px solid rgba(23, 56, 46, 0.08);
-  border-radius: 1.25rem;
+  gap: 0.85rem 0.8rem;
+  padding: 1.15rem 1.15rem 1.2rem;
+  border: 1px solid rgba(23, 56, 46, 0.1);
+  border-radius: 14px;
   background:
-    linear-gradient(155deg, rgba(255, 255, 255, 0.98) 0%, rgba(241, 237, 229, 0.92) 100%);
+    linear-gradient(165deg, #fff 0%, #f7f4ee 100%);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.7) inset,
-    0 1px 0 rgba(199, 157, 90, 0.18),
-    0 28px 64px rgba(23, 56, 46, 0.09);
+    0 1px 0 rgba(199, 157, 90, 0.22),
+    0 16px 36px rgba(23, 56, 46, 0.07);
   overflow: hidden;
 }
 
@@ -12940,7 +13045,7 @@ button.gh-arch-chip {
 .gh-priv-field {
   position: relative;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.32rem;
   min-width: 0;
 }
 
@@ -12952,11 +13057,11 @@ button.gh-arch-chip {
 .gh-priv-field__label {
   display: block !important;
   margin: 0;
-  color: rgba(23, 56, 46, 0.62) !important;
+  color: rgba(23, 56, 46, 0.58) !important;
   font-family: "Jost Variable", "Jost", system-ui, sans-serif;
-  font-size: 0.68rem !important;
+  font-size: 0.62rem !important;
   font-weight: 520 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: 0.14em !important;
   text-transform: uppercase;
 }
 
@@ -12965,22 +13070,31 @@ button.gh-arch-chip {
 }
 
 .gh-priv-form input,
+.gh-priv-form select,
 .gh-priv-form textarea {
   width: 100%;
-  border: 1px solid rgba(23, 56, 46, 0.12);
-  border-radius: 0.65rem;
-  padding: 0.95rem 1.05rem;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  min-height: 44px;
+  border: 1px solid rgba(23, 56, 46, 0.14);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  background-color: #fff;
+  box-shadow: none;
   color: var(--gh-forest);
   font-family: "Jost Variable", "Jost", system-ui, sans-serif;
-  font-size: 1.02rem;
-  line-height: 1.45;
+  font-size: 0.9375rem;
+  line-height: 1.35;
   transition:
-    border-color 0.35s ease,
-    background-color 0.35s ease,
-    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gh-priv-form select {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%2317382E' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 12px 8px;
 }
 
 .gh-priv-form input::placeholder,
@@ -12989,18 +13103,18 @@ button.gh-arch-chip {
 }
 
 .gh-priv-form input:hover,
+.gh-priv-form select:hover,
 .gh-priv-form textarea:hover {
   border-color: rgba(23, 56, 46, 0.28);
-  background: #fff;
+  background-color: #fff;
 }
 
 .gh-priv-form input:focus-visible,
+.gh-priv-form select:focus-visible,
 .gh-priv-form textarea:focus-visible {
   border-color: rgba(199, 157, 90, 0.72);
-  background: #fff;
-  box-shadow:
-    0 0 0 3px rgba(199, 157, 90, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(199, 157, 90, 0.16);
   outline: none;
 }
 
@@ -13039,10 +13153,10 @@ button.gh-arch-chip {
 
 .gh-priv-type__options button {
   position: relative;
-  min-height: 44px;
-  padding: 0.7rem 1.05rem;
+  min-height: 36px;
+  padding: 0.42rem 0.7rem;
   border: 1px solid rgba(23, 56, 46, 0.14);
-  border-radius: 0.65rem;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.7);
   color: var(--gh-forest);
   font-family: "Jost Variable", "Jost", system-ui, sans-serif;
@@ -13093,7 +13207,7 @@ button.gh-arch-chip {
 }
 
 .gh-priv-form__message textarea {
-  min-height: 9.5rem;
+  min-height: 6.5rem;
   resize: vertical;
 }
 
@@ -13493,6 +13607,20 @@ button.gh-arch-chip {
 
   .gh-priv-form {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1rem 0.95rem 1.05rem;
+  }
+
+  .gh-priv-form input,
+  .gh-priv-form select,
+  .gh-priv-form textarea {
+    font-size: 16px;
+    min-height: 44px;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .gh-priv-form select {
+    padding-right: 1.85rem;
   }
 
   .gh-priv-field,
@@ -13508,6 +13636,7 @@ button.gh-arch-chip {
 
   .gh-priv-type__options button {
     width: 100%;
+    min-height: 44px;
   }
 
   .gh-priv-final {
@@ -20387,7 +20516,20 @@ button.gh-arch-chip {
 }
 
 .gh-enquire__section {
-  padding-top: calc(88px + clamp(2.5rem, 6vw, 4.5rem));
+  padding-top: calc(88px + clamp(2rem, 5vw, 3.5rem));
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 767px) {
+  .gh-enquire .gh-priv-form input,
+  .gh-enquire .gh-priv-form select,
+  .gh-enquire .gh-priv-form textarea {
+    font-size: 16px;
+  }
+
+  .gh-enquire .gh-priv-title {
+    font-size: clamp(1.55rem, 6.4vw, 1.9rem);
+  }
 }
 
 .gh-enquire__direct a {

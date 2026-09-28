@@ -6,8 +6,8 @@ import { demoOpportunities as mockProperties, type Property } from '@/data/mockD
 import { useInView } from '@/hooks/useInView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { usePublicOpportunities } from '@/lib/usePublicOpportunities';
 import { useContentText } from '@/content/hooks';
-import { publicOpportunities } from '@/lib/publicOpportunities';
 import { BrandCurveMark } from '@/components/brand/BrandCurveMark';
 import { CuratedOpportunityCard } from './opportunities/CuratedOpportunityCard';
 import { selectCuratedOpportunities } from './opportunities/selectCuratedOpportunities';
@@ -20,62 +20,49 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * Curated editorial collection. Same Green Hill signature mark as Section 02.
  */
 export function SelectedOpportunities() {
-  const { ref, isInView } = useInView({ threshold: 0.12 });
+  const { ref, isInView } = useInView({ threshold: 0.08 });
   const { language, t } = useLanguage();
   const reduce = useReducedMotion();
-  // Without a database: the demo set in development or an explicit demo build, otherwise nothing.
+  const live = usePublicOpportunities();
   const [source, setSource] = useState<Property[]>(isSupabaseConfigured ? [] : mockProperties);
-  const [loaded, setLoaded] = useState(!isSupabaseConfigured);
+  const loaded = isSupabaseConfigured ? live.loaded : true;
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (isInView) setRevealed(true);
+  }, [isInView]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setRevealed(true), 800);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
       setSource(mockProperties);
       return;
     }
-
-    let cancelled = false;
-
-    const fetchProperties = async () => {
-      try {
-        const { data, error } = await publicOpportunities()
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        if (cancelled) return;
-
-        const rows = data ?? [];
-        const normalized = rows.map((p: Record<string, unknown>) => ({
-          ...p,
-          image: (p.image_url as string) || (p.image as string),
-          sqft: (p.m2 as number) || (p.sqft as number) || 0,
-          priceType: (p.price_type as string) || (p.priceType as string),
-          featured: (p.is_featured as boolean) ?? (p.featured as boolean),
-          surfaceArea: (p.surface_area as string) || (p.surfaceArea as string),
-          type: (p.type as string) || (p.property_type as string) || '',
-          address: (p.address as string) || (p.location as string) || '',
-          title: (p.title as string) || '',
-          price: Number(p.price) || 0,
-          bedrooms: Number(p.bedrooms) || 0,
-          bathrooms: Number(p.bathrooms) || 0,
-          status: (p.status as Property['status']) || 'sale',
-          images: (p.images as string[]) || [],
-          features: (p.features as Record<string, string>) || {},
-        })) as Property[];
-
-        setSource(normalized);
-      } catch (err) {
-        console.error('Error fetching curated opportunities:', err);
-        if (!cancelled) setSource([]);
-      } finally {
-        if (!cancelled) setLoaded(true);
-      }
-    };
-
-    fetchProperties();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    if (!live.loaded && live.rows.length === 0) return;
+    setSource(
+      live.rows.map((p) => ({
+        ...p,
+        image: (p.image_url as string) || (p.image as string),
+        sqft: (p.m2 as number) || (p.sqft as number) || 0,
+        priceType: (p.price_type as string) || (p.priceType as string),
+        featured: (p.is_featured as boolean) ?? (p.featured as boolean),
+        surfaceArea: (p.surface_area as string) || (p.surfaceArea as string),
+        type: (p.type as string) || (p.property_type as string) || '',
+        address: (p.address as string) || (p.location as string) || '',
+        title: (p.title as string) || '',
+        price: Number(p.price) || 0,
+        bedrooms: Number(p.bedrooms) || 0,
+        bathrooms: Number(p.bathrooms) || 0,
+        status: (p.status as Property['status']) || 'sale',
+        images: (p.images as string[]) || [],
+        features: (p.features as Record<string, string>) || {},
+      })) as Property[],
+    );
+  }, [live.loaded, live.rows]);
 
   // Reece chooses 3–6 in the admin (brief §4); the shipped default otherwise.
   const countSetting = Number(useContentText('cms.home.selected.count'));
@@ -90,13 +77,13 @@ export function SelectedOpportunities() {
     if (reduce) {
       return {
         initial: { opacity: 0 },
-        animate: isInView ? { opacity: 1 } : { opacity: 0 },
+        animate: revealed ? { opacity: 1 } : { opacity: 0 },
         transition: { duration: 0.4, delay: Math.min(delay, 0.1), ease: EASE },
       };
     }
     return {
       initial: { opacity: 0, y },
-      animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y },
+        animate: revealed ? { opacity: 1, y: 0 } : { opacity: 0, y },
       transition: { duration: 0.72, delay, ease: EASE },
     };
   };
@@ -134,7 +121,7 @@ export function SelectedOpportunities() {
               property={curated[0]}
               index={0}
               lead
-              inView={isInView}
+              inView={revealed}
             />
           )}
 
@@ -145,7 +132,7 @@ export function SelectedOpportunities() {
                   <CuratedOpportunityCard
                     property={property}
                     index={i + 1}
-                    inView={isInView}
+                    inView={revealed}
                   />
                 </div>
               ))}

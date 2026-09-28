@@ -27,6 +27,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useInView } from '@/hooks/useInView';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { publicOpportunities, publicOpportunityByKey } from '@/lib/publicOpportunities';
+import { usePublicOpportunities } from '@/lib/usePublicOpportunities';
 import { useOpportunityPriceDetail } from '@/lib/opportunityPrice';
 import { fetchPrivateTeaser } from '@/lib/privateTeasers';
 import { buildWhatsAppUrl, getPublicWhatsAppUrl } from '@/lib/contact';
@@ -368,6 +369,9 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
   const close = useInView({ threshold: 0.25 });
   const portrait = useContentImage('site.reece.portrait', founderPortrait);
   const contact = useContactSettings();
+  const live = usePublicOpportunities();
+  const liveRows = useRef(live.rows);
+  liveRows.current = live.rows;
   const [property, setProperty] = useState<OpportunityRecord | null>(null);
   const [others, setOthers] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -381,11 +385,31 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
     const pickOthers = (list: Property[], currentId: string | undefined) =>
       list.filter((item) => item.id !== currentId).slice(0, 3);
 
+    const cachedRecord = () => {
+      const row = liveRows.current.find(
+        (item) => String(item.id ?? '') === (id ?? '') || String(item.slug ?? '') === (id ?? ''),
+      );
+      return row ? fromRow(row) : null;
+    };
+
     const load = async () => {
-      setLoading(true);
-      setProperty(null);
-      setOthers([]);
       setPhotoIndex(null);
+      setProperty((current) => {
+        if (!current || !id) return null;
+        if (current.id === id || current.slug === id) return current;
+        return null;
+      });
+      setLoading(true);
+
+      const showMissing = () => {
+        const cached = cachedRecord();
+        if (cached) {
+          setProperty(cached);
+          return;
+        }
+        setProperty(null);
+        setOthers([]);
+      };
 
       try {
         if (preview && id) {
@@ -414,10 +438,30 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
           return;
         }
 
-        const { data, error } = await publicOpportunityByKey(id ?? '').maybeSingle();
+        const read = async () => {
+          const { data, error } = await publicOpportunityByKey(id ?? '').maybeSingle();
+          if (error) throw error;
+          return data;
+        };
+
+        let data: unknown = null;
+        try {
+          data = await read();
+        } catch (err) {
+          console.error('Error fetching property:', err);
+          await new Promise((resolve) => window.setTimeout(resolve, 450));
+          if (!active) return;
+          data = await read();
+        }
+        if (!active) return;
+        if (!data) {
+          await new Promise((resolve) => window.setTimeout(resolve, 450));
+          if (!active) return;
+          data = await read();
+        }
         if (!active) return;
 
-        if (data && !error) {
+        if (data && typeof data === 'object') {
           const record = fromRow(data as Record<string, unknown>);
           setProperty(record);
           const { data: siblings } = await publicOpportunities()
@@ -428,13 +472,11 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
           return;
         }
 
-        setProperty(null);
-        setOthers([]);
+        showMissing();
       } catch (err) {
         console.error('Error fetching property:', err);
         if (!active) return;
-        setProperty(null);
-        setOthers([]);
+        showMissing();
       } finally {
         if (active) setLoading(false);
       }
@@ -445,6 +487,16 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
       active = false;
     };
   }, [id, preview, teaser]);
+
+  useEffect(() => {
+    if (teaser || preview || !id || !isSupabaseConfigured) return;
+    const row = live.rows.find(
+      (item) => String(item.id ?? '') === id || String(item.slug ?? '') === id,
+    );
+    if (!row) return;
+    setProperty(fromRow(row));
+    setLoading(false);
+  }, [live.rows, id, teaser, preview]);
 
   useEffect(() => {
     if (photoIndex == null) return;
@@ -561,6 +613,10 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
     return (
       <Shell>
         <main className="gh-memo-state">
+          <Link className="gh-memo-back" to={archiveHref}>
+            <GhIconArrow className="gh-memo-back__icon" size={14} />
+            {t('properties.memo.backToCollection')}
+          </Link>
           <h1>{t('properties.notFound')}</h1>
           <p>{t('properties.memo.notFoundLead')}</p>
           <Link className="gh-final__cta gh-final__cta--primary" to={archiveHref}>
@@ -631,6 +687,7 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
     url: property.features?._maps,
     latitude: point?.lat,
     longitude: point?.lng,
+    place,
   });
   const meta = [
     typeLabel,
@@ -687,6 +744,10 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
     <Shell>
       <main>
         <header className="gh-memo-head">
+          <Link className="gh-memo-back" to={teaser ? privateHref : archiveHref}>
+            <GhIconArrow className="gh-memo-back__icon" size={14} />
+            {t('properties.memo.backToCollection')}
+          </Link>
           <div className="gh-memo-head__copy">
             <p className="gh-memo-kicker">
               <BrandCurveMark className="gh-memo-kicker__mark" isInView />
@@ -722,10 +783,6 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
               </ul>
             ) : null}
           </div>
-          <Link className="gh-memo-back" to={archiveHref}>
-            {t('properties.memo.exploreAll')}
-            <GhIconArrow size={14} />
-          </Link>
         </header>
 
         {heroImage ? (
@@ -857,13 +914,17 @@ const PropertyDetail = ({ teaser = false }: { teaser?: boolean }) => {
                 ) : null}
                 {maps ? (
                   <div className="gh-memo-map">
-                    <iframe
-                      className="gh-memo-map__frame"
-                      src={maps.embed}
-                      title={`${property.title} — ${place}`}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
+                    {maps.embed ? (
+                      <div className="gh-memo-map__stage">
+                        <iframe
+                          className="gh-memo-map__frame"
+                          src={maps.embed}
+                          title={`${property.title} — ${place}`}
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                    ) : null}
                     <a className="gh-memo-map__link" href={maps.href} target="_blank" rel="noopener noreferrer">
                       {t('properties.memo.openMap')}
                       <GhIconArrow size={14} />
